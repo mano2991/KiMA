@@ -1,0 +1,60 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                      KIMA IMAGE MANAGEMENT - QUICK START                     ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📁 WHERE TO PUT IMAGE FILES:
+   /Users/manojkumark/Desktop/KiMA/KiMA/src/images/
+
+📝 HOW TO USE IN HTML:
+   <img src="images/M_L.png" alt="Description">
+
+📊 CURRENT FILES:
+   ✓ kinematics.png    (36 KB)
+   ✓ ladder.png        (46 KB)
+   ✓ M_L.png           (138 KB)
+   ✓ Multiple.png      (137 KB)
+   ✓ PCA.png           (76 KB)
+   ━━━━━━━━━━━━━━
+   TOTAL: 433 KB
+
+⚙️ WEBPACK HANDLES:
+   ✓ Automatically copies images from src/images/ to dist/
+   ✓ Optimizes image sizes
+   ✓ Caches efficiently
+   ✓ Works for production builds
+
+📋 ADDING NEW IMAGES:
+   1. Save image to: src/images/your-image.png
+   2. Use in HTML:   <img src="images/your-image.png" alt="...">
+   3. Restart server: npm start
+   4. Done! ✓
+
+💾 FILE SIZE LIMITS:
+   • Maximum: 200 KB (recommended)
+   • Current: All under 150 KB ✓
+   • Optimal: 50-100 KB
+
+🎨 FORMATS:
+   • PNG  → Graphics, logos, diagrams ✓
+   • JPG  → Photos
+   • WebP → Smaller file sizes
+   • GIF  → Animations only
+
+🐛 TROUBLESHOOTING:
+   Image not showing?
+   • Check path uses "images/" prefix
+   • Verify file exists in src/images/
+   • Restart server with: npm start
+   • Clear browser cache: Cmd+Shift+R (Mac)
+
+📍 DATA FILES (Keep in Root):
+   • DhanuushAug8shuffle0_50000_filtered.csv (143 KB)
+   • DhanuushAug8shuffle0_50000_Data_2.csv   (83 KB)
+
+🌐 PRODUCTION BUILD:
+   npm run build
+   Creates optimized files in dist/ folder
+
+────────────────────────────────────────────────────────────────────────────────
+See IMAGE_MANAGEMENT.md for full documentation
+────────────────────────────────────────────────────────────────────────────────

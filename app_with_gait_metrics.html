@@ -1,0 +1,2773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiMA - kinematics Motion Analysis for SCI</title>
+    <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pca-js@1.0.3/dist/pca.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f7fa;
+            --text: #1a202c;
+            --panel-bg: #ffffff;
+            --panel-border: #e5e7eb;
+            --muted: #6b7280;
+            --header-bg: #1f2937;
+            --header-text: #ffffff;
+            --card-bg: #ffffff;
+            --card-border: #e5e7eb;
+            --card-shadow: rgba(17, 29, 57, 0.08);
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --success: #10b981;
+            --success-dark: #059669;
+        }
+        body.theme-dark {
+            --bg: #0f172a;
+            --text: #f3f4f6;
+            --panel-bg: #1f2937;
+            --panel-border: #374151;
+            --muted: #d1d5db;
+            --header-bg: #111827;
+            --header-text: #f9fafb;
+            --card-bg: #1f2937;
+            --card-border: #374151;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1600px; }
+        .hidden { display: none; }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 0.75rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--header-bg) 0%, #374151 100%);
+            color: var(--header-text);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel h2 {
+            color: var(--text);
+            border-bottom: 2px solid var(--panel-border);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(59, 130, 246, 0.04));
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.12));
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        body.theme-dark .upload-area {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.08));
+            border-color: #475569;
+        }
+
+        .form-group label {
+            color: var(--muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select {
+            border: 1.5px solid var(--panel-border);
+            border-radius: 0.5rem;
+            padding: 0.7rem 0.9rem;
+            background-color: var(--panel-bg);
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        body.theme-dark .form-group input, body.theme-dark .form-group select {
+            background-color: #111827;
+            border-color: #4b5563;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.04);
+            background-color: var(--panel-bg);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.65rem 1.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1e3a8a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.25);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: linear-gradient(135deg, #cbd5e1 0%, #a1a5ac 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, var(--success-dark) 0%, #065f46 100%);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.25);
+        }
+
+        .theme-toggle {
+            border: 1.5px solid var(--panel-border);
+            background-color: var(--panel-bg);
+            color: var(--text);
+            border-radius: 9999px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+
+        .color-picker input[type="color"] {
+            -webkit-appearance: none;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--panel-border);
+            border-radius: 0.5rem;
+            padding: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .color-picker input[type="color"]:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+        }
+
+        .color-picker input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 0.25rem;
+        }
+
+        .color-picker input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 0.25rem;
+        }
+
+        .status.success {
+            background-color: #f0fdf4;
+            color: #166534;
+            border: 1.5px solid #86efac;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+
+        .status.error {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1.5px solid #fca5a5;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+
+        .status.info {
+            background-color: #eff6ff;
+            color: #1e40af;
+            border: 1.5px solid #93c5fd;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+
+        .spinner {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .download-options {
+            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+            border: 1px solid var(--panel-border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        body.theme-dark .download-options {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            border-color: #374151;
+        }
+
+        .dpi-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #e5e7eb 0%, var(--primary) 0%);
+            outline: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .dpi-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .dpi-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .slider-container {
+            position: relative;
+            margin: 0.75rem 0;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        #plot-container {
+            position: relative;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        #hover-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        #tooltip {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
+            border-radius: 0.5rem;
+            pointer-events: none;
+            display: none;
+            transform: translate(-50%, -150%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+        }
+
+        .tab-button {
+            padding: 0.85rem 1.5rem;
+            cursor: pointer;
+            background-color: transparent;
+            color: var(--muted);
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .tab-button:hover {
+            color: var(--text);
+            background-color: var(--panel-bg);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: #f0f4ff;
+        }
+
+        body.theme-dark .tab-button.active {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        .landing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .landing-grid-three {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.75rem;
+        }
+
+        @media (max-width: 1024px) {
+            .landing-grid-three {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+        }
+
+        .landing-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 12px var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .landing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #8b5cf6);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .landing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .landing-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .landing-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.35rem;
+        }
+
+        .landing-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .landing-media {
+            width: 100%;
+            height: 160px;
+            border-radius: 0.75rem;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--card-border);
+        }
+
+        .work-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #ea580c;
+            background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(249, 115, 22, 0.1));
+            border: 1px solid rgba(234, 88, 12, 0.3);
+            border-radius: 999px;
+            padding: 0.4rem 0.95rem;
+            align-self: flex-start;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        body.theme-dark .work-badge {
+            color: #ffa74d;
+            background: rgba(251, 146, 60, 0.15);
+            border-color: rgba(251, 146, 60, 0.3);
+        }
+
+        .card-footer {
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 500;
+            border-top: 1px solid var(--card-border);
+            padding-top: 0.75rem;
+        }
+
+        .wip-card {
+            cursor: default;
+            opacity: 0.85;
+        }
+
+        .wip-card:hover {
+            transform: none;
+            box-shadow: 0 4px 12px var(--card-shadow);
+        }
+
+        .brand-gradient {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            display: inline-block;
+            font-weight: 800;
+        }
+
+        .hero-heading {
+            font-size: clamp(2.75rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 800px;
+            margin: 1.25rem auto 0;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        /* Breadcrumb Styles */
+        .breadcrumb-container {
+            background: linear-gradient(135deg, var(--header-bg) 0%, #374151 100%);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #ffffff;
+        }
+
+        .breadcrumb-item {
+            color: #e5e7eb;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb-item.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .breadcrumb-separator {
+            color: #9ca3af;
+            margin: 0 0.25rem;
+        }
+
+        /* Dark Mode - Section Container keeps white background */
+        body.theme-dark .section-container {
+            background: #ffffff;
+        }
+
+        body.theme-dark .section-header {
+            background: #ffffff;
+            color: #1a202c;
+        }
+
+        body.theme-dark .container.mx-auto.bg-white {
+            background: #ffffff;
+            color: #1a202c;
+        }
+
+        body.theme-dark .header {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #1f2937;
+        }
+
+        body.theme-dark .header h1 {
+            color: #1f2937;
+        }
+
+        body.theme-dark .header p {
+            color: #6b7280;
+        }
+
+        body.theme-dark .controls-panel .panel {
+            background: #ffffff;
+            border-color: #e5e7eb;
+            color: #1a202c;
+        }
+
+        body.theme-dark .controls-panel h2 {
+            color: #1a202c;
+        }
+
+        body.theme-dark .results-panel .panel {
+            background: #ffffff;
+            border-color: #e5e7eb;
+            color: #1a202c;
+        }
+
+        body.theme-dark .results-panel h2 {
+            color: #1a202c;
+        }
+
+        body.theme-dark .upload-area {
+            border-color: #cbd5e1;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(59, 130, 246, 0.04));
+        }
+
+        body.theme-dark .upload-area p {
+            color: #6b7280;
+        }
+
+        body.theme-dark .form-group label {
+            color: #6b7280;
+        }
+
+        body.theme-dark .form-group input,
+        body.theme-dark .form-group select {
+            background-color: #f9fafb;
+            border-color: #e5e7eb;
+            color: #1a202c;
+        }
+
+        body.theme-dark .form-group input:focus,
+        body.theme-dark .form-group select:focus {
+            background-color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        body.theme-dark .tab-button {
+            color: #6b7280;
+            border-bottom-color: transparent;
+        }
+
+        body.theme-dark .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: #f0f4ff;
+        }
+
+        body.theme-dark .tab-content {
+            color: #1a202c;
+        }
+
+        body.theme-dark .panel.bg-green-50 {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            color: #15803d;
+        }
+
+        body.theme-dark .panel.bg-green-50 h2 {
+            color: #15803d;
+        }
+
+        body.theme-dark .panel.bg-green-50 p {
+            color: #15803d;
+        }
+
+        body.theme-dark table {
+            background: #ffffff;
+            color: #1a202c;
+        }
+
+        body.theme-dark thead {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        body.theme-dark tbody tr {
+            border-color: #e5e7eb;
+        }
+
+        body.theme-dark tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        body.theme-dark .tab-header {
+            border-color: #e5e7eb;
+        }
+
+        body.theme-dark .border-gray-200 {
+            border-color: #e5e7eb;
+        }
+
+        body.theme-dark .text-gray-600 {
+            color: #6b7280;
+        }
+
+        body.theme-dark .text-gray-400 {
+            color: #9ca3af;
+        }
+
+        body.theme-dark .text-gray-500 {
+            color: #9ca3af;
+        }
+
+        body.theme-dark .bg-slate-50,
+        body.theme-dark .bg-slate-100 {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        body.theme-dark .bg-blue-50 {
+            background: #f0f4ff;
+            color: #1e40af;
+        }
+
+        /* Dark Mode - Download Options Box */
+        body.theme-dark .download-options {
+            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+            border-color: #e5e7eb;
+            color: #1a202c;
+        }
+
+        body.theme-dark .download-options .text-sm,
+        body.theme-dark .download-options label {
+            color: #1a202c;
+        }
+
+        body.theme-dark .download-options .text-xs {
+            color: #6b7280;
+        }
+
+        body.theme-dark .download-options select {
+            background: #ffffff;
+            border-color: #e5e7eb;
+            color: #1a202c;
+        }
+
+        body.theme-dark .slider-labels {
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div id="homeSection" class="container mx-auto my-10 px-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-wide" style="color: var(--muted);">Interface</p>
+                <h2 class="text-xl font-bold mt-1" style="color: var(--text);">KiMA workspace</h2>
+            </div>
+            <button id="themeToggle" class="theme-toggle" type="button">
+                <span id="themeToggleIcon">🌞</span>
+                <span id="themeToggleLabel">Light Mode</span>
+            </button>
+        </div>
+        <div class="text-center mb-10">
+            <p class="text-xs font-semibold uppercase tracking-[0.35em]" style="color: var(--muted);">kiMA suite</p>
+            <h1 class="hero-heading brand-gradient mt-4">KiMA suite</h1>
+            <p class="hero-subtitle">KiMA (Kinematics motion analysis) is our rapid assessment environment for Spinal Cord Injury (SCI) models—move between single runs, cohort summaries, and PCA comparisons without leaving your browser.</p>
+            <p class="hero-subtitle">Pick a workflow below to start analyzing gait data your way.</p>
+        </div>
+        <div class="landing-grid-three">
+            <div class="landing-card" data-section-target="singleSampleSection">
+                <img class="landing-media" src="kinematics.png" alt="Single Sample Stick Figure">
+                <h3>Single Sample Analysis</h3>
+                <p>Load a DeepLabCut CSV to interact with stick plots, gait parameters, and export-ready visuals.</p>
+            </div>
+            <div class="landing-card" data-section-target="multiSampleSection">
+                <img class="landing-media" src="ladder.png" alt="Multiple Sample Comparison">
+                <h3>Multiple Sample Analysis</h3>
+                <p>Batch process subjects, capture 46 gait metrics per file, and export a tidy dataset for comparisons.</p>
+            </div>
+            <div class="landing-card" data-section-target="pcaSection">
+                <img class="landing-media" src="kinematics.png" alt="PCA Visualization">
+                <h3>PCA & Group Separation</h3>
+                <p>Upload aggregated metrics, label cohorts (Injured vs Treated vs Control), and visualize group shifts.</p>
+            </div>
+        </div>
+        <div class="landing-grid-three mt-6">
+            <div class="landing-card wip-card">
+                <img class="landing-media" src="ladder.png" alt="Footfall Heatmap">
+                <span class="work-badge">Work in progress</span>
+                <h3>Foot Fall Analysis</h3>
+                <p>Automated detection of paw placements with spatial density plots and outlier mapping.</p>
+                <p class="card-footer">Coming soon for detailed stance diagnostics.</p>
+            </div>
+            <div class="landing-card wip-card">
+                <img class="landing-media" src="kinematics.png" alt="Cat Walk Visualization">
+                <span class="work-badge">Work in progress</span>
+                <h3>Cat Walk</h3>
+                <p>High-speed runway analytics with paw timing, symmetry radar plots, and exportable overlays.</p>
+                <p class="card-footer">Optimized for standard CatWalk™ datasets.</p>
+            </div>
+            <div class="landing-card wip-card">
+                <img class="landing-media" src="ladder.png" alt="Treadmill Analysis">
+                <span class="work-badge">Work in progress</span>
+                <h3>Treadmill Analysis</h3>
+                <p>Synchronize treadmill speed logs with stick plots to profile fatigue and adaptive gait changes.</p>
+                <p class="card-footer">Expected release after Foot Fall module.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="singleSampleSection" class="hidden">
+        <div class="breadcrumb-container">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item" data-back-home style="cursor: pointer;">Home</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">Single Sample Analysis</span>
+                    </div>
+                    <button id="themeToggleSingle" class="theme-toggle" type="button">
+                        <span class="theme-toggle-icon">🌞</span>
+                        <span class="theme-toggle-label">Light Mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-6"></div>
+    <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="header p-8 text-center">
+            <h1 class="text-4xl font-bold tracking-tight">KiMA - kinematics Motion Analysis for SCI</h1>
+            <p class="text-lg text-slate-300 mt-2">Analysis and Visualize the GAIT parameters from DeepLabCut data </p>
+        </div>
+
+        <div class="content flex flex-col lg:flex-row gap-8 p-8">
+            <div class="controls-panel lg:w-1/3 space-y-6">
+                <div class="panel rounded-xl p-6">
+                    <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                    <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="uploadArea">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        <p class="mt-2 text-sm text-gray-600">Click to upload or drag & drop</p>
+                        <p class="text-xs text-gray-500">CSV files only</p>
+                        <input type="file" id="csvFile" accept=".csv" class="hidden">
+                    </div>
+                    <div id="fileStatus" class="mt-4"></div>
+                </div>
+
+                <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
+                    <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
+                    <button class="btn w-full text-base py-3 btn-success" id="downloadParamsBtn" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Download Parameters CSV
+                    </button>
+                    <p class="text-xs text-green-700 mt-2">Exports all 46 gait parameters</p>
+                </div>
+
+                <div class="panel rounded-xl p-6">
+                    <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Plot Styling</h2>
+                    <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Title</label> <input type="text" id="plotTitle" value="Gait Analysis Plot" class="mt-1 w-full"> </div>
+                    <div class="grid grid-cols-2 gap-4 form-group mb-4"> <div><label class="text-sm font-medium">X-Axis Label</label><input type="text" id="xAxisLabel" value="X - Coordinate" class="mt-1 w-full"></div> <div><label class="text-sm font-medium">Y-Axis Label</label><input type="text" id="yAxisLabel" value="Y - Coordinate" class="mt-1 w-full"></div> </div>
+                    <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Background Color</label> <div class="color-picker text-sm flex items-center mt-1"> <span>Background Color:</span> <input type="color" id="plotBackgroundColor" value="#ffffff" class="ml-auto"> </div> </div>
+                    <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">Highlighted Frame Style</label> <div class="grid grid-cols-3 gap-4"> <div><label class="text-xs font-medium text-gray-600">Point Size</label><input type="number" id="pointSize" value="8" class="mt-1 w-full"></div> <div><label class="text-xs font-medium text-gray-600">Line Width</label><input type="number" id="lineWidth" value="5" class="mt-1 w-full"></div> <div><label class="text-xs font-medium text-gray-600">Text Size</label><input type="number" id="textSize" value="14" class="mt-1 w-full"></div> </div> </div>
+                    <div class="form-group mb-4"> <label class="text-sm font-medium">Body Part Colors</label> <div class="grid grid-cols-2 gap-x-6 gap-y-4 mt-2"> <div class="color-picker text-sm flex items-center"><span>Toe:</span><input type="color" id="colorToe" value="#F781BF" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>MTP:</span><input type="color" id="colorMtp" value="#FDB462" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Ankle:</span><input type="color" id="colorAnkle" value="#B3ED69" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Knee:</span><input type="color" id="colorKnee" value="#80B1D3" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Hip:</span><input type="color" id="colorHip" value="#CAB2D6" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Iliac:</span><input type="color" id="colorIliac" value="#F90B0B" class="ml-auto"></div> </div> </div>
+                    <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">Background / Unselected Frames</label> <div class="grid grid-cols-2 gap-4"> <div> <label class="text-xs font-medium text-gray-600">Color</label> <div class="color-picker text-sm flex items-center mt-1"><span>Frame Color:</span><input type="color" id="backgroundFrameColor" value="#94a3b8" class="ml-auto"></div> </div> <div> <label class="text-xs font-medium text-gray-600">Opacity</label> <input type="range" id="backgroundOpacity" min="0" max="100" value="10" class="w-full mt-1"> <div class="text-xs text-center text-gray-600" id="opacityValue">10%</div> </div> </div> <div class="mt-4"> <label class="text-sm font-medium text-gray-700">Frame Step</label> <input type="number" id="frameStep" value="1" min="1" class="w-full mt-1"> <p class="text-xs text-gray-500 mt-1">Draw one background frame every N steps to reduce clutter.</p> </div> </div>
+                    <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">General Settings</label> <div class="mb-4"> <label class="text-sm font-medium">Labels & Title Color</label> <div class="color-picker text-sm flex items-center mt-1"><span>Text Color:</span><input type="color" id="textColor" value="#1e293b" class="ml-auto"></div> </div> <label class="text-sm font-medium">Likelihood Threshold</label> <input type="number" id="threshold" value="0.5" min="0" max="1" step="0.1" class="w-full mt-1"> </div>
+                    <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold mb-3 block">Download Options (Interactive Plot)</label> <div class="download-options"> <div class="grid grid-cols-2 gap-4 mb-4"> <div> <label class="text-xs font-medium text-gray-600 mb-2 block">DPI Quality</label> <div class="slider-container"> <input type="range" id="dpiSlider" min="100" max="600" value="300" step="50" class="dpi-slider"> <div class="slider-labels"><span>100</span><span>600</span></div> </div> <div class="text-center text-sm font-semibold text-gray-700 mt-1" id="dpiValue">300 DPI</div> </div> <div> <label class="text-xs font-medium text-gray-600 mb-1 block">Background</label> <select id="backgroundType" class="w-full text-sm"> <option value="white">White Background</option> <option value="black">Black Background</option> <option value="transparent">Transparent Background</option> </select> </div> </div> <div class="text-xs text-gray-500 mb-2"><span id="imageSizeInfo">Image size: ~2400 x 2100 pixels</span></div> </div> </div>
+                    <div class="mt-6"> <button class="btn w-full text-base py-3 btn-success" id="downloadBtn" disabled> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg> Generate Downloadable PNG </button> </div>
+                </div>
+            </div>
+
+            <div class="results-panel lg:w-2/3 flex flex-col">
+                <div class="panel rounded-xl flex-grow flex flex-col">
+                    <div class="tab-header border-b border-gray-200">
+                        <div class="flex overflow-x-auto">
+                            <button class="tab-button active" data-tab="interactivePlotTab">Interactive Plot</button>
+                            <button class="tab-button" data-tab="gaitParametersTab">Gait Parameters</button>
+                            <button class="tab-button" data-tab="statsAnalysisTab">Statistical Analysis</button>
+                            <button class="tab-button" data-tab="multiSampleViewerTab">Stick Viewer</button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 flex-grow flex flex-col">
+                        <div id="interactivePlotTab" class="tab-content active flex-grow flex-col">
+                            <h2 class="text-xl font-semibold">📊 Interactive Plot</h2>
+                            <p class="text-sm text-slate-500 mb-4">Hover to see frame number. Click to select or deselect.</p>
+                            <div id="processingStatus"></div>
+                            <div id="results">
+                                <p class="text-gray-500">Upload a CSV file to begin</p>
+                            </div>
+                            <div id="sequencePreviewPanel" class="mt-6 hidden">
+                                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                                    <div>
+                                        <h3 class="text-lg font-semibold">🎞️ Stick Sequence Player</h3>
+                                        <p class="text-sm text-slate-500">Plays up to 20 evenly spaced frames so you can inspect motion frame-by-frame.</p>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-3 text-sm">
+                                        <label class="flex items-center gap-2">Skip
+                                            <input type="number" id="sequenceSkipInput" min="1" value="1" class="w-20 border border-gray-300 rounded-md px-2 py-1">
+                                        </label>
+                                        <button class="btn text-xs py-2 px-3" id="sequenceAutoBtn">Auto</button>
+                                        <button class="btn btn-success text-xs py-2 px-3" id="sequencePlayBtn">Play</button>
+                                        <button class="btn text-xs py-2 px-3 bg-slate-600 hover:bg-slate-700 text-white" id="sequencePauseBtn">Pause</button>
+                                        <button class="btn text-xs py-2 px-3 bg-rose-600 hover:bg-rose-700 text-white" id="sequenceVideoBtn">Download Video</button>
+                                    </div>
+                                </div>
+                                <div class="mt-4 border border-dashed border-gray-300 rounded-lg bg-slate-50 p-3">
+                                    <canvas id="sequencePlayerCanvas" width="1280" height="820" class="w-full bg-white rounded-md shadow-inner"></canvas>
+                                </div>
+                                <div id="sequenceStatus" class="text-xs text-slate-500 mt-2"></div>
+                                <div class="mt-6 border border-dashed border-gray-300 rounded-lg bg-white p-4">
+                                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 mb-3">
+                                        <div>
+                                            <h4 class="text-base font-semibold text-slate-800">🖼️ Linear Stick Strip</h4>
+                                            <p class="text-sm text-slate-500">Displays every sampled frame along one horizontal line for quick comparison.</p>
+                                        </div>
+                                        <button class="btn text-xs py-2 px-3 btn-success" id="sequenceStaticDownloadBtn">Download PNG</button>
+                                    </div>
+                                    <canvas id="sequenceStaticCanvas" width="2000" height="640" class="w-full rounded-md border border-gray-200 bg-slate-50"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="gaitParametersTab" class="tab-content flex-col w-full">
+                            <h2 class="text-xl font-semibold mb-4">📋 Gait Parameters</h2>
+                            <div style="max-height:600px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:8px">
+                                <table class="min-w-full text-sm">
+                                    <thead class="bg-blue-50 sticky top-0">
+                                        <tr>
+                                            <th class="px-3 py-2 text-left font-semibold">Parameter</th>
+                                            <th class="px-3 py-2 text-right font-semibold">Value</th>
+                                            <th class="px-3 py-2 text-left font-semibold text-xs">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="gaitParamsBody">
+                                        <tr><td colspan="3" class="px-3 py-8 text-center text-gray-400">Upload a CSV file to calculate parameters</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="statsAnalysisTab" class="tab-content flex-col lg:flex-row gap-6 w-full">
+                            <div class="lg:w-2/3">
+                                <h2 class="text-xl font-semibold mb-2">📈 Angle Distribution Analysis</h2>
+                                <p class="text-sm text-slate-500 mb-4">Distribution of joint angles across the **entire dataset**.</p>
+                                <div id="statsPlot" class="w-full h-[400px] lg:h-[500px]"></div>
+                            <div class="w-full border-t mt-6 pt-6">
+                                <h2 class="text-xl font-semibold mb-2">🏃 Gait Metrics (per-cycle means)</h2>
+                                <p class="text-sm text-slate-500 mb-4">Cadence, stride, and swing/stance from foot speed (assumes 30 fps, foot=toe).</p>
+                                <div id="gaitMetricsPlot" class="w-full h-[360px] lg:h-[420px]"></div>
+                                <div id="gaitSummary" class="mt-3 text-sm text-slate-700"></div>
+                                <div class="mt-4">
+                                    <div style="max-height:260px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
+                                        <table class="min-w-full text-sm">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-2 py-1 text-left">#</th>
+                                                    <th class="px-2 py-1 text-right">Start frame</th>
+                                                    <th class="px-2 py-1 text-right">End frame</th>
+                                                    <th class="px-2 py-1 text-right">Step time (s)</th>
+                                                    <th class="px-2 py-1 text-right">Cadence (spm)</th>
+                                                    <th class="px-2 py-1 text-right">Stance %</th>
+                                                    <th class="px-2 py-1 text-right">Swing %</th>
+                                                    <th class="px-2 py-1 text-right">Stride (px)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="gaitCyclesBody"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                            <div class="lg:w-1/3 border-t lg:border-t-0 lg:border-l p-4 space-y-4">
+                                <h3 class="text-lg font-semibold">Chart Options</h3>
+                                <div class="form-group">
+                                    <label class="text-sm font-medium">Chart Type</label>
+                                    <div class="flex flex-col space-y-1 mt-1">
+                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="box" checked> Box Plot</label>
+                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="violin"> Violin Plot</label>
+                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="violinbox"> Violin + Box</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-sm font-medium flex items-center">
+                                        <input type="checkbox" id="showDataPoints" class="mr-2 h-4 w-4">
+                                        Show Data Points
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-sm font-medium">Plot Color</label>
+                                    <div class="color-picker text-sm flex items-center mt-1">
+                                        <span>Plot Color:</span>
+                                        <input type="color" id="statsPlotColor" value="#818cf8" class="ml-auto">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-sm font-medium">Text Size</label>
+                                    <input type="number" id="statsTextSize" value="12" min="8" class="w-full mt-1 text-sm">
+                                </div>
+                                
+                                <div class="form-group border-t pt-4">
+                                     <label class="text-sm font-medium">Download Dimensions</label>
+                                     <div class="grid grid-cols-2 gap-2 mt-1">
+                                        <div>
+                                            <label class="text-xs text-gray-500">Width (in)</label>
+                                            <input type="number" id="statsWidthIn" value="8" class="w-full text-sm">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs text-gray-500">Height (in)</label>
+                                            <input type="number" id="statsHeightIn" value="5" class="w-full text-sm">
+                                        </div>
+                                     </div>
+                                      <div class="mt-2">
+                                        <label class="text-xs text-gray-500">DPI</label>
+                                        <input type="number" id="statsDpi" value="300" class="w-full text-sm">
+                                        <p class="text-xs text-gray-400 mt-1">Total pixels = inches × DPI</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <button class="btn btn-success w-full text-sm py-2" id="downloadStatsBtn">
+                                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+                                        Download Chart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="multiSampleViewerTab" class="tab-content flex-col gap-4 w-full">
+                            <h2 class="text-xl font-semibold">🧾 Sample Stick Viewer</h2>
+                            <p class="text-sm text-slate-500">Queue multiple DeepLabCut CSV files, then load each into the interactive stick plot without re-uploading.</p>
+                            <div class="border border-dashed border-slate-300 rounded-xl p-4 bg-slate-50">
+                                <label class="text-sm font-semibold text-slate-700">Upload CSV files (multiple allowed)</label>
+                                <input type="file" id="multiStickInput" accept=".csv" multiple class="mt-2 w-full border border-gray-300 rounded-lg p-3 bg-white">
+                                <p class="text-xs text-slate-500 mt-1">Each file should follow the DeepLabCut CSV format (frame rows after two header lines).</p>
+                                <div id="multiStickStatus" class="text-xs text-slate-500 mt-2"></div>
+                            </div>
+                            <div class="border border-slate-200 rounded-xl p-4 bg-white">
+                                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-slate-800">Queued Samples</h3>
+                                        <p class="text-xs text-slate-500">Use “Load & View” to open a sample inside the Interactive Plot tab.</p>
+                                    </div>
+                                    <span class="text-xs text-slate-400">Need different settings per sample? load in seconds.</span>
+                                </div>
+                                <div id="multiStickList" class="mt-4 space-y-3">
+                                    <div class="text-center text-slate-400 py-6 text-sm border border-dashed border-slate-200 rounded-lg">No queued samples yet.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- close singleSampleSection -->
+
+    <div id="multiSampleSection" class="hidden">
+        <div class="breadcrumb-container">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item" data-back-home style="cursor: pointer;">Home</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">Multiple Sample Analysis</span>
+                    </div>
+                    <button id="themeToggleMulti" class="theme-toggle" type="button">
+                        <span class="theme-toggle-icon">🌞</span>
+                        <span class="theme-toggle-label">Light Mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-6"></div>
+        <div class="container mx-auto mb-10 bg-white rounded-2xl shadow-xl border border-gray-200 p-8 space-y-6">
+            <div class="grid lg:grid-cols-2 gap-6">
+                <div>
+                    <label class="text-sm font-semibold text-slate-700">Upload CSV files (multiple allowed)</label>
+                    <input type="file" id="multiCsvInput" accept=".csv" multiple class="mt-2 w-full border border-gray-300 rounded-lg p-3">
+                    <p class="text-xs text-slate-500 mt-2">Each file should follow the DeepLabCut CSV format (frame rows after two header lines).</p>
+                    <div id="multiSamplesStatus" class="mt-3 text-sm text-slate-600"></div>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 text-sm text-slate-600">
+                    <p class="font-semibold text-slate-800 mb-2">Workflow</p>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>Upload Injured, Treated, Control samples.</li>
+                        <li>Review the computed gait summaries per sample.</li>
+                        <li>Export the combined table or send directly to the PCA tool.</li>
+                    </ol>
+                </div>
+            </div>
+            <div id="multiSamplesTableWrapper" class="border border-slate-200 rounded-xl overflow-hidden">
+                <table class="min-w-full text-sm">
+                    <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
+                        <tr>
+                            <th class="px-3 py-2 text-left">Sample</th>
+                            <th class="px-3 py-2 text-left">Valid Frames</th>
+                            <th class="px-3 py-2 text-right">Cadence (spm)</th>
+                            <th class="px-3 py-2 text-right">Stride (px)</th>
+                            <th class="px-3 py-2 text-right">Stance (%)</th>
+                            <th class="px-3 py-2 text-right">Swing (%)</th>
+                            <th class="px-3 py-2 text-right">Overall Regularity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="multiSamplesTableBody">
+                        <tr><td colspan="7" class="px-4 py-6 text-center text-slate-400">Upload samples to begin</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex flex-wrap gap-4">
+                <button class="btn btn-success px-4 py-2 text-sm" id="multiExportBtn" disabled>Export Combined CSV</button>
+                <button class="btn bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700" id="multiSendToPcaBtn" disabled>Send to PCA Tool</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pcaSection" class="hidden">
+        <div class="breadcrumb-container">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item" data-back-home style="cursor: pointer;">Home</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">PCA & Group Separation</span>
+                    </div>
+                    <button id="themeTogglePca" class="theme-toggle" type="button">
+                        <span class="theme-toggle-icon">🌞</span>
+                        <span class="theme-toggle-label">Light Mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-6"></div>
+        <div class="container mx-auto mb-10 bg-white rounded-2xl shadow-xl border border-gray-200 p-8 space-y-6">
+            <div class="grid lg:grid-cols-2 gap-6">
+                <div>
+                    <label class="text-sm font-semibold text-slate-700">Upload aggregated metrics CSV</label>
+                    <input type="file" id="pcaFileInput" accept=".csv" class="mt-2 w-full border border-gray-300 rounded-lg p-3">
+                    <p class="text-xs text-slate-500 mt-2">Files exported from the multi-sample tool already include all 46 metrics per row.</p>
+                    <div id="pcaDataStatus" class="mt-3 text-sm text-slate-600"></div>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 text-sm text-slate-600">
+                    <p class="font-semibold text-slate-800 mb-2">Tips</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Label samples as Injured, Treated, Control, etc.</li>
+                        <li>PCA is centered and scaled automatically.</li>
+                        <li>Use color separation to confirm treatment recovery.</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="pcaGroupTableWrapper" class="border border-slate-200 rounded-xl overflow-hidden">
+                <table class="min-w-full text-sm">
+                    <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
+                        <tr>
+                            <th class="px-3 py-2 text-left">Sample</th>
+                            <th class="px-3 py-2 text-left">Group</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pcaGroupTableBody">
+                        <tr><td colspan="2" class="px-4 py-6 text-center text-slate-400">Upload aggregated metrics to edit group labels</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex gap-4">
+                <button class="btn btn-success px-4 py-2 text-sm" id="runPcaBtn" disabled>Run PCA</button>
+            </div>
+            <div id="pcaVariance" class="text-sm text-slate-600"></div>
+            <div id="pcaPlot" class="w-full h-[520px] rounded-xl border border-slate-200"></div>
+        </div>
+    </div>
+
+    <script>
+        let csvData = null;
+        let allNormalizedPoints = [];
+        let selectedFrames = [];
+        let angleDistributions = {};
+        let sequenceFrames = [];
+        let sequenceCurrentIndex = 0;
+        let sequenceInterval = null;
+        let userModifiedSelection = false;
+        let multiSamples = [];
+        let pcaWorkingData = [];
+        let pcaMetricKeys = [];
+        let multiStickSamples = [];
+        let currentDatasetLabel = 'current';
+        const DEFAULT_SELECTED_FRAMES = 10;
+        const MAX_SEQUENCE_FRAMES = 20;
+        const SEQUENCE_PLAYBACK_DELAY = 400;
+        let tabButtons = [];
+        let tabContents = [];
+
+        // --- DOM Selectors ---
+        const uploadArea = document.getElementById('uploadArea');
+        const csvFile = document.getElementById('csvFile');
+        const fileStatus = document.getElementById('fileStatus');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const processingStatus = document.getElementById('processingStatus');
+        const results = document.getElementById('results');
+        const backgroundOpacitySlider = document.getElementById('backgroundOpacity');
+        const opacityValue = document.getElementById('opacityValue');
+        const dpiSlider = document.getElementById('dpiSlider');
+        const dpiValue = document.getElementById('dpiValue');
+        const imageSizeInfo = document.getElementById('imageSizeInfo');
+        const sequencePanel = document.getElementById('sequencePreviewPanel');
+        const sequenceSkipInput = document.getElementById('sequenceSkipInput');
+        const sequenceAutoBtn = document.getElementById('sequenceAutoBtn');
+        const sequencePlayBtn = document.getElementById('sequencePlayBtn');
+        const sequencePauseBtn = document.getElementById('sequencePauseBtn');
+        const sequenceStatus = document.getElementById('sequenceStatus');
+        const sequenceCanvas = document.getElementById('sequencePlayerCanvas');
+        const sequenceVideoBtn = document.getElementById('sequenceVideoBtn');
+        const sequenceStaticCanvas = document.getElementById('sequenceStaticCanvas');
+        const sequenceStaticDownloadBtn = document.getElementById('sequenceStaticDownloadBtn');
+        const homeSectionEl = document.getElementById('homeSection');
+        const singleSampleSectionEl = document.getElementById('singleSampleSection');
+        const multiSampleSectionEl = document.getElementById('multiSampleSection');
+        const pcaSectionEl = document.getElementById('pcaSection');
+        const multiCsvInput = document.getElementById('multiCsvInput');
+        const multiSamplesStatus = document.getElementById('multiSamplesStatus');
+        const multiSamplesTableBody = document.getElementById('multiSamplesTableBody');
+        const multiExportBtn = document.getElementById('multiExportBtn');
+        const multiSendToPcaBtn = document.getElementById('multiSendToPcaBtn');
+        const pcaFileInput = document.getElementById('pcaFileInput');
+        const pcaDataStatus = document.getElementById('pcaDataStatus');
+        const pcaGroupTableBody = document.getElementById('pcaGroupTableBody');
+        const runPcaBtn = document.getElementById('runPcaBtn');
+        const pcaVariance = document.getElementById('pcaVariance');
+        const pcaPlot = document.getElementById('pcaPlot');
+        const multiStickInput = document.getElementById('multiStickInput');
+        const multiStickStatus = document.getElementById('multiStickStatus');
+        const multiStickList = document.getElementById('multiStickList');
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeToggleIcon = document.getElementById('themeToggleIcon');
+        const themeToggleLabel = document.getElementById('themeToggleLabel');
+        const sectionsMap = {
+            homeSection: homeSectionEl,
+            singleSampleSection: singleSampleSectionEl,
+            multiSampleSection: multiSampleSectionEl,
+            pcaSection: pcaSectionEl
+        };
+        const THEME_STORAGE_KEY = 'kima-theme';
+        
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', function() {
+            uploadArea.addEventListener('click', () => csvFile.click());
+            csvFile.addEventListener('change', (e) => processFile(e.target.files[0]));
+            downloadBtn.addEventListener('click', generateDownloadableImage);
+            document.querySelectorAll('[data-section-target]').forEach(card => {
+                card.addEventListener('click', () => showSection(card.dataset.sectionTarget));
+            });
+            document.querySelectorAll('[data-back-home]').forEach(btn => {
+                btn.addEventListener('click', () => showSection('homeSection'));
+            });
+            showSection('homeSection');
+            initTheme();
+            
+            const immediateRefreshControls = [ backgroundOpacitySlider, document.getElementById('backgroundFrameColor'), document.getElementById('textColor'), document.getElementById('pointSize'), document.getElementById('lineWidth'), document.getElementById('plotTitle'), document.getElementById('xAxisLabel'), document.getElementById('yAxisLabel'), document.getElementById('frameStep'), document.getElementById('plotBackgroundColor'), ];
+            immediateRefreshControls.forEach(control => {
+                control.addEventListener('input', () => { if (csvData) generateInteractivePlot(); });
+            });
+            backgroundOpacitySlider.addEventListener('input', () => { opacityValue.textContent = `${backgroundOpacitySlider.value}%`; });
+            dpiSlider.addEventListener('input', function() {
+                const dpi = parseInt(this.value);
+                dpiValue.textContent = `${dpi} DPI`;
+                imageSizeInfo.textContent = `Image size: ~${dpi * 8} x ${dpi * 7} pixels`;
+            });
+            dpiValue.textContent = `${dpiSlider.value} DPI`;
+            imageSizeInfo.textContent = `Image size: ~${dpiSlider.value * 8} x ${dpiSlider.value * 7} pixels`;
+            
+            tabButtons = Array.from(document.querySelectorAll('.tab-button'));
+            tabContents = Array.from(document.querySelectorAll('.tab-content'));
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => activateTab(button.dataset.tab));
+            });
+
+            document.querySelectorAll('input[name="statsPlotType"]').forEach(radio => {
+                radio.addEventListener('change', () => { if(csvData) drawStatsPlot() });
+            });
+            document.getElementById('showDataPoints').addEventListener('change', () => { if(csvData) drawStatsPlot() });
+            document.getElementById('statsPlotColor').addEventListener('input', () => { if(csvData) drawStatsPlot() });
+            document.getElementById('statsTextSize').addEventListener('input', () => { if(csvData) drawStatsPlot() });
+
+            if (sequenceSkipInput) {
+                sequenceSkipInput.addEventListener('change', () => {
+                    if (!csvData) return;
+                    refreshSequenceFrames();
+                    if (!userModifiedSelection) {
+                        generateInteractivePlot();
+                    }
+                });
+            }
+            if (sequenceAutoBtn) {
+                sequenceAutoBtn.addEventListener('click', () => {
+                    if (!csvData) return;
+                    userModifiedSelection = false;
+                    refreshSequenceFrames({ forceAuto: true });
+                    generateInteractivePlot();
+                });
+            }
+            if (sequencePlayBtn) {
+                sequencePlayBtn.addEventListener('click', () => { startSequencePlayback(); });
+            }
+            if (sequencePauseBtn) {
+                sequencePauseBtn.addEventListener('click', () => { stopSequencePlayback(); });
+            }
+            if (sequenceVideoBtn) {
+                sequenceVideoBtn.addEventListener('click', () => { downloadSequenceVideo(); });
+            }
+            if (sequenceStaticDownloadBtn) {
+                sequenceStaticDownloadBtn.addEventListener('click', () => { downloadSequenceStaticImage(); });
+            }
+            if (multiCsvInput) {
+                multiCsvInput.addEventListener('change', handleMultiCsvUpload);
+            }
+            if (multiExportBtn) {
+                multiExportBtn.addEventListener('click', exportMultiSamplesCsv);
+            }
+            if (multiSendToPcaBtn) {
+                multiSendToPcaBtn.addEventListener('click', () => {
+                    if (!multiSamples.length) return;
+                    setPcaDatasetFromSamples(multiSamples);
+                    showSection('pcaSection');
+                });
+            }
+            if (pcaFileInput) {
+                pcaFileInput.addEventListener('change', handlePcaFileUpload);
+            }
+            if (pcaGroupTableBody) {
+                pcaGroupTableBody.addEventListener('input', handlePcaGroupEdit);
+            }
+            if (runPcaBtn) {
+                runPcaBtn.addEventListener('click', runPcaAnalysis);
+            }
+            if (multiStickInput) {
+                multiStickInput.addEventListener('change', handleMultiStickUpload);
+            }
+            if (multiStickList) {
+                multiStickList.addEventListener('click', handleMultiStickLibraryAction);
+            }
+            if (sequenceCanvas) {
+                sequenceCanvas.addEventListener('click', () => {
+                    if (!sequenceFrames.length) return;
+                    sequenceCurrentIndex = (sequenceCurrentIndex + 1) % sequenceFrames.length;
+                    drawSequenceFramePreview();
+                });
+            }
+            ['colorToe','colorMtp','colorAnkle','colorKnee','colorHip','colorIliac'].forEach(id => {
+                const picker = document.getElementById(id);
+                if (picker) {
+                    picker.addEventListener('input', () => { handleSequenceStyleChange(); });
+                }
+            });
+
+            drawSequenceStaticCollage();
+            
+            // MODIFIED: Final download logic with robust font scaling
+            document.getElementById('downloadStatsBtn').addEventListener('click', () => {
+                setProcessing(true, 'Generating high-resolution chart...');
+                const tempDiv = document.createElement('div');
+                tempDiv.id = 'temp-plot';
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                document.body.appendChild(tempDiv);
+
+                drawStatsPlot(true, tempDiv.id).then(() => {
+                    const widthIn = parseFloat(document.getElementById('statsWidthIn').value) || 8;
+                    const heightIn = parseFloat(document.getElementById('statsHeightIn').value) || 5;
+                    const dpi = parseInt(document.getElementById('statsDpi').value) || 300;
+                    
+                    Plotly.toImage(tempDiv, {
+                        format: 'png', 
+                        width: widthIn * dpi, 
+                        height: heightIn * dpi,
+                    }).then(function(dataUrl) {
+                        const link = document.createElement('a');
+                        link.download = 'angle_analysis_plot.png';
+                        link.href = dataUrl;
+                        link.click();
+                        document.body.removeChild(tempDiv);
+                        setProcessing(false);
+                    }).catch(err => {
+                        console.error(err);
+                        document.body.removeChild(tempDiv);
+                        setProcessing(false);
+                    });
+                });
+            });
+        });
+
+        function showSection(sectionId) {
+            Object.entries(sectionsMap).forEach(([key, el]) => {
+                if (!el) return;
+                if (key === sectionId) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+            if (!sectionsMap[sectionId] && homeSectionEl) {
+                homeSectionEl.classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function initTheme() {
+            const savedTheme = (() => {
+                try { return localStorage.getItem(THEME_STORAGE_KEY); } catch { return null; }
+            })();
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyThemePreference(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+            // Add listeners to all theme toggle buttons
+            const allThemeToggles = document.querySelectorAll('[id^="themeToggle"]');
+            allThemeToggles.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const nextTheme = document.body.classList.contains('theme-dark') ? 'light' : 'dark';
+                    applyThemePreference(nextTheme);
+                });
+            });
+        }
+
+        function applyThemePreference(mode = 'light') {
+            const normalized = mode === 'dark' ? 'dark' : 'light';
+            document.body.classList.toggle('theme-dark', normalized === 'dark');
+            document.documentElement.classList.toggle('dark', normalized === 'dark');
+            document.documentElement.style.colorScheme = normalized === 'dark' ? 'dark' : 'light';
+
+            // Update all theme toggle buttons
+            const allThemeToggles = document.querySelectorAll('[id^="themeToggle"]');
+            allThemeToggles.forEach(btn => {
+                const icon = btn.querySelector('.theme-toggle-icon') || btn.querySelector('#themeToggleIcon');
+                const label = btn.querySelector('.theme-toggle-label') || btn.querySelector('#themeToggleLabel');
+                if (icon) icon.textContent = normalized === 'dark' ? '🌙' : '🌞';
+                if (label) label.textContent = normalized === 'dark' ? 'Dark Mode' : 'Light Mode';
+            });
+
+            try { localStorage.setItem(THEME_STORAGE_KEY, normalized); } catch (error) {
+                console.warn('Unable to persist theme preference', error);
+            }
+        }
+
+        function activateTab(tabId) {
+            if (!tabId) return;
+            if (!tabButtons.length || !tabContents.length) {
+                tabButtons = Array.from(document.querySelectorAll('.tab-button'));
+                tabContents = Array.from(document.querySelectorAll('.tab-content'));
+            }
+            tabButtons.forEach(btn => {
+                if (!btn) return;
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
+            tabContents.forEach(content => {
+                if (!content) return;
+                content.classList.toggle('active', content.id === tabId);
+            });
+            if (tabId === 'statsAnalysisTab' && csvData) {
+                drawStatsPlot();
+            }
+        }
+
+        // MODIFIED: drawStatsPlot with all final fixes
+        function drawStatsPlot(forDownload = false, targetDivId = 'statsPlot') {
+            return new Promise((resolve) => {
+                if (Object.keys(angleDistributions).length === 0) {
+                    resolve(); return;
+                }
+
+                const plotType = document.querySelector('input[name="statsPlotType"]:checked').value;
+                const showDataPoints = document.getElementById('showDataPoints').checked;
+                const plotColor = document.getElementById('statsPlotColor').value;
+                let textSize = parseInt(document.getElementById('statsTextSize').value) || 12;
+
+                if (forDownload) {
+                    const widthIn = parseFloat(document.getElementById('statsWidthIn').value) || 8;
+                    const baseWidthIn = 8;
+                    const scaleFactor = widthIn / baseWidthIn;
+                    textSize = Math.max(8, textSize * scaleFactor);
+                }
+                
+                let data = [];
+                for (const key in angleDistributions) {
+                    let trace = {
+                        y: angleDistributions[key],
+                        name: key,
+                        jitter: 0.4,
+                        pointpos: 0,
+                        line: { color: 'black', width: 1 }
+                    };
+
+                    if (plotType === 'box') {
+                        trace.type = 'box';
+                        trace.fillcolor = plotColor;
+                        trace.marker = { color: 'black', size: 3 };
+                        trace.boxpoints = showDataPoints ? 'all' : false;
+                    } else { // For both violin and violin+box
+                        trace.type = 'violin';
+                        trace.points = showDataPoints ? 'all' : false;
+                        trace.fillcolor = plotColor;
+                        trace.marker = { color: 'black', size: 3, line: { color: 'black', width: 0.5 } };
+                        trace.box = {
+                            visible: plotType === 'violinbox',
+                            width: 0.2,
+                            fillcolor: '#ffffff',
+                            line: { color: 'black' }
+                        };
+                        trace.meanline = {
+                            visible: plotType === 'violin'
+                        };
+                    }
+                    data.push(trace);
+                }
+                
+                const layout = {
+                    title: { text: 'Angle Distribution Analysis', font: { size: textSize + 4 } },
+                    yaxis: { title: 'Angle (Degrees)', titlefont: { size: textSize + 2 }, tickfont: { size: textSize } },
+                    xaxis: { tickfont: { size: textSize } },
+                    font: { family: 'Inter, sans-serif', color: 'black' },
+                    plot_bgcolor: document.getElementById('plotBackgroundColor').value,
+                    paper_bgcolor: document.getElementById('plotBackgroundColor').value,
+                    margin: { l: 60, r: 20, b: 80, t: 50 },
+                    showlegend: false
+                };
+
+                Plotly.newPlot(targetDivId, data, layout, {responsive: true}).then(resolve);
+            });
+        }
+        
+        // --- All other functions (unchanged) ---
+        function parseCSV(csvText, label = '') { try { setProcessing(true, 'Processing CSV file...'); currentDatasetLabel = label || 'current'; selectedFrames = []; angleDistributions = {}; sequenceFrames = []; sequenceCurrentIndex = 0; userModifiedSelection = false; stopSequencePlayback(); if (sequencePanel) sequencePanel.classList.add('hidden'); const lines = csvText.split('\n').filter(line => line.trim()); if (lines.length < 3) throw new Error("CSV must have at least 3 rows."); const dataLines = lines.slice(2); csvData = dataLines.map(line => line.split(',')); __gaitCache = null; __gaitComputedFor = null; processData(); calculateAllAngles(); showStatus('success', `File loaded! ${csvData.length} frames detected.`); downloadBtn.disabled = false; generateInteractivePlot(); } catch (error) { showStatus('error', 'Error parsing CSV: ' + error.message); csvData = null; currentDatasetLabel = 'current'; downloadBtn.disabled = true; } finally { setProcessing(false); } }
+        function generateInteractivePlot() { if (!csvData) return; ensureDefaultSelections(sequenceFrames); const { canvas, plotContext } = generatePlotCanvas({ isForDownload: false }); displayResults(canvas, plotContext); updateSequencePlayer({ forceAuto: sequenceFrames.length === 0 }); }
+        function displayResults(displayCanvas, plotContext) { results.innerHTML = ''; const plotContainer = document.createElement('div'); plotContainer.id = 'plot-container'; displayCanvas.style.maxWidth = '100%'; displayCanvas.style.height = 'auto'; displayCanvas.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'; displayCanvas.style.borderRadius = '0.5rem'; const hoverCanvas = document.createElement('canvas'); hoverCanvas.id = 'hover-canvas'; hoverCanvas.width = displayCanvas.width; hoverCanvas.height = displayCanvas.height; hoverCanvas.style.maxWidth = '100%'; hoverCanvas.style.height = 'auto'; const tooltip = document.createElement('div'); tooltip.id = 'tooltip'; plotContainer.append(displayCanvas, hoverCanvas, tooltip); results.appendChild(plotContainer); requestAnimationFrame(() => { const rect = displayCanvas.getBoundingClientRect(); hoverCanvas.style.width = `${rect.width}px`; hoverCanvas.style.height = `${rect.height}px`; plotContainer.addEventListener('mousemove', e => handleCanvasHover(e, plotContext)); plotContainer.addEventListener('mouseleave', handleCanvasLeave); plotContainer.addEventListener('click', e => handleCanvasClick(e, plotContext)); }); }
+        function generateDownloadableImage() { setProcessing(true, 'Generating high-resolution image...'); setTimeout(() => { try { const { canvas } = generatePlotCanvas({ isForDownload: true }); const link = document.createElement('a'); link.download = 'gait_analysis_plot.png'; link.href = canvas.toDataURL('image/png'); link.click(); } catch (error) { console.error("Download failed:", error); } finally { setProcessing(false); } }, 100); }
+        function generatePlotCanvas(options) { const { isForDownload } = options; const displayWidth = 800; const displayHeight = 700; const dpi = parseInt(document.getElementById('dpiSlider').value); const canvas = document.createElement('canvas'); canvas.width = isForDownload ? dpi * 8 : displayWidth; canvas.height = isForDownload ? dpi * 7 : displayHeight; const scaleFactor = canvas.width / displayWidth; const ctx = canvas.getContext('2d'); const downloadBackgroundType = document.getElementById('backgroundType').value; const interactiveBackgroundColor = document.getElementById('plotBackgroundColor').value; const textColor = document.getElementById('textColor').value; const plotTitle = document.getElementById('plotTitle').value; const xAxisLabel = document.getElementById('xAxisLabel').value; const yAxisLabel = document.getElementById('yAxisLabel').value; const frameStep = parseInt(document.getElementById('frameStep').value) || 1; if (isForDownload) { if (downloadBackgroundType === 'white') { ctx.fillStyle = 'white'; ctx.fillRect(0, 0, canvas.width, canvas.height); } else if (downloadBackgroundType === 'black') { ctx.fillStyle = 'black'; ctx.fillRect(0, 0, canvas.width, canvas.height); } } else { ctx.fillStyle = interactiveBackgroundColor; ctx.fillRect(0, 0, canvas.width, canvas.height); } const allPointsForBounds = allNormalizedPoints.filter(p => p).flat().flatMap(p => Object.values(p)); if (allPointsForBounds.length === 0) throw new Error('No valid points found to plot.'); const minX = Math.min(...allPointsForBounds.map(p => p.x)); const maxX = Math.max(...allPointsForBounds.map(p => p.x)); const minY = Math.min(...allPointsForBounds.map(p => p.y)); const maxY = Math.max(...allPointsForBounds.map(p => p.y)); const padding = 100 * scaleFactor; const scale = Math.min((canvas.width - 2 * padding) / (maxX - minX || 1), (canvas.height - 2 * padding) / (maxY - minY || 1)) * 0.9; const offsetX = canvas.width / 2 - ((maxX + minX) / 2) * scale; const offsetY = (canvas.height - (120 * scaleFactor)) / 2 - ((maxY + minY) / 2) * scale; const backgroundFrameColor = document.getElementById('backgroundFrameColor').value; const backgroundOpacity = parseInt(document.getElementById('backgroundOpacity').value) / 100; const colors = { toe: document.getElementById('colorToe').value, mtp: document.getElementById('colorMtp').value, ankle: document.getElementById('colorAnkle').value, knee: document.getElementById('colorKnee').value, hip: document.getElementById('colorHip').value, iliac: document.getElementById('colorIliac').value }; const highlightedLineWidth = parseInt(document.getElementById('lineWidth').value) * scaleFactor; const highlightedPointSize = parseInt(document.getElementById('pointSize').value) * scaleFactor; ctx.globalAlpha = backgroundOpacity; for (let i = 0; i < allNormalizedPoints.length; i += frameStep) { const points = allNormalizedPoints[i]; if (points && !selectedFrames.includes(i)) { drawStickFigure(ctx, points, scale, offsetX, offsetY, backgroundFrameColor, 1.5 * scaleFactor, null, 0); } } ctx.globalAlpha = 1.0; selectedFrames.forEach(frameIndex => { const points = allNormalizedPoints[frameIndex]; if (points) { drawStickFigure(ctx, points, scale, offsetX, offsetY, null, highlightedLineWidth, colors, highlightedPointSize); } }); ctx.globalAlpha = 1.0; ctx.fillStyle = textColor; const baseTextSize = parseInt(document.getElementById('textSize').value); ctx.font = `bold ${(baseTextSize + 6) * scaleFactor}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.fillText(plotTitle, canvas.width / 2, 50 * scaleFactor); ctx.font = `${baseTextSize * scaleFactor}px Inter, sans-serif`; ctx.fillText(xAxisLabel, canvas.width / 2, canvas.height - (40 * scaleFactor)); ctx.save(); ctx.translate(50 * scaleFactor, canvas.height / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillText(yAxisLabel, 0, 0); ctx.restore(); drawLegend(ctx, colors, canvas.width, canvas.height, highlightedPointSize, textColor, scaleFactor); const plotContext = isForDownload ? null : { scale: scale / scaleFactor, offsetX: offsetX / scaleFactor, offsetY: offsetY / scaleFactor }; return { canvas, plotContext }; }
+        function calculateAngle(p1, p2, p3) { if (!p1 || !p2 || !p3) return null; const angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x); const angle2 = Math.atan2(p3.y - p2.y, p3.x - p2.x); let angle = (angle2 - angle1) * 180 / Math.PI; if (angle < 0) angle += 360; return angle > 180 ? 360 - angle : angle; }
+        function calculateHorizontalAngle(p1, p2) { if (!p1 || !p2) return null; return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI; }
+        function calculateAllAngles() { angleDistributions = computeAngleDistributions(allNormalizedPoints); }
+        function handleCanvasHover(event, plotContext) { const hoverCanvas = document.getElementById('hover-canvas'); const tooltip = document.getElementById('tooltip'); if (!hoverCanvas || !tooltip) return; const canvas = event.currentTarget.querySelector('canvas:not(#hover-canvas)'); if (!canvas) return; const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; const mouseX = (event.clientX - rect.left) * scaleX; const mouseY = (event.clientY - rect.top) * scaleY; const frameIndex = findNearestFrame(mouseX, mouseY, plotContext); const hoverCtx = hoverCanvas.getContext('2d'); hoverCtx.clearRect(0, 0, hoverCanvas.width, hoverCanvas.height); if (frameIndex !== -1) { const points = allNormalizedPoints[frameIndex]; const { scale, offsetX, offsetY } = plotContext; drawStickFigure(hoverCtx, points, scale, offsetX, offsetY, 'rgba(79, 70, 229, 0.5)', 3, null, 0); tooltip.style.display = 'block'; tooltip.style.left = `${event.clientX - rect.left}px`; tooltip.style.top = `${event.clientY - rect.top}px`; tooltip.textContent = `Frame: ${frameIndex}`; } else { tooltip.style.display = 'none'; } }
+        function handleCanvasClick(event, plotContext) { const canvas = event.currentTarget.querySelector('canvas:not(#hover-canvas)'); if (!canvas) return; const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; const mouseX = (event.clientX - rect.left) * scaleX; const mouseY = (event.clientY - rect.top) * scaleY; const frameIndex = findNearestFrame(mouseX, mouseY, plotContext); if (frameIndex !== -1) { const indexInSelection = selectedFrames.indexOf(frameIndex); if (indexInSelection > -1) { selectedFrames.splice(indexInSelection, 1); } else { selectedFrames.push(frameIndex); } userModifiedSelection = true; generateInteractivePlot(); } }
+        function findNearestFrame(mouseX, mouseY, plotContext) { const { scale, offsetX, offsetY } = plotContext; const dataX = (mouseX - offsetX) / scale; const dataY = (mouseY - offsetY) / scale; let bestMatch = { frameIndex: -1, distance: Infinity }; allNormalizedPoints.forEach((points, frameIndex) => { if (!points) return; let minDistanceForThisFrame = Infinity; for (const partName in points) { const partPoint = points[partName]; const dist = Math.hypot(partPoint.x - dataX, partPoint.y - dataY); if (dist < minDistanceForThisFrame) { minDistanceForThisFrame = dist; } } if (minDistanceForThisFrame < bestMatch.distance) { bestMatch = { frameIndex, distance: minDistanceForThisFrame }; } }); return bestMatch.distance < 20 ? bestMatch.frameIndex : -1; }
+        function handleCanvasLeave() { const hoverCanvas = document.getElementById('hover-canvas'); const tooltip = document.getElementById('tooltip'); if (!hoverCanvas || !tooltip) return; hoverCanvas.getContext('2d').clearRect(0, 0, hoverCanvas.width, hoverCanvas.height); tooltip.style.display = 'none'; }
+        function drawStickFigure(ctx, points, scale, offsetX, offsetY, overrideColor, lineWidth, pointColors = null, pointSize = 6) { const segments = [['toe', 'mtp'], ['mtp', 'ankle'], ['ankle', 'knee'], ['knee', 'hip'], ['hip', 'iliac']]; ctx.lineCap = 'round'; ctx.lineWidth = lineWidth; segments.forEach(([part1, part2]) => { const p1 = points[part1], p2 = points[part2]; if (p1 && p2) { ctx.strokeStyle = overrideColor || (pointColors ? pointColors[part1] : 'black'); ctx.beginPath(); ctx.moveTo(p1.x * scale + offsetX, p1.y * scale + offsetY); ctx.lineTo(p2.x * scale + offsetX, p2.y * scale + offsetY); ctx.stroke(); } }); if (pointColors && pointSize > 0) { for (const part in points) { if (pointColors[part]) { ctx.fillStyle = ctx.strokeStyle = pointColors[part]; drawMarker(ctx, part, points[part].x * scale + offsetX, points[part].y * scale + offsetY, pointSize); } } } }
+        function drawMarker(ctx, part, x, y, size) { const s = size / 2; ctx.beginPath(); switch (part) { case 'toe': ctx.arc(x, y, s, 0, 2 * Math.PI); ctx.fill(); break; case 'mtp': ctx.rect(x - s, y - s, size, size); ctx.fill(); break; case 'ankle': ctx.moveTo(x, y - s); ctx.lineTo(x + s, y); ctx.lineTo(x, y + s); ctx.lineTo(x - s, y); ctx.closePath(); ctx.fill(); break; case 'knee': ctx.moveTo(x, y - s); ctx.lineTo(x + s, y + s); ctx.lineTo(x - s, y + s); ctx.closePath(); ctx.fill(); break; case 'hip': ctx.moveTo(x, y + s); ctx.lineTo(x + s, y - s); ctx.lineTo(x - s, y - s); ctx.closePath(); ctx.fill(); break; case 'iliac': const currentFillStyle = ctx.fillStyle; ctx.lineWidth = Math.max(2, size / 4); ctx.beginPath(); ctx.moveTo(x - s, y); ctx.lineTo(x + s, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y - s); ctx.lineTo(x, y + s); ctx.stroke(); ctx.fillStyle = currentFillStyle; break; } }
+        function drawLegend(ctx, colors, canvasWidth, canvasHeight, pointSize, textColor, scaleFactor) { ctx.font = `${12 * scaleFactor}px Inter, sans-serif`; ctx.textAlign = 'left'; const legendY = canvasHeight - (25 * scaleFactor); const parts = ['toe', 'mtp', 'ankle', 'knee', 'hip', 'iliac']; const itemWidth = 100 * scaleFactor; let startX = (canvasWidth - (parts.length * itemWidth)) / 2 + (20 * scaleFactor); parts.forEach(part => { ctx.fillStyle = colors[part]; ctx.strokeStyle = colors[part]; ctx.lineWidth = 2 * scaleFactor; drawMarker(ctx, part, startX, legendY, pointSize * 0.8); ctx.fillStyle = textColor; ctx.fillText(part.charAt(0).toUpperCase() + part.slice(1), startX + (15 * scaleFactor), legendY + (4 * scaleFactor)); startX += itemWidth; }); }
+
+        function drawStickLegendOverlay(ctx, colors, canvasWidth, canvasHeight, options = {}) {
+            if (!colors) return;
+            const parts = ['toe', 'mtp', 'ankle', 'knee', 'hip', 'iliac'];
+            const scale = options.scale || 1;
+            const bottomPadding = options.bottomPadding || 30;
+            const itemWidth = (options.itemWidth || 140) * scale;
+            const legendY = canvasHeight - bottomPadding;
+            let startX = (canvasWidth - parts.length * itemWidth) / 2;
+            ctx.font = `${14 * scale}px Inter, sans-serif`;
+            ctx.textAlign = 'left';
+            parts.forEach(part => {
+                ctx.fillStyle = colors[part];
+                ctx.strokeStyle = colors[part];
+                ctx.lineWidth = Math.max(2, 2 * scale);
+                drawMarker(ctx, part, startX + (20 * scale), legendY, 18 * scale);
+                ctx.fillStyle = '#0f172a';
+                ctx.fillText(part.charAt(0).toUpperCase() + part.slice(1), startX + (36 * scale), legendY + (5 * scale));
+                startX += itemWidth;
+            });
+        }
+
+        function updateSequencePlayer(options = {}) {
+            if (!sequencePanel || !sequenceCanvas) return;
+            refreshSequenceFrames(options);
+        }
+
+        function refreshSequenceFrames({ forceAuto = false } = {}) {
+            if (!sequenceCanvas) return;
+            const ctx = sequenceCanvas.getContext('2d');
+            const hasData = Array.isArray(allNormalizedPoints) && allNormalizedPoints.some(points => points);
+            if (!hasData) {
+                sequenceFrames = [];
+                sequenceCurrentIndex = 0;
+                stopSequencePlayback();
+                if (sequencePanel) sequencePanel.classList.add('hidden');
+                if (sequenceStatus) sequenceStatus.textContent = 'Upload a CSV to enable the player.';
+                if (ctx) ctx.clearRect(0, 0, sequenceCanvas.width, sequenceCanvas.height);
+                if (sequenceStaticCanvas) {
+                    const staticCtx = sequenceStaticCanvas.getContext('2d');
+                    staticCtx.clearRect(0, 0, sequenceStaticCanvas.width, sequenceStaticCanvas.height);
+                    staticCtx.fillStyle = '#94a3b8';
+                    staticCtx.font = '16px Inter, sans-serif';
+                    staticCtx.textAlign = 'center';
+                    staticCtx.fillText('Load data to render strip', sequenceStaticCanvas.width / 2, sequenceStaticCanvas.height / 2);
+                }
+                return;
+            }
+
+            if (sequencePanel) sequencePanel.classList.remove('hidden');
+            const totalFrames = allNormalizedPoints.length;
+            const autoSkip = Math.max(1, Math.ceil(totalFrames / MAX_SEQUENCE_FRAMES));
+            let skipValue = parseInt(sequenceSkipInput?.value || autoSkip, 10);
+            if (forceAuto || !skipValue || skipValue < 1) {
+                skipValue = autoSkip;
+            }
+            if (sequenceSkipInput) sequenceSkipInput.value = skipValue;
+
+            const wasPlaying = Boolean(sequenceInterval);
+            stopSequencePlayback();
+
+            const frames = [];
+            let idx = 0;
+            while (idx < totalFrames && frames.length < MAX_SEQUENCE_FRAMES) {
+                const nextValid = findNextValidFrame(idx);
+                if (nextValid === -1) break;
+                frames.push(nextValid);
+                idx = nextValid + skipValue;
+            }
+            if (!frames.length) {
+                const fallback = findNextValidFrame(0);
+                if (fallback !== -1) frames.push(fallback);
+            }
+
+            sequenceFrames = frames;
+            sequenceCurrentIndex = 0;
+            ensureDefaultSelections(sequenceFrames);
+            if (sequenceStatus) {
+                if (frames.length) {
+                    sequenceStatus.textContent = `Displaying ${frames.length} frame${frames.length === 1 ? '' : 's'} (skip ${skipValue}, total frames ${totalFrames}).`;
+                } else {
+                    sequenceStatus.textContent = 'No valid frames available for preview.';
+                }
+            }
+            drawSequenceFramePreview();
+            drawSequenceStaticCollage();
+            if (wasPlaying && sequenceFrames.length > 1) {
+                startSequencePlayback();
+            }
+        }
+
+        function drawSequenceFramePreview() {
+            if (!sequenceCanvas) return;
+            const ctx = sequenceCanvas.getContext('2d');
+            ctx.clearRect(0, 0, sequenceCanvas.width, sequenceCanvas.height);
+            if (!sequenceFrames.length) {
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '16px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Load data to preview motion', sequenceCanvas.width / 2, sequenceCanvas.height / 2);
+                return;
+            }
+            const frameIndex = sequenceFrames[sequenceCurrentIndex % sequenceFrames.length];
+            const points = allNormalizedPoints[frameIndex];
+            if (!points) return;
+            const bounds = getGlobalBounds();
+            if (!bounds) return;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, sequenceCanvas.width, sequenceCanvas.height);
+            const padding = 80;
+            const scale = Math.min(
+                (sequenceCanvas.width - 2 * padding) / (bounds.maxX - bounds.minX || 1),
+                (sequenceCanvas.height - 2 * padding) / (bounds.maxY - bounds.minY || 1)
+            ) * 0.9;
+            const offsetX = sequenceCanvas.width / 2 - ((bounds.maxX + bounds.minX) / 2) * scale;
+            const offsetY = sequenceCanvas.height / 2 - ((bounds.maxY + bounds.minY) / 2) * scale;
+            const colors = getCurrentStickColors();
+            const lineWidth = parseInt(document.getElementById('lineWidth').value) || 5;
+            const pointSize = parseInt(document.getElementById('pointSize').value) || 8;
+
+            drawStickFigure(
+                ctx,
+                points,
+                scale,
+                offsetX,
+                offsetY,
+                null,
+                Math.max(3, lineWidth),
+                colors,
+                Math.max(4, pointSize)
+            );
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = '18px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`Frame ${frameIndex}`, 20, 30);
+            ctx.font = '14px Inter, sans-serif';
+            ctx.fillStyle = '#475569';
+            ctx.fillText(`Sequence ${sequenceCurrentIndex + 1} / ${sequenceFrames.length}`, 20, 55);
+            drawStickLegendOverlay(ctx, colors, sequenceCanvas.width, sequenceCanvas.height, { bottomPadding: 35, scale: sequenceCanvas.width / 800 });
+        }
+
+        function drawSequenceStaticCollage() {
+            if (!sequenceStaticCanvas) return;
+            const ctx = sequenceStaticCanvas.getContext('2d');
+            if (!renderSequenceStrip(ctx, sequenceStaticCanvas.width, sequenceStaticCanvas.height)) {
+                ctx.clearRect(0, 0, sequenceStaticCanvas.width, sequenceStaticCanvas.height);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '16px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Load data to render strip', sequenceStaticCanvas.width / 2, sequenceStaticCanvas.height / 2);
+            }
+        }
+
+        function renderSequenceStrip(ctx, width, height, options = {}) {
+            const { forDownload = false } = options;
+            if (!sequenceFrames.length) return false;
+            const framesToShow = sequenceFrames.slice(0, MAX_SEQUENCE_FRAMES);
+            if (!framesToShow.length) return false;
+            const bounds = getGlobalBounds();
+            if (!bounds) return false;
+            const baseWidth = sequenceStaticCanvas ? sequenceStaticCanvas.width : 2000;
+            const baseHeight = sequenceStaticCanvas ? sequenceStaticCanvas.height : 640;
+            const scaleFactor = width / baseWidth;
+            const heightFactor = height / baseHeight;
+            const mixFactor = Math.max(scaleFactor, heightFactor);
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, width, height);
+            const colors = getCurrentStickColors();
+            const baseLineWidth = parseInt(document.getElementById('lineWidth').value) || 5;
+            const basePointSize = parseInt(document.getElementById('pointSize').value) || 8;
+            const lineWidth = Math.max(5 * mixFactor, baseLineWidth * 1.1 * mixFactor);
+            const pointSize = Math.max(8 * mixFactor, basePointSize * mixFactor);
+            const paddingX = 140 * scaleFactor;
+            const timelineY = height - 120 * heightFactor;
+            const centerY = height / 2 - 60 * heightFactor;
+            const availableWidth = Math.max(10, width - paddingX * 2);
+            let spacing = framesToShow.length > 1 ? availableWidth / (framesToShow.length - 1) : 0;
+            const desiredSpacing = 260 * scaleFactor;
+            spacing = framesToShow.length > 1 ? Math.min(desiredSpacing, spacing) : 0;
+            const totalSpan = spacing * (framesToShow.length - 1);
+            const leftEdge = framesToShow.length > 1 ? (width - totalSpan) / 2 : width / 2;
+            ctx.strokeStyle = '#cbd5f5';
+            ctx.lineWidth = 3 * mixFactor;
+            ctx.beginPath();
+            ctx.moveTo(paddingX, timelineY);
+            ctx.lineTo(width - paddingX, timelineY);
+            ctx.stroke();
+            const targetWidth = Math.max(220 * scaleFactor, Math.min(320 * scaleFactor, availableWidth / Math.max(framesToShow.length, 1) * 1.2));
+            const availableHeight = Math.max(220 * heightFactor, timelineY - 190 * heightFactor);
+            framesToShow.forEach((frameIndex, idx) => {
+                const x = framesToShow.length === 1 ? width / 2 : leftEdge + idx * spacing;
+                const scale = Math.min(
+                    targetWidth / (bounds.maxX - bounds.minX || 1),
+                    (availableHeight) / (bounds.maxY - bounds.minY || 1)
+                ) * 1.0;
+                const offsetX = x - ((bounds.maxX + bounds.minX) / 2) * scale;
+                const offsetY = centerY - ((bounds.maxY + bounds.minY) / 2) * scale;
+                const points = allNormalizedPoints[frameIndex];
+                if (points) {
+                    drawStickFigure(ctx, points, scale, offsetX, offsetY, null, lineWidth, colors, pointSize);
+                }
+                ctx.fillStyle = '#475569';
+                ctx.beginPath();
+                ctx.arc(x, timelineY, 16 * mixFactor, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            drawStickLegendOverlay(ctx, colors, width, height, { bottomPadding: 25 * heightFactor, scale: mixFactor });
+            return true;
+        }
+
+        function startSequencePlayback() {
+            if (!sequenceFrames.length) {
+                refreshSequenceFrames();
+                if (!sequenceFrames.length) return;
+            }
+            stopSequencePlayback();
+            sequenceInterval = setInterval(() => {
+                if (!sequenceFrames.length) {
+                    stopSequencePlayback();
+                    return;
+                }
+                sequenceCurrentIndex = (sequenceCurrentIndex + 1) % sequenceFrames.length;
+                drawSequenceFramePreview();
+            }, SEQUENCE_PLAYBACK_DELAY);
+        }
+
+        function stopSequencePlayback() {
+            if (sequenceInterval) {
+                clearInterval(sequenceInterval);
+                sequenceInterval = null;
+            }
+        }
+
+        function handleSequenceStyleChange() {
+            drawSequenceFramePreview();
+            drawSequenceStaticCollage();
+        }
+
+        function getCurrentStickColors() {
+            const fallback = '#475569';
+            const getColor = (id) => document.getElementById(id)?.value || fallback;
+            return {
+                toe: getColor('colorToe'),
+                mtp: getColor('colorMtp'),
+                ankle: getColor('colorAnkle'),
+                knee: getColor('colorKnee'),
+                hip: getColor('colorHip'),
+                iliac: getColor('colorIliac')
+            };
+        }
+
+        function getGlobalBounds() {
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            let hasPoint = false;
+            if (!Array.isArray(allNormalizedPoints)) return null;
+            allNormalizedPoints.forEach(points => {
+                if (!points) return;
+                for (const part in points) {
+                    const { x, y } = points[part];
+                    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+                    hasPoint = true;
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                }
+            });
+            return hasPoint ? { minX, maxX, minY, maxY } : null;
+        }
+
+        function findNextValidFrame(startIndex) {
+            if (!Array.isArray(allNormalizedPoints)) return -1;
+            for (let i = startIndex; i < allNormalizedPoints.length; i++) {
+                if (allNormalizedPoints[i]) return i;
+            }
+            return -1;
+        }
+
+        function ensureDefaultSelections(presetFrames = null) {
+            if (userModifiedSelection) return;
+            const desiredCount = DEFAULT_SELECTED_FRAMES;
+            const frames = (presetFrames && presetFrames.length) ? presetFrames.slice(0, desiredCount) : computeAutoFrameIndices(desiredCount);
+            if (frames.length) {
+                selectedFrames = frames.slice(0, desiredCount);
+            }
+        }
+
+        function computeAutoFrameIndices(limit = DEFAULT_SELECTED_FRAMES) {
+            if (!Array.isArray(allNormalizedPoints) || allNormalizedPoints.length === 0) return [];
+            const frames = [];
+            const totalFrames = allNormalizedPoints.length;
+            const step = Math.max(1, Math.ceil(totalFrames / limit));
+            let idx = 0;
+            while (idx < totalFrames && frames.length < limit) {
+                const nextValid = findNextValidFrame(idx);
+                if (nextValid === -1) break;
+                frames.push(nextValid);
+                idx = nextValid + step;
+            }
+            if (!frames.length) {
+                const fallback = findNextValidFrame(0);
+                if (fallback !== -1) frames.push(fallback);
+            }
+            return frames;
+        }
+
+        function parseCsvTextToRows(csvText) {
+            if (!csvText) return [];
+            const lines = csvText.split(/\r?\n/).filter(line => line.trim());
+            if (lines.length <= 2) return [];
+            return lines.slice(2).map(line => line.split(','));
+        }
+
+        function computeNormalizedPointsFromRows(rows, threshold = 0.5) {
+            const bodyPartIndices = { 'iliac': [1, 2, 3], 'hip': [4, 5, 6], 'knee': [7, 8, 9], 'ankle': [10, 11, 12], 'mtp': [13, 14, 15], 'toe': [16, 17, 18] };
+            if (!Array.isArray(rows)) return [];
+            return rows.map(row => {
+                let points = {};
+                for (const part in bodyPartIndices) {
+                    const [x_idx, y_idx, l_idx] = bodyPartIndices[part];
+                    if (row.length > l_idx && parseFloat(row[l_idx]) > threshold) {
+                        points[part] = { x: parseFloat(row[x_idx]), y: parseFloat(row[y_idx]) };
+                    }
+                }
+                if (Object.keys(points).length < 6 || !points.iliac) return null;
+                const refX = points.iliac.x, refY = points.iliac.y;
+                const normalized = {};
+                for (const part in points) {
+                    normalized[part] = { x: points[part].x - refX, y: points[part].y - refY };
+                }
+                return normalized;
+            });
+        }
+
+        function computeAngleDistributions(pointsList) {
+            const angles = { mtp: [], ankle: [], knee: [], hip: [], pelvicTilt: [] };
+            if (!Array.isArray(pointsList)) return { "MTP": [], "Ankle": [], "Knee": [], "Hip": [], "Pelvic Tilt": [] };
+            pointsList.forEach(points => {
+                if (!points) return;
+                angles.mtp.push(calculateAngle(points.toe, points.mtp, points.ankle));
+                angles.ankle.push(calculateAngle(points.mtp, points.ankle, points.knee));
+                angles.knee.push(calculateAngle(points.ankle, points.knee, points.hip));
+                angles.hip.push(calculateAngle(points.knee, points.hip, points.iliac));
+                angles.pelvicTilt.push(calculateHorizontalAngle(points.hip, points.iliac));
+            });
+            return {
+                "MTP": angles.mtp.filter(a => a !== null),
+                "Ankle": angles.ankle.filter(a => a !== null),
+                "Knee": angles.knee.filter(a => a !== null),
+                "Hip": angles.hip.filter(a => a !== null),
+                "Pelvic Tilt": angles.pelvicTilt.filter(a => a !== null),
+            };
+        }
+
+        function computeGaitMetricsFromPoints(pointsList) {
+            const fps = 30;
+            const foot = 'toe';
+            if (!Array.isArray(pointsList) || pointsList.length < 10) return null;
+            const xs = [], ys = [], fr = [];
+            for (let i = 0; i < pointsList.length; i++) {
+                const p = pointsList[i]?.[foot];
+                if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) {
+                    xs.push(p.x);
+                    ys.push(p.y);
+                    fr.push(i);
+                }
+            }
+            if (fr.length < 10) return null;
+            const smooth = (arr, w = 7) => {
+                const hw = Math.floor(w / 2), out = new Array(arr.length);
+                for (let i = 0; i < arr.length; i++) {
+                    let s = 0, c = 0;
+                    for (let k = -hw; k <= hw; k++) {
+                        const j = i + k;
+                        if (j >= 0 && j < arr.length) {
+                            s += arr[j];
+                            c++;
+                        }
+                    }
+                    out[i] = s / (c || 1);
+                }
+                return out;
+            };
+            const vx = [], vy = [];
+            for (let i = 1; i < xs.length; i++) {
+                vx.push((xs[i] - xs[i - 1]) * fps);
+                vy.push((ys[i] - ys[i - 1]) * fps);
+            }
+            const spd = smooth(vx.map((d, k) => Math.hypot(d, vy[k])), 7);
+            spd.unshift(spd[0]);
+            const arr = spd.filter(v => Number.isFinite(v));
+            const med = arr.slice().sort((a, b) => a - b)[Math.floor(arr.length / 2)] || 0;
+            const mad = arr.map(v => Math.abs(v - med)).slice().sort((a, b) => a - b)[Math.floor(arr.length / 2)] || 1e-6;
+            const th = med + 0.5 * mad;
+            const stance = spd.map(v => v < th);
+            const heel = [];
+            for (let i = 1; i < stance.length; i++) {
+                if (stance[i] && !stance[i - 1]) heel.push(i);
+            }
+            if (heel.length < 2) return null;
+            const cycles = [];
+            for (let c = 1; c < heel.length; c++) {
+                const i0 = heel[c - 1], i1 = heel[c];
+                const fr0 = fr[i0], fr1 = fr[i1];
+                const durSec = (fr1 - fr0) / fps;
+                let stanceCount = 0, total = 0;
+                for (let j = i0; j < i1; j++) { total++; if (stance[j]) stanceCount++; }
+                const stancePct = total ? 100 * stanceCount / total : NaN;
+                const swingPct = Number.isFinite(stancePct) ? 100 - stancePct : NaN;
+                const stride = xs[i1] - xs[i0];
+                cycles.push({ startFrame: fr0, endFrame: fr1, stepTime: durSec, cadence: (durSec > 0 ? 60 / durSec : NaN), stancePct, swingPct, stride });
+            }
+            const mean = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : NaN;
+            return {
+                nCycles: cycles.length,
+                cadenceMean: mean(cycles.map(c => c.cadence).filter(Number.isFinite)),
+                strideMean: mean(cycles.map(c => c.stride).filter(Number.isFinite)),
+                stanceMean: mean(cycles.map(c => c.stancePct).filter(Number.isFinite)),
+                swingMean: mean(cycles.map(c => c.swingPct).filter(Number.isFinite)),
+                cycles
+            };
+        }
+
+        function calculateParametersFromData(angleData, gaitData) {
+            if (!gaitData || !gaitData.cycles || gaitData.cycles.length === 0) return {};
+            const cycles = gaitData.cycles;
+            const mean = (arr) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+            const std = (arr) => {
+                if (!arr.length) return 0;
+                const m = mean(arr);
+                const variance = mean(arr.map(x => (x - m) ** 2));
+                return Math.sqrt(variance);
+            };
+            const min = (arr) => arr.length ? Math.min(...arr) : 0;
+            const max = (arr) => arr.length ? Math.max(...arr) : 0;
+            const cadences = cycles.map(c => c.cadence).filter(Number.isFinite);
+            const strideLengths = cycles.map(c => c.stride).filter(Number.isFinite);
+            const stepTimes = cycles.map(c => c.stepTime).filter(Number.isFinite);
+            const stancePercents = cycles.map(c => c.stancePct).filter(Number.isFinite);
+            const swingPercents = cycles.map(c => c.swingPct).filter(Number.isFinite);
+            const angleSafe = key => (angleData && angleData[key]) ? angleData[key] : [];
+            return {
+                "Cadence (steps/min)": mean(cadences),
+                "Cadence STD": std(cadences),
+                "Step Time (s)": mean(stepTimes),
+                "Stride Length (px)": mean(strideLengths),
+                "Stride Length STD": std(strideLengths),
+                "Number of Cycles": cycles.length,
+                "Stance Time (%)": mean(stancePercents),
+                "Stance Time STD": std(stancePercents),
+                "Swing Time (%)": mean(swingPercents),
+                "Swing Time STD": std(swingPercents),
+                "Stance/Swing Ratio": mean(stancePercents) / (mean(swingPercents) || 1),
+                "Gait Cycle Duration (s)": mean(stepTimes),
+                "MTP Angle Mean (°)": mean(angleSafe("MTP")),
+                "MTP Angle STD": std(angleSafe("MTP")),
+                "MTP Angle Min": min(angleSafe("MTP")),
+                "MTP Angle Max": max(angleSafe("MTP")),
+                "MTP Angle Range": max(angleSafe("MTP")) - min(angleSafe("MTP")),
+                "MTP Flexion/Extension": Math.abs(max(angleSafe("MTP")) - min(angleSafe("MTP"))),
+                "Ankle Angle Mean (°)": mean(angleSafe("Ankle")),
+                "Ankle Angle STD": std(angleSafe("Ankle")),
+                "Ankle Angle Min": min(angleSafe("Ankle")),
+                "Ankle Angle Max": max(angleSafe("Ankle")),
+                "Ankle Angle Range": max(angleSafe("Ankle")) - min(angleSafe("Ankle")),
+                "Ankle Dorsi/Plantarflex": Math.abs(max(angleSafe("Ankle")) - min(angleSafe("Ankle"))),
+                "Knee Angle Mean (°)": mean(angleSafe("Knee")),
+                "Knee Angle STD": std(angleSafe("Knee")),
+                "Knee Angle Min": min(angleSafe("Knee")),
+                "Knee Angle Max": max(angleSafe("Knee")),
+                "Knee Angle Range": max(angleSafe("Knee")) - min(angleSafe("Knee")),
+                "Knee Flexion/Extension": Math.abs(max(angleSafe("Knee")) - min(angleSafe("Knee"))),
+                "Hip Angle Mean (°)": mean(angleSafe("Hip")),
+                "Hip Angle STD": std(angleSafe("Hip")),
+                "Hip Angle Min": min(angleSafe("Hip")),
+                "Hip Angle Max": max(angleSafe("Hip")),
+                "Hip Angle Range": max(angleSafe("Hip")) - min(angleSafe("Hip")),
+                "Hip Flexion/Extension": Math.abs(max(angleSafe("Hip")) - min(angleSafe("Hip"))),
+                "Pelvic Tilt Mean (°)": mean(angleSafe("Pelvic Tilt")),
+                "Pelvic Tilt STD": std(angleSafe("Pelvic Tilt")),
+                "Pelvic Tilt Min": min(angleSafe("Pelvic Tilt")),
+                "Pelvic Tilt Max": max(angleSafe("Pelvic Tilt")),
+                "Stride Length Symmetry": mean(strideLengths) ? std(strideLengths) / mean(strideLengths) : 0,
+                "Cadence Consistency": mean(cadences) ? std(cadences) / mean(cadences) : 0,
+                "Stance/Swing Symmetry": Math.abs(mean(stancePercents) - mean(swingPercents)),
+                "Overall Gait Regularity": 1 / (1 + std(stepTimes))
+            };
+        }
+
+        function computeSampleMetricsFromText(sampleName, csvText) {
+            const rows = parseCsvTextToRows(csvText);
+            if (!rows.length) throw new Error('No frame rows detected.');
+            const threshold = parseFloat(document.getElementById('threshold').value) || 0.5;
+            const normalized = computeNormalizedPointsFromRows(rows, threshold);
+            const validFrames = normalized.filter(Boolean).length;
+            if (!validFrames) throw new Error('No frames passed the likelihood threshold.');
+            const angleData = computeAngleDistributions(normalized);
+            const gaitData = computeGaitMetricsFromPoints(normalized);
+            if (!gaitData || !gaitData.nCycles) throw new Error('Not enough gait cycles detected.');
+            const metrics = calculateParametersFromData(angleData, gaitData);
+            return { sampleName, validFrames, metrics, angleData, gaitData, group: '' };
+        }
+        function downloadSequenceVideo() {
+            if (!sequenceCanvas) return;
+            if (typeof MediaRecorder === 'undefined') {
+                if (sequenceStatus) sequenceStatus.textContent = 'Browser does not support video export.';
+                return;
+            }
+            if (!sequenceFrames.length) {
+                refreshSequenceFrames();
+                if (!sequenceFrames.length) {
+                    if (sequenceStatus) sequenceStatus.textContent = 'No frames available to export.';
+                    return;
+                }
+            }
+            const preferredMimeTypes = [
+                'video/mp4;codecs="avc1.42E01E, mp4a.40.2"',
+                'video/mp4;codecs="avc1.42E01E"',
+                'video/mp4',
+                'video/webm;codecs=vp9',
+                'video/webm;codecs=vp8',
+                'video/webm'
+            ];
+            let supportedMime = null;
+            for (const type of preferredMimeTypes) {
+                if (!MediaRecorder.isTypeSupported || MediaRecorder.isTypeSupported(type)) {
+                    supportedMime = type;
+                    break;
+                }
+            }
+            if (!supportedMime) {
+                if (sequenceStatus) sequenceStatus.textContent = 'Video format not supported in this browser.';
+                return;
+            }
+            const isMp4 = supportedMime.includes('mp4');
+            const fps = Math.max(1, Math.round(1000 / SEQUENCE_PLAYBACK_DELAY));
+            let stream;
+            try {
+                stream = sequenceCanvas.captureStream(fps);
+            } catch (error) {
+                console.error('captureStream failed', error);
+                if (sequenceStatus) sequenceStatus.textContent = 'Canvas capture not supported in this browser.';
+                return;
+            }
+            let recorder;
+            try {
+                recorder = new MediaRecorder(stream, { mimeType: supportedMime });
+            } catch (error) {
+                console.error('MediaRecorder init failed', error);
+                if (sequenceStatus) sequenceStatus.textContent = 'MediaRecorder initialization failed.';
+                return;
+            }
+            const wasPlaying = Boolean(sequenceInterval);
+            stopSequencePlayback();
+            const originalIndex = sequenceCurrentIndex;
+            const chunks = [];
+            let frameTimer = null;
+            recorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+            recorder.onstop = () => {
+                if (frameTimer) {
+                    clearInterval(frameTimer);
+                    frameTimer = null;
+                }
+                const blob = new Blob(chunks, { type: supportedMime });
+                const url = URL.createObjectURL(blob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = `kima_sequence.${isMp4 ? 'mp4' : 'webm'}`;
+                downloadLink.click();
+                setTimeout(() => URL.revokeObjectURL(url), 500);
+                if (sequenceStatus) {
+                    sequenceStatus.textContent = isMp4 ? 'Sequence video downloaded (MP4, 720p).' : 'Sequence video downloaded (WEBM fallback, 720p).';
+                }
+                sequenceCurrentIndex = originalIndex % (sequenceFrames.length || 1);
+                drawSequenceFramePreview();
+                if (wasPlaying && sequenceFrames.length > 1) {
+                    startSequencePlayback();
+                }
+            };
+            recorder.onerror = (event) => {
+                console.error('MediaRecorder error', event);
+                if (sequenceStatus) sequenceStatus.textContent = 'Video export failed.';
+                if (frameTimer) {
+                    clearInterval(frameTimer);
+                    frameTimer = null;
+                }
+                sequenceCurrentIndex = originalIndex;
+                drawSequenceFramePreview();
+                if (wasPlaying && sequenceFrames.length > 1) {
+                    startSequencePlayback();
+                }
+            };
+            const loops = sequenceFrames.length <= 6 ? 3 : 2;
+            const totalFrames = sequenceFrames.length * loops;
+            let framesRecorded = 0;
+            if (sequenceStatus) sequenceStatus.textContent = `Recording sequence preview (${isMp4 ? 'MP4' : 'WEBM'}, 720p).`;
+            recorder.start();
+            frameTimer = setInterval(() => {
+                if (framesRecorded >= totalFrames) {
+                    clearInterval(frameTimer);
+                    recorder.stop();
+                    return;
+                }
+                sequenceCurrentIndex = framesRecorded % sequenceFrames.length;
+                drawSequenceFramePreview();
+                framesRecorded += 1;
+            }, SEQUENCE_PLAYBACK_DELAY);
+        }
+        function downloadSequenceStaticImage() {
+            if (!sequenceStaticCanvas) return;
+            if (!sequenceFrames.length) {
+                refreshSequenceFrames();
+                if (!sequenceFrames.length) {
+                    if (sequenceStatus) sequenceStatus.textContent = 'No frames available for strip export.';
+                    return;
+                }
+            }
+            const widthInches = 14;
+            const heightInches = 4.5;
+            const dpi = 300;
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = Math.round(widthInches * dpi);
+            tempCanvas.height = Math.round(heightInches * dpi);
+            const ctx = tempCanvas.getContext('2d');
+            if (!renderSequenceStrip(ctx, tempCanvas.width, tempCanvas.height, { forDownload: true })) {
+                if (sequenceStatus) sequenceStatus.textContent = 'Unable to render strip for download.';
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = tempCanvas.toDataURL('image/png');
+            link.download = 'kima_sequence_strip.png';
+            link.click();
+            if (sequenceStatus) sequenceStatus.textContent = 'Strip PNG downloaded at 300 DPI.';
+        }
+
+        async function handleMultiCsvUpload(event) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length) return;
+            if (multiSamplesStatus) multiSamplesStatus.textContent = 'Processing samples...';
+            for (const file of files) {
+                try {
+                    const text = await file.text();
+                    const sample = computeSampleMetricsFromText(file.name, text);
+                    multiSamples = multiSamples.filter(s => s.sampleName !== sample.sampleName);
+                    multiSamples.push(sample);
+                    addSampleToStickLibrary(file.name, text);
+                    if (multiSamplesStatus) multiSamplesStatus.textContent = `Processed ${file.name}`;
+                } catch (error) {
+                    if (multiSamplesStatus) multiSamplesStatus.textContent = `${file.name}: ${error.message}`;
+                }
+            }
+            renderMultiSamplesTable();
+            event.target.value = '';
+        }
+
+        async function handleMultiStickUpload(event) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length) return;
+            if (multiStickStatus) multiStickStatus.textContent = 'Reading files...';
+            for (const file of files) {
+                try {
+                    const text = await file.text();
+                    addSampleToStickLibrary(file.name, text);
+                } catch (error) {
+                    if (multiStickStatus) multiStickStatus.textContent = `${file.name}: ${error.message}`;
+                }
+            }
+            if (multiStickStatus) multiStickStatus.textContent = files.length > 1 ? `Queued ${files.length} files.` : (files[0] ? `Queued ${files[0].name}` : '');
+            event.target.value = '';
+        }
+
+        function handleMultiStickLibraryAction(event) {
+            const button = event.target.closest('button[data-sample-index]');
+            if (!button) return;
+            const idx = parseInt(button.dataset.sampleIndex, 10);
+            if (Number.isNaN(idx) || !multiStickSamples[idx]) return;
+            const action = button.dataset.action;
+            if (action === 'remove') {
+                multiStickSamples.splice(idx, 1);
+                renderMultiStickList();
+                return;
+            }
+            if (action === 'load') {
+                loadSampleIntoSingleAnalysis(idx);
+            }
+        }
+
+        function addSampleToStickLibrary(sampleName, csvText) {
+            if (!csvText) return;
+            const frames = estimateFrameCount(csvText);
+            const payload = { name: sampleName, csvText, frameCount: frames };
+            const existingIdx = multiStickSamples.findIndex(sample => sample.name === sampleName);
+            if (existingIdx >= 0) {
+                multiStickSamples[existingIdx] = payload;
+            } else {
+                multiStickSamples.push(payload);
+            }
+            renderMultiStickList();
+            if (multiStickStatus) {
+                multiStickStatus.textContent = `Queued ${sampleName}`;
+            }
+        }
+
+        function renderMultiStickList() {
+            if (!multiStickList) return;
+            if (!multiStickSamples.length) {
+                multiStickList.innerHTML = '<div class="text-center text-slate-400 py-6 text-sm border border-dashed border-slate-200 rounded-lg">No queued samples yet.</div>';
+                return;
+            }
+            multiStickList.innerHTML = multiStickSamples.map((sample, idx) => `
+                <div class="border border-slate-200 rounded-lg p-3 bg-slate-50 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                    <div>
+                        <p class="font-semibold text-slate-800">${sample.name}</p>
+                        <p class="text-xs text-slate-500">${sample.frameCount} frame${sample.frameCount === 1 ? '' : 's'} detected</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="btn btn-success text-xs px-3 py-2" data-action="load" data-sample-index="${idx}">Load &amp; View</button>
+                        <button class="btn text-xs px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800" data-action="remove" data-sample-index="${idx}">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadSampleIntoSingleAnalysis(sampleIdx) {
+            const entry = multiStickSamples[sampleIdx];
+            if (!entry) return;
+            parseCSV(entry.csvText, entry.name || `queued-${sampleIdx + 1}`);
+            if (fileStatus) {
+                showStatus('info', `Loaded ${entry.name} from Sample Stick Viewer.`);
+            }
+            activateTab('interactivePlotTab');
+        }
+
+        function estimateFrameCount(csvText) {
+            if (!csvText) return 0;
+            const lines = csvText.split(/\r?\n/).filter(line => line.trim());
+            return Math.max(0, lines.length - 2);
+        }
+
+        function renderMultiSamplesTable() {
+            if (!multiSamplesTableBody) return;
+            if (!multiSamples.length) {
+                multiSamplesTableBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-slate-400">Upload samples to begin</td></tr>';
+                if (multiExportBtn) multiExportBtn.disabled = true;
+                if (multiSendToPcaBtn) multiSendToPcaBtn.disabled = true;
+                return;
+            }
+            const format = (val) => Number.isFinite(val) ? (+val).toFixed(2) : 'NA';
+            multiSamplesTableBody.innerHTML = multiSamples.map(sample => {
+                const metrics = sample.metrics || {};
+                return `<tr class="border-t">
+                    <td class="px-3 py-2 text-left font-semibold text-slate-800">${sample.sampleName}</td>
+                    <td class="px-3 py-2 text-left">${sample.validFrames}</td>
+                    <td class="px-3 py-2 text-right">${format(metrics["Cadence (steps/min)"])}</td>
+                    <td class="px-3 py-2 text-right">${format(metrics["Stride Length (px)"])}</td>
+                    <td class="px-3 py-2 text-right">${format(metrics["Stance Time (%)"])}</td>
+                    <td class="px-3 py-2 text-right">${format(metrics["Swing Time (%)"])}</td>
+                    <td class="px-3 py-2 text-right">${format(metrics["Overall Gait Regularity"])}</td>
+                </tr>`;
+            }).join('');
+            if (multiExportBtn) multiExportBtn.disabled = false;
+            if (multiSendToPcaBtn) multiSendToPcaBtn.disabled = false;
+        }
+
+        function exportMultiSamplesCsv() {
+            if (!multiSamples.length) return;
+            const metricKeys = Object.keys(multiSamples[0].metrics || {});
+            const headers = ['Sample', 'Group', 'Valid Frames', ...metricKeys];
+            const lines = [headers.join(',')];
+            multiSamples.forEach(sample => {
+                const row = [
+                    `"${sample.sampleName}"`,
+                    `"${sample.group || ''}"`,
+                    sample.validFrames || 0,
+                    ...metricKeys.map(key => {
+                        const val = sample.metrics[key];
+                        return Number.isFinite(val) ? val : '';
+                    })
+                ];
+                lines.push(row.join(','));
+            });
+            const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'kima_multi_samples.csv';
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(link.href), 500);
+        }
+
+        function setPcaDatasetFromSamples(samples) {
+            if (!samples.length) return;
+            pcaMetricKeys = Object.keys(samples[0].metrics || {});
+            pcaWorkingData = samples.map(sample => ({
+                sample: sample.sampleName,
+                group: sample.group || '',
+                metrics: { ...sample.metrics }
+            }));
+            renderPcaGroupTable();
+            if (pcaDataStatus) pcaDataStatus.textContent = `Loaded ${samples.length} sample(s) from multi-sample workspace.`;
+            if (runPcaBtn) runPcaBtn.disabled = false;
+        }
+
+        async function handlePcaFileUpload(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            try {
+                const text = await file.text();
+                loadPcaDataFromCsvText(text);
+                if (pcaDataStatus) pcaDataStatus.textContent = `Loaded ${file.name}`;
+            } catch (error) {
+                if (pcaDataStatus) pcaDataStatus.textContent = error.message;
+            }
+            event.target.value = '';
+        }
+
+        function loadPcaDataFromCsvText(csvText) {
+            const rows = csvText.split(/\r?\n/).filter(line => line.trim());
+            if (!rows.length) throw new Error('CSV file is empty.');
+            const headers = rows[0].split(',').map(h => h.trim());
+            const sampleIdx = headers.findIndex(h => h.toLowerCase() === 'sample');
+            if (sampleIdx === -1) throw new Error('Missing "Sample" column.');
+            const groupIdx = headers.findIndex(h => h.toLowerCase() === 'group');
+            const metricIndices = headers.map((_, idx) => idx).filter(idx => idx !== sampleIdx && idx !== groupIdx);
+            const samples = [];
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].split(',');
+                if (!cells.length || !cells[sampleIdx]) continue;
+                const metrics = {};
+                metricIndices.forEach(idx => {
+                    const key = headers[idx];
+                    const value = parseFloat(cells[idx]);
+                    if (Number.isFinite(value)) metrics[key] = value;
+                });
+                if (Object.keys(metrics).length === 0) continue;
+                samples.push({
+                    sample: cells[sampleIdx],
+                    group: groupIdx >= 0 ? (cells[groupIdx] || '') : '',
+                    metrics
+                });
+            }
+            if (!samples.length) throw new Error('No numeric metrics detected.');
+            pcaWorkingData = samples;
+            pcaMetricKeys = Object.keys(samples[0].metrics);
+            renderPcaGroupTable();
+            if (runPcaBtn) runPcaBtn.disabled = false;
+        }
+
+        function renderPcaGroupTable() {
+            if (!pcaGroupTableBody) return;
+            if (!pcaWorkingData.length) {
+                pcaGroupTableBody.innerHTML = '<tr><td colspan="2" class="px-4 py-6 text-center text-slate-400">Upload aggregated metrics to edit group labels</td></tr>';
+                if (runPcaBtn) runPcaBtn.disabled = true;
+                return;
+            }
+            pcaGroupTableBody.innerHTML = pcaWorkingData.map((row, idx) => `
+                <tr class="border-t">
+                    <td class="px-3 py-2 text-left font-semibold text-slate-800">${row.sample}</td>
+                    <td class="px-3 py-2 text-left">
+                        <input type="text" data-sample-index="${idx}" value="${row.group || ''}" class="pca-group-input border border-slate-300 rounded-md px-3 py-1 w-full" placeholder="e.g., Treated">
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function handlePcaGroupEdit(event) {
+            if (!event.target.classList.contains('pca-group-input')) return;
+            const idx = parseInt(event.target.dataset.sampleIndex, 10);
+            if (Number.isNaN(idx) || !pcaWorkingData[idx]) return;
+            pcaWorkingData[idx].group = event.target.value;
+        }
+
+        function runPcaAnalysis() {
+            if (!pcaWorkingData.length || !pcaMetricKeys.length) {
+                if (pcaDataStatus) pcaDataStatus.textContent = 'Upload aggregated metrics before running PCA.';
+                return;
+            }
+            if (pcaWorkingData.length < 2) {
+                if (pcaDataStatus) pcaDataStatus.textContent = 'Need at least two samples for PCA.';
+                return;
+            }
+            if (pcaMetricKeys.length < 2) {
+                if (pcaDataStatus) pcaDataStatus.textContent = 'Need at least two metrics for PCA.';
+                return;
+            }
+            const dataMatrix = pcaWorkingData.map(sample => pcaMetricKeys.map(key => sample.metrics[key] ?? 0));
+            try {
+                const { scores, percentVar } = computeLocalPca(dataMatrix, 2);
+                const palette = ['#1d4ed8', '#dc2626', '#16a34a', '#f97316', '#a855f7', '#0ea5e9', '#0d9488', '#facc15'];
+                const tracesMap = {};
+                let colorIdx = 0;
+                pcaWorkingData.forEach((sample, idx) => {
+                    const group = (sample.group || 'Unspecified').trim() || 'Unspecified';
+                    if (!tracesMap[group]) {
+                        tracesMap[group] = {
+                            x: [],
+                            y: [],
+                            text: [],
+                            mode: 'markers+text',
+                            type: 'scatter',
+                            name: group,
+                            marker: { size: 14, color: palette[colorIdx % palette.length], line: { color: '#0f172a', width: 1 } },
+                            textposition: 'top center'
+                        };
+                        colorIdx++;
+                    }
+                    tracesMap[group].x.push(scores[idx][0] || 0);
+                    tracesMap[group].y.push(scores[idx][1] || 0);
+                    tracesMap[group].text.push(sample.sample);
+                });
+                const traces = Object.values(tracesMap);
+                const layout = {
+                    title: 'PCA Projection (PC1 vs PC2)',
+                    xaxis: { title: `PC1 ${(percentVar[0] || 0).toFixed(1)}%` },
+                    yaxis: { title: `PC2 ${(percentVar[1] || 0).toFixed(1)}%` },
+                    legend: { orientation: 'h' },
+                    hovermode: 'closest'
+                };
+                if (pcaVariance) {
+                    pcaVariance.textContent = `Explained variance: PC1 ${(percentVar[0] || 0).toFixed(2)}% · PC2 ${(percentVar[1] || 0).toFixed(2)}%`;
+                }
+                Plotly.newPlot(pcaPlot, traces, layout, { responsive: true });
+                if (pcaDataStatus) {
+                    pcaDataStatus.textContent = `PCA ready · ${pcaWorkingData.length} samples, ${pcaMetricKeys.length} metrics`;
+                }
+            } catch (error) {
+                console.error(error);
+                if (pcaDataStatus) pcaDataStatus.textContent = error.message || 'PCA computation failed.';
+            }
+        }
+
+        function computeLocalPca(dataMatrix, components = 2) {
+            const nSamples = dataMatrix.length;
+            const nFeatures = dataMatrix[0]?.length || 0;
+            if (nSamples < 2) throw new Error('Need at least two samples for PCA.');
+            if (nFeatures < 2) throw new Error('Need at least two metrics for PCA.');
+            const means = new Array(nFeatures).fill(0);
+            dataMatrix.forEach(row => {
+                row.forEach((value, idx) => {
+                    means[idx] += value;
+                });
+            });
+            for (let idx = 0; idx < nFeatures; idx++) {
+                means[idx] /= nSamples;
+            }
+            const centered = dataMatrix.map(row => row.map((value, idx) => value - means[idx]));
+            const denominator = Math.max(1, nSamples - 1);
+            const covariance = Array.from({ length: nFeatures }, () => Array(nFeatures).fill(0));
+            for (let row = 0; row < nFeatures; row++) {
+                for (let col = row; col < nFeatures; col++) {
+                    let acc = 0;
+                    for (let sampleIdx = 0; sampleIdx < nSamples; sampleIdx++) {
+                        acc += centered[sampleIdx][row] * centered[sampleIdx][col];
+                    }
+                    const value = acc / denominator;
+                    covariance[row][col] = value;
+                    covariance[col][row] = value;
+                }
+            }
+            const { vectors, eigenvalues } = powerIterationEigen(covariance, Math.min(components, nFeatures));
+            if (!vectors.length) throw new Error('Unable to compute PCA components.');
+            const scores = centered.map(row => vectors.map(vec => dotProduct(row, vec)));
+            const totalVariance = eigenvalues.reduce((sum, value) => sum + Math.max(0, value), 0);
+            const percentVar = eigenvalues.map(value => {
+                const safe = Math.max(0, value);
+                return totalVariance ? (safe / totalVariance) * 100 : 0;
+            });
+            while (scores[0] && scores[0].length < components) {
+                scores.forEach(row => row.push(0));
+            }
+            while (percentVar.length < components) {
+                percentVar.push(0);
+            }
+            return { scores, percentVar };
+        }
+
+        function powerIterationEigen(matrix, components = 2) {
+            const size = matrix.length;
+            const vectors = [];
+            const eigenvalues = [];
+            const working = matrix.map(row => row.slice());
+            const maxComponents = Math.min(components, size);
+            for (let comp = 0; comp < maxComponents; comp++) {
+                let vec = Array.from({ length: size }, () => Math.random() - 0.5);
+                if (!normalizeVector(vec)) {
+                    vec = Array.from({ length: size }, (_, idx) => (idx === comp ? 1 : 0));
+                }
+                let iterations = 0;
+                while (iterations < 1000) {
+                    const next = multiplyMatrixVector(working, vec);
+                    if (!normalizeVector(next)) break;
+                    const diff = vectorDistance(vec, next);
+                    vec = next;
+                    if (diff < 1e-7) break;
+                    iterations++;
+                }
+                const eigenvalue = dotProduct(vec, multiplyMatrixVector(matrix, vec));
+                if (!Number.isFinite(eigenvalue)) continue;
+                vectors.push(vec.slice());
+                eigenvalues.push(eigenvalue);
+                deflateMatrix(working, vec, eigenvalue);
+            }
+            return { vectors, eigenvalues };
+        }
+
+        function multiplyMatrixVector(matrix, vector) {
+            return matrix.map(row => row.reduce((sum, value, idx) => sum + value * (vector[idx] || 0), 0));
+        }
+
+        function dotProduct(a, b) {
+            return a.reduce((sum, value, idx) => sum + value * (b[idx] || 0), 0);
+        }
+
+        function normalizeVector(vec) {
+            const norm = Math.sqrt(vec.reduce((sum, value) => sum + value * value, 0));
+            if (!norm) return false;
+            for (let i = 0; i < vec.length; i++) {
+                vec[i] /= norm;
+            }
+            return true;
+        }
+
+        function vectorDistance(a, b) {
+            let sum = 0;
+            for (let i = 0; i < a.length; i++) {
+                const diff = (a[i] || 0) - (b[i] || 0);
+                sum += diff * diff;
+            }
+            return Math.sqrt(sum);
+        }
+
+        function deflateMatrix(matrix, vector, eigenvalue) {
+            for (let row = 0; row < matrix.length; row++) {
+                for (let col = 0; col < matrix[row].length; col++) {
+                    matrix[row][col] -= eigenvalue * vector[row] * vector[col];
+                }
+            }
+        }
+        function setProcessing(processing, message = '') { if (processing) { processingStatus.innerHTML = `<div class="status info p-4 rounded-md flex items-center"><div class="spinner mr-3"></div>${message}</div>`; } else { processingStatus.innerHTML = ''; } }
+        function showStatus(type, message) { fileStatus.innerHTML = `<div class="status ${type} p-4 rounded-md">${message}</div>`; }
+        function processFile(file) { if (!file || !file.name.toLowerCase().endsWith('.csv')) { showStatus('error', 'Please select a CSV file'); return; } const reader = new FileReader(); reader.onload = (e) => parseCSV(e.target.result, file.name || 'uploaded'); reader.readAsText(file); }
+        function processData() { const threshold = parseFloat(document.getElementById('threshold').value); allNormalizedPoints = computeNormalizedPointsFromRows(csvData, threshold); }
+    
+// === Gait metrics (non-intrusive) ===
+let __gaitComputedFor = null;
+let __gaitCache = null;
+
+function __computeGaitFromNormalized() {
+    __gaitCache = computeGaitMetricsFromPoints(allNormalizedPoints);
+    __gaitComputedFor = currentDatasetLabel || 'current';
+}
+
+function drawGaitMetrics() {
+    const plotDiv = document.getElementById('gaitMetricsPlot');
+    const summary = document.getElementById('gaitSummary');
+    const tbody = document.getElementById('gaitCyclesBody');
+    if (!plotDiv || !summary || !tbody) return;
+    if (!__gaitCache || !__gaitCache.nCycles){
+        Plotly.purge(plotDiv);
+        summary.textContent = 'Not enough heel-strike cycles detected (need ≥2).';
+        tbody.innerHTML = '';
+        return;
+    }
+    const vals = [
+        __gaitCache.cadenceMean,
+        __gaitCache.strideMean,
+        __gaitCache.swingMean,
+        __gaitCache.stanceMean
+    ].map(v => Number.isFinite(v)? +v.toFixed(1) : null);
+    const labels = ['Cadence (spm)', 'Stride (px)', 'Swing (%)', 'Stance (%)'];
+
+    Plotly.newPlot(plotDiv, [{
+        x: labels, y: vals, type:'bar',
+        text: vals.map(v=>v==null?'NA':v.toString()),
+        textposition:'auto',
+        marker:{line:{width:1,color:'#111827'}}
+    }], {
+        title:{text:'Gait Metrics (means across cycles)'},
+        margin:{l:60,r:20,b:80,t:50}
+    }, {responsive:true});
+
+    summary.innerHTML = `Cycles: <b>${__gaitCache.nCycles}</b> &nbsp;|&nbsp; Foot: <b>toe</b> &nbsp;|&nbsp; FPS: <b>30</b>`;
+
+    tbody.innerHTML = '';
+    __gaitCache.cycles.forEach((c,i)=>{
+        const tr = document.createElement('tr');
+        const put = (v,cls='text-right') => `<td class="px-2 py-1 ${cls}">${Number.isFinite(v)? (typeof v==='number'? v.toFixed(3): v): (v===0?'0':'NA')}</td>`;
+        tr.innerHTML = `<td class="px-2 py-1 text-left">${i+1}</td>` + 
+            put(c.startFrame) + put(c.endFrame) + put(c.stepTime) + put(c.cadence) + put(c.stancePct) + put(c.swingPct) + put(c.stride);
+        tbody.appendChild(tr);
+    });
+}
+
+// ========== 46 GAIT PARAMETERS CALCULATION ==========
+let gaitParameters = {};
+
+function calculate46Parameters() {
+    if (!__gaitCache || !__gaitCache.cycles || __gaitCache.cycles.length === 0) {
+        return {};
+    }
+    return calculateParametersFromData(angleDistributions, __gaitCache);
+}
+
+function displayGaitParameters() {
+    const tbody = document.getElementById('gaitParamsBody');
+    if (!tbody) return;
+
+    gaitParameters = calculate46Parameters();
+
+    if (Object.keys(gaitParameters).length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="px-3 py-8 text-center text-gray-400">No parameters calculated. Check your data.</td></tr>';
+        return;
+    }
+
+    const descriptions = {
+        "Cadence (steps/min)": "Walking speed in steps per minute",
+        "Cadence STD": "Variability in cadence across cycles",
+        "Step Time (s)": "Time to complete one step",
+        "Stride Length (px)": "Distance covered per complete stride",
+        "Stride Length STD": "Variability in stride length",
+        "Number of Cycles": "Total number of detected gait cycles",
+        "Stance Time (%)": "Percentage of gait cycle in stance phase",
+        "Stance Time STD": "Variability in stance percentage",
+        "Swing Time (%)": "Percentage of gait cycle in swing phase",
+        "Swing Time STD": "Variability in swing percentage",
+        "Stance/Swing Ratio": "Ratio of stance to swing phase duration",
+        "Gait Cycle Duration (s)": "Time for one complete gait cycle",
+        "MTP Angle Mean (°)": "Average metatarsophalangeal joint angle",
+        "MTP Angle STD": "MTP angle variability",
+        "MTP Angle Min": "Minimum MTP angle in dataset",
+        "MTP Angle Max": "Maximum MTP angle in dataset",
+        "MTP Angle Range": "Range of motion at MTP joint",
+        "MTP Flexion/Extension": "Magnitude of MTP joint movement",
+        "Ankle Angle Mean (°)": "Average ankle joint angle",
+        "Ankle Angle STD": "Ankle angle variability",
+        "Ankle Angle Min": "Minimum ankle angle",
+        "Ankle Angle Max": "Maximum ankle angle",
+        "Ankle Angle Range": "Range of ankle motion",
+        "Ankle Dorsi/Plantarflex": "Magnitude of ankle movement",
+        "Knee Angle Mean (°)": "Average knee joint angle",
+        "Knee Angle STD": "Knee angle variability",
+        "Knee Angle Min": "Minimum knee angle",
+        "Knee Angle Max": "Maximum knee angle",
+        "Knee Angle Range": "Range of knee motion",
+        "Knee Flexion/Extension": "Magnitude of knee movement",
+        "Hip Angle Mean (°)": "Average hip joint angle",
+        "Hip Angle STD": "Hip angle variability",
+        "Hip Angle Min": "Minimum hip angle",
+        "Hip Angle Max": "Maximum hip angle",
+        "Hip Angle Range": "Range of hip motion",
+        "Hip Flexion/Extension": "Magnitude of hip movement",
+        "Pelvic Tilt Mean (°)": "Average pelvic tilt angle",
+        "Pelvic Tilt STD": "Pelvic tilt variability",
+        "Pelvic Tilt Min": "Minimum pelvic tilt",
+        "Pelvic Tilt Max": "Maximum pelvic tilt",
+        "Stride Length Symmetry": "Symmetry index for stride length",
+        "Cadence Consistency": "Consistency of cadence across cycles",
+        "Stance/Swing Symmetry": "Symmetry between stance and swing phases",
+        "Overall Gait Regularity": "Overall regularity score (0-1)"
+    };
+
+    let html = '';
+    Object.entries(gaitParameters).forEach(([param, value]) => {
+        const desc = descriptions[param] || '';
+        const displayValue = typeof value === 'number' ? value.toFixed(3) : value;
+        const bgColor = html.length % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+        html += `<tr class="${bgColor}"><td class="px-3 py-2 text-left">${param}</td><td class="px-3 py-2 text-right font-semibold">${displayValue}</td><td class="px-3 py-2 text-xs text-gray-600">${desc}</td></tr>`;
+    });
+
+    tbody.innerHTML = html;
+
+    // Enable download button
+    const downloadBtn = document.getElementById('downloadParamsBtn');
+    if (downloadBtn && Object.keys(gaitParameters).length > 0) {
+        downloadBtn.disabled = false;
+    }
+}
+
+function exportParametersCSV() {
+    if (!gaitParameters || Object.keys(gaitParameters).length === 0) {
+        alert('No parameters to export. Please analyze data first.');
+        return;
+    }
+
+    let csv = 'Gait Parameter,Value\n';
+    Object.entries(gaitParameters).forEach(([param, value]) => {
+        let displayValue = value;
+        if (typeof value === 'number') {
+            displayValue = value.toFixed(6);
+        }
+        csv += `"${param}",${displayValue}\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'gait_parameters.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Hook into existing UI without changing it
+document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.tab-button');
+    if (!btn) return;
+    const tabId = btn.dataset.tab;
+    if (tabId === 'statsAnalysisTab'){
+        if (!__gaitCache || __gaitComputedFor !== (currentDatasetLabel || 'current')) { __computeGaitFromNormalized(); }
+        drawGaitMetrics();
+    } else if (tabId === 'gaitParametersTab'){
+        if (!__gaitCache || __gaitComputedFor !== (currentDatasetLabel || 'current')) { __computeGaitFromNormalized(); }
+        displayGaitParameters();
+    }
+});
+
+// Download parameters button
+document.getElementById('downloadParamsBtn').addEventListener('click', exportParametersCSV);
+
+// Also recompute shortly after file processing
+setInterval(()=>{
+    if (!csvData) return;
+    if (!Array.isArray(allNormalizedPoints) || allNormalizedPoints.length<10) return;
+    if (!__gaitCache || __gaitComputedFor !== (currentDatasetLabel || 'current')){
+        __computeGaitFromNormalized();
+        const tab = document.querySelector('.tab-button.active')?.dataset?.tab;
+        if (tab === 'statsAnalysisTab'){ drawGaitMetrics(); }
+        else if (tab === 'gaitParametersTab'){ displayGaitParameters(); }
+    }
+}, 1200);
+</script>
+</body>
+</html>
