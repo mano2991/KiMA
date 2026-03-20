@@ -800,56 +800,178 @@
 <body>
     <div id="homeSection" class="container mx-auto my-10 px-6">
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-            <div>
-                <!-- <p class="text-sm font-semibold uppercase tracking-wide" style="color: var(--muted);">KiMA Interface</p>
-                <h2 class="text-xl font-bold mt-1" style="color: var(--text);">workspace</h2> -->
+            <div class="flex flex-wrap items-center gap-3">
+                <button class="btn" type="button" data-section-target="homeSection">Home Page</button>
+                <button class="btn btn-success" type="button" data-section-target="toolsHubSection">Tools</button>
+                <a class="btn bg-slate-200 hover:bg-slate-300 text-slate-800" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
             </div>
             <button id="themeToggle" class="theme-toggle" type="button">
                 <span id="themeToggleIcon">🌞</span>
                 <span id="themeToggleLabel">Light Mode</span>
             </button>
         </div>
-        <div class="text-center mb-10">
-            <!-- <p class="text-xs font-semibold uppercase tracking-[0.35em]" style="color: var(--muted);">kiMA suite</p> -->
-            <h1 class="hero-heading brand-gradient mt-4">KiMA suite</h1>
-            <p class="hero-subtitle">KiMA (Kinematics motion analysis) is our rapid assessment environment for Spinal Cord Injury (SCI) models—move between single runs, cohort summaries, and PCA comparisons without leaving your browser.</p>
-            <p class="hero-subtitle">Pick a workflow below to start analyzing gait data your way.</p>
+        <div class="panel rounded-3xl p-8 lg:p-10 mb-8">
+            <div class="grid lg:grid-cols-[1.4fr_0.9fr] gap-8 items-center">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">KiMA</p>
+                    <h1 class="hero-heading brand-gradient mt-3">Kinematics motion analysis</h1>
+                    <p class="hero-subtitle mt-4">KiMA is the main tool for gait analysis from DeepLabCut CSV data. It brings ladder and rung analysis, foot fall, CatWalk, treadmill, batch comparison, and PCA into one place.</p>
+                    <p class="hero-subtitle">This page explains the tool, the required labeling, and the example data. The tools page opens the actual analysis modules.</p>
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <button class="btn btn-success" type="button" data-section-target="toolsHubSection">Open Tools</button>
+                    </div>
+                </div>
+                <div class="grid gap-4">
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Tool</p>
+                        <h3 class="text-lg font-semibold mt-1">KiMA Suite v1.0</h3>
+                        <p class="text-sm text-slate-600 mt-2">Browser-based tool for locomotor analysis and export from DeepLabCut output.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Example Data</p>
+                        <p class="text-sm text-slate-600 mt-2">Sample CSV files are bundled in `samples/csv/` so users can test each module before loading their own data.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="landing-grid-three">
-            <div class="landing-card" data-section-target="singleSampleSection">
-                <img class="landing-media" src="images/ladder.png" alt="Single Sample Stick Figure">
-                <h3>Single Sample Analysis</h3>
-                <p>Load a DeepLabCut CSV to interact with stick plots, gait parameters, and export-ready visuals.</p>
+
+        <div class="grid lg:grid-cols-2 gap-6 mt-8">
+            <div class="panel rounded-2xl p-6">
+                <h2 class="text-xl font-semibold pb-4 mb-4">About KiMA</h2>
+                <div class="space-y-3 text-sm text-slate-600">
+                    <p>KiMA is built to analyze locomotor data from different experiment types without mixing the logic between them.</p>
+                    <p>Each analysis block has its own parser, settings, plots, videos, and exports so the modules stay separate and stable.</p>
+                    <p>The tools page is where users open the actual analysis modules. This home page is for explaining the tool and guiding new users.</p>
+                    <p>KiMA can also point users back to the <a href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Venkatesh Lab website</a> for the lab overview and related work.</p>
+                </div>
             </div>
-            <div class="landing-card" data-section-target="multiSampleSection">
-                <img class="landing-media" src="images/M_L.png" alt="Multiple Sample Comparison">
-                <h3>Multiple Sample Analysis</h3>
-                <p>Batch process subjects, capture 46 gait metrics per file, and export a tidy dataset for comparisons.</p>
-            </div>
-            <div class="landing-card" data-section-target="pcaSection">
-                <img class="landing-media" src="images/PCA.png" alt="PCA Visualization">
-                <h3>PCA & Group Separation</h3>
-                <p>Upload aggregated metrics, label cohorts (Injured vs Treated vs Control), and visualize group shifts.</p>
+            <div class="panel rounded-2xl p-6">
+                <h2 class="text-xl font-semibold pb-4 mb-4">Required Labeling</h2>
+                <div class="space-y-3 text-sm text-slate-600">
+                    <p><strong>Ladder / Treadmill:</strong> use `toe`, `mtp`, `ankle`, `knee`, `hip`, and `iliac crest`.</p>
+                    <p><strong>Foot Fall / CatWalk:</strong> use `RF`, `LF`, `RH`, and `LH` with `x`, `y`, and `likelihood`.</p>
+                    <p><strong>PCA:</strong> use the aggregated metrics CSV exported from KiMA multiple-sample analysis.</p>
+                    <p>If the labels are different, the module will not parse correctly, so keeping the labeling proper is important.</p>
+                </div>
             </div>
         </div>
-        <div class="landing-grid-three mt-6">
-            <div class="landing-card" data-section-target="footFallSection">
-                <img class="landing-media" src="images/FootFall.png" alt="FootFall Heatmap">
-                <h3>Foot Fall Analysis</h3>
-                <p>Analyze RF, LF, RH, and LH paw contacts from DLC output with contact maps, timelines, and summary metrics.</p>
-                <p class="card-footer">Dedicated workflow for paw placement and stance diagnostics.</p>
+
+        <div class="grid lg:grid-cols-2 gap-6 mt-6">
+            <div class="panel rounded-2xl p-6">
+                <h2 class="text-xl font-semibold pb-4 mb-4">Example Data</h2>
+                <div class="space-y-4 text-sm text-slate-600">
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p><strong>Ladder Example 1</strong> `samples/csv/Ladder_rung.csv`</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="single_ladder_1">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung.csv" download>Download CSV</a>
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p><strong>Ladder Example 2</strong> `samples/csv/Ladder_rung_2.csv`</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="single_ladder_2">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung_2.csv" download>Download CSV</a>
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p><strong>Foot Fall Example</strong> `samples/csv/Foot_fall.csv`</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="foot_fall">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Foot_fall.csv" download>Download CSV</a>
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p><strong>Cat Walk Example</strong> `samples/csv/Cat_Walk.csv`</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="cat_walk">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Cat_Walk.csv" download>Download CSV</a>
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p><strong>Treadmill Example</strong> `samples/csv/Treadmill.csv`</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="treadmill">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Treadmill.csv" download>Download CSV</a>
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p><strong>Batch &amp; PCA Demo</strong> uses the bundled ladder examples as a ready test run.</p>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="batch">Load Batch Demo</button>
+                            <button class="btn btn-success text-xs py-2 px-3" type="button" data-example-load="pca">Load PCA Demo</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="landing-card" data-section-target="catWalkSection">
-                <img class="landing-media" src="images/catwalk.png" alt="Cat Walk Visualization">
-                <h3>Cat Walk</h3>
-                <p>Runway paw-placement analysis with stride length, stride width, and projected contact maps.</p>
-                <p class="card-footer">Optimized for standard CatWalk-style DLC paw datasets.</p>
+            <div class="panel rounded-2xl p-6">
+                <h2 class="text-xl font-semibold pb-4 mb-4">Modules In KiMA</h2>
+                <div class="space-y-3 text-sm text-slate-600">
+                    <p><strong>Ladder &amp; Rung:</strong> single run visualization and gait parameters.</p>
+                    <p><strong>Foot Fall:</strong> paw contact detection, paw plots, and paw videos.</p>
+                    <p><strong>CatWalk:</strong> stride length and stride width from paw placement.</p>
+                    <p><strong>Treadmill:</strong> cycle-based kinematics and treadmill playback.</p>
+                    <p><strong>Multiple Sample and PCA:</strong> group-level analysis and separation.</p>
+                </div>
             </div>
-            <div class="landing-card" data-section-target="treadmillSection">
-                <img class="landing-media" src="images/kinematics.png" alt="Treadmill Analysis">
-                <h3>Treadmill Analysis</h3>
-                <p>Track hindlimb kinematics across a treadmill run with time-series plots, cycle trends, and fatigue-style comparisons.</p>
-                <p class="card-footer">Dedicated workflow for continuous treadmill gait analysis.</p>
+        </div>
+    </div>
+
+    <div id="toolsHubSection" class="hidden">
+        <div class="container mx-auto my-10 px-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div class="flex flex-wrap items-center gap-3">
+                <button class="btn" type="button" data-section-target="homeSection">Home Page</button>
+                <button class="btn btn-success" type="button" data-section-target="toolsHubSection">Tools</button>
+                <a class="btn bg-slate-200 hover:bg-slate-300 text-slate-800" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
+            </div>
+                <button id="themeToggleTools" class="theme-toggle" type="button">
+                    <span class="theme-toggle-icon">🌞</span>
+                    <span class="theme-toggle-label">Light Mode</span>
+                </button>
+            </div>
+
+            <div class="panel rounded-3xl p-8 lg:p-10 mb-8">
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">KiMA Tools</p>
+                <h1 class="hero-heading brand-gradient mt-3">Choose an analysis module</h1>
+                <p class="hero-subtitle mt-4">Open the tool that matches your experiment design. KiMA keeps the modules separate so the analysis stays clean for each data type.</p>
+            </div>
+
+            <div class="panel rounded-2xl p-6 mb-8">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Suite</p>
+                        <h2 class="text-2xl font-semibold mt-1">All KiMA Modules</h2>
+                    </div>
+                </div>
+                <div class="landing-grid-three">
+                    <div class="landing-card" data-section-target="singleSampleSection">
+                        <img class="landing-media" src="images/ladder.png" alt="Ladder and rung experiment">
+                        <h3>Ladder &amp; Rung Experiment</h3>
+                        <p>Analyze hindlimb gait from ladder and rung walking experiments with kinematics, parameters, and sequence views.</p>
+                    </div>
+                    <div class="landing-card" data-section-target="footFallSection">
+                        <img class="landing-media" src="images/FootFall.png" alt="Foot Fall analysis">
+                        <h3>Foot Fall Analysis</h3>
+                        <p>Detect paw contacts and show simple paw-specific signals, plots, and videos for RF, LF, RH, and LH.</p>
+                    </div>
+                    <div class="landing-card" data-section-target="catWalkSection">
+                        <img class="landing-media" src="images/catwalk.png" alt="Cat Walk analysis">
+                        <h3>Cat Walk Analysis</h3>
+                        <p>Measure projected stride length and stride width from paw-placement data collected on the runway.</p>
+                    </div>
+                    <div class="landing-card" data-section-target="treadmillSection">
+                        <img class="landing-media" src="images/kinematics.png" alt="Treadmill analysis">
+                        <h3>Treadmill Analysis</h3>
+                        <p>Track continuous hindlimb movement, cycle trends, angle distributions, and treadmill playback.</p>
+                    </div>
+                    <div class="landing-card" data-section-target="multiSampleSection">
+                        <img class="landing-media" src="images/M_L.png" alt="Batch and PCA workflow">
+                        <h3>Batch &amp; PCA Workflow</h3>
+                        <p>Process multiple animals, assign treatment groups, export the full metrics table, and continue to PCA from inside the same workflow.</p>
+                        <p class="card-footer">Main route for cohort comparison and PCA.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -886,6 +1008,12 @@
                         <p class="mt-2 text-sm text-gray-600">Click to upload or drag & drop</p>
                         <p class="text-xs text-gray-500">CSV files only</p>
                         <input type="file" id="csvFile" accept=".csv" class="hidden">
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <button class="btn text-xs py-2 px-3" type="button" data-example-load="single_ladder_1">Load Example 1</button>
+                        <button class="btn text-xs py-2 px-3" type="button" data-example-load="single_ladder_2">Load Example 2</button>
+                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung.csv" download>Download Example 1</a>
+                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung_2.csv" download>Download Example 2</a>
                     </div>
                     <div id="fileStatus" class="mt-4"></div>
                 </div>
@@ -1127,6 +1255,11 @@
                     <label class="text-sm font-semibold text-slate-700">Upload CSV files (multiple allowed)</label>
                     <input type="file" id="multiCsvInput" accept=".csv" multiple class="mt-2 w-full border border-gray-300 rounded-lg p-3">
                     <p class="text-xs text-slate-500 mt-2">Each file should follow the DeepLabCut CSV format (frame rows after two header lines).</p>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <button class="btn text-xs py-2 px-3" type="button" data-example-load="batch">Load Example Batch</button>
+                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung.csv" download>Download Example 1</a>
+                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung_2.csv" download>Download Example 2</a>
+                    </div>
                     <div id="multiSamplesStatus" class="mt-3 text-sm text-slate-600"></div>
                 </div>
                 <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 text-sm text-slate-600">
@@ -1158,7 +1291,7 @@
             </div>
             <div class="flex flex-wrap gap-4">
                 <button class="btn btn-success px-4 py-2 text-sm" id="multiExportBtn" disabled>Export Combined CSV</button>
-                <button class="btn bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700" id="multiSendToPcaBtn" disabled>Send to PCA Tool</button>
+                <button class="btn bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700" id="multiSendToPcaBtn" disabled>Continue to PCA</button>
             </div>
         </div>
     </div>
@@ -1185,7 +1318,10 @@
                 <div>
                     <label class="text-sm font-semibold text-slate-700">Upload aggregated metrics CSV</label>
                     <input type="file" id="pcaFileInput" accept=".csv" class="mt-2 w-full border border-gray-300 rounded-lg p-3">
-                    <p class="text-xs text-slate-500 mt-2">Files exported from the multi-sample tool already include all 46 metrics per row.</p>
+                    <p class="text-xs text-slate-500 mt-2">Recommended flow: run Multiple Sample Analysis first and continue to PCA from there. Direct upload is for manual use.</p>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <button class="btn text-xs py-2 px-3" type="button" data-example-load="pca">Load Example PCA</button>
+                    </div>
                     <div id="pcaDataStatus" class="mt-3 text-sm text-slate-600"></div>
                 </div>
                 <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 text-sm text-slate-600">
@@ -1249,6 +1385,10 @@
                             <p class="mt-2 text-sm text-gray-600">Click to upload Foot Fall CSV</p>
                             <p class="text-xs text-gray-500">DLC CSV with RF, LF, RH, LH body parts</p>
                             <input type="file" id="footFallFile" accept=".csv" class="hidden">
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="foot_fall">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Foot_fall.csv" download>Download Example CSV</a>
                         </div>
                         <div id="footFallStatus" class="mt-4"></div>
                     </div>
@@ -1476,6 +1616,10 @@
                             <p class="text-xs text-gray-500">DLC CSV with toe, mtp, ankle, knee, hip, iliac crest</p>
                             <input type="file" id="treadmillFile" accept=".csv" class="hidden">
                         </div>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="treadmill">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Treadmill.csv" download>Download Example CSV</a>
+                        </div>
                         <div id="treadmillStatus" class="mt-4"></div>
                     </div>
 
@@ -1629,6 +1773,10 @@
                             <p class="text-xs text-gray-500">DLC CSV with rf, lf, rh, lh paw tracks</p>
                             <input type="file" id="catWalkFile" accept=".csv" class="hidden">
                         </div>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <button class="btn text-xs py-2 px-3" type="button" data-example-load="cat_walk">Load Example</button>
+                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Cat_Walk.csv" download>Download Example CSV</a>
+                        </div>
                         <div id="catWalkStatus" class="mt-4"></div>
                     </div>
 
@@ -1762,6 +1910,7 @@
         const sequenceStaticCanvas = document.getElementById('sequenceStaticCanvas');
         const sequenceStaticDownloadBtn = document.getElementById('sequenceStaticDownloadBtn');
         const homeSectionEl = document.getElementById('homeSection');
+        const toolsHubSectionEl = document.getElementById('toolsHubSection');
         const singleSampleSectionEl = document.getElementById('singleSampleSection');
         const multiSampleSectionEl = document.getElementById('multiSampleSection');
         const pcaSectionEl = document.getElementById('pcaSection');
@@ -1838,6 +1987,7 @@
         const themeToggleLabel = document.getElementById('themeToggleLabel');
         const sectionsMap = {
             homeSection: homeSectionEl,
+            toolsHubSection: toolsHubSectionEl,
             singleSampleSection: singleSampleSectionEl,
             multiSampleSection: multiSampleSectionEl,
             pcaSection: pcaSectionEl,
@@ -1846,6 +1996,150 @@
             catWalkSection: catWalkSectionEl
         };
         const THEME_STORAGE_KEY = 'kima-theme';
+        const SAMPLE_DATASETS = {
+            single_ladder_1: { url: 'samples/csv/Ladder_rung.csv', label: 'Ladder_rung.csv' },
+            single_ladder_2: { url: 'samples/csv/Ladder_rung_2.csv', label: 'Ladder_rung_2.csv' },
+            foot_fall: { url: 'samples/csv/Foot_fall.csv', label: 'Foot_fall.csv' },
+            treadmill: { url: 'samples/csv/Treadmill.csv', label: 'Treadmill.csv' },
+            cat_walk: { url: 'samples/csv/Cat_Walk.csv', label: 'Cat_Walk.csv' }
+        };
+
+        function sanitizeFileStem(label = 'dataset') {
+            const stem = String(label || 'dataset')
+                .replace(/\.[^.]+$/, '')
+                .replace(/[^a-z0-9]+/gi, '_')
+                .replace(/^_+|_+$/g, '')
+                .toLowerCase();
+            return stem || 'dataset';
+        }
+
+        function buildExportName(label, suffix, extension) {
+            return `${sanitizeFileStem(label)}_${suffix}.${extension}`;
+        }
+
+        function downloadBlob(blob, filename) {
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 500);
+        }
+
+        function downloadDataUrl(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            link.click();
+        }
+
+        function validateRequiredColumns(resolved, expectedLabelMap) {
+            const missing = Object.entries(expectedLabelMap)
+                .filter(([key]) => !resolved[key]?.x || !resolved[key]?.y || !resolved[key]?.likelihood)
+                .map(([, label]) => label);
+            if (missing.length) {
+                throw new Error(`Missing required body parts: ${missing.join(', ')}.`);
+            }
+        }
+
+        async function fetchSampleCsv(key) {
+            const sample = SAMPLE_DATASETS[key];
+            if (!sample) throw new Error(`Unknown example dataset: ${key}`);
+            const response = await fetch(sample.url);
+            if (!response.ok) throw new Error(`Failed to fetch example file: ${sample.label}`);
+            const text = await response.text();
+            return { ...sample, text };
+        }
+
+        async function loadSingleExample(key) {
+            const sample = await fetchSampleCsv(key);
+            showSection('singleSampleSection');
+            parseCSV(sample.text, sample.label);
+        }
+
+        async function loadFootFallExample() {
+            const sample = await fetchSampleCsv('foot_fall');
+            showSection('footFallSection');
+            analyzeFootFallCsv(sample.text, sample.label);
+        }
+
+        async function loadTreadmillExample() {
+            const sample = await fetchSampleCsv('treadmill');
+            showSection('treadmillSection');
+            analyzeTreadmillCsv(sample.text, sample.label);
+        }
+
+        async function loadCatWalkExample() {
+            const sample = await fetchSampleCsv('cat_walk');
+            showSection('catWalkSection');
+            analyzeCatWalkCsv(sample.text, sample.label);
+        }
+
+        async function loadExampleBatchSamples() {
+            showSection('multiSampleSection');
+            if (multiSamplesStatus) multiSamplesStatus.textContent = 'Loading example batch...';
+            const [sampleA, sampleB] = await Promise.all([
+                fetchSampleCsv('single_ladder_1'),
+                fetchSampleCsv('single_ladder_2')
+            ]);
+            const batchSamples = [
+                computeSampleMetricsFromText(sampleA.label, sampleA.text),
+                computeSampleMetricsFromText(sampleB.label, sampleB.text)
+            ];
+            batchSamples[0].group = 'Control';
+            batchSamples[1].group = 'Treated';
+            multiSamples = batchSamples;
+            addSampleToStickLibrary(sampleA.label, sampleA.text);
+            addSampleToStickLibrary(sampleB.label, sampleB.text);
+            renderMultiSamplesTable();
+            if (multiSamplesStatus) multiSamplesStatus.textContent = `Loaded example batch with ${batchSamples.length} samples.`;
+            return batchSamples;
+        }
+
+        async function loadExamplePca() {
+            const batchSamples = await loadExampleBatchSamples();
+            setPcaDatasetFromSamples(batchSamples);
+            showSection('pcaSection');
+            if (pcaDataStatus) pcaDataStatus.textContent = `Loaded ${batchSamples.length} example sample(s) from the KiMA batch workflow.`;
+        }
+
+        async function handleExampleLoad(key) {
+            try {
+                if (key === 'single_ladder_1' || key === 'single_ladder_2') {
+                    await loadSingleExample(key);
+                    return;
+                }
+                if (key === 'foot_fall') {
+                    await loadFootFallExample();
+                    return;
+                }
+                if (key === 'treadmill') {
+                    await loadTreadmillExample();
+                    return;
+                }
+                if (key === 'cat_walk') {
+                    await loadCatWalkExample();
+                    return;
+                }
+                if (key === 'batch') {
+                    await loadExampleBatchSamples();
+                    return;
+                }
+                if (key === 'pca') {
+                    await loadExamplePca();
+                }
+            } catch (error) {
+                console.error(error);
+                showStatus('error', `Example load failed: ${error.message}`);
+                showFootFallStatus('error', `Example load failed: ${error.message}`);
+                showTreadmillStatus('error', `Example load failed: ${error.message}`);
+                showCatWalkStatus('error', `Example load failed: ${error.message}`);
+                if (multiSamplesStatus) multiSamplesStatus.textContent = `Example load failed: ${error.message}`;
+                if (pcaDataStatus) pcaDataStatus.textContent = `Example load failed: ${error.message}`;
+            }
+        }
         
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', function() {
@@ -1869,6 +2163,9 @@
             });
             document.querySelectorAll('[data-back-home]').forEach(btn => {
                 btn.addEventListener('click', () => showSection('homeSection'));
+            });
+            document.querySelectorAll('[data-example-load]').forEach(btn => {
+                btn.addEventListener('click', () => handleExampleLoad(btn.dataset.exampleLoad));
             });
             showSection('homeSection');
             initTheme();
@@ -2064,7 +2361,7 @@
                         height: heightIn * dpi,
                     }).then(function(dataUrl) {
                         const link = document.createElement('a');
-                        link.download = 'angle_analysis_plot.png';
+                        link.download = buildExportName(currentDatasetLabel || 'single_sample', 'angle_analysis_plot', 'png');
                         link.href = dataUrl;
                         link.click();
                         document.body.removeChild(tempDiv);
@@ -2293,6 +2590,10 @@
             const scorerRow = lines[0].split(',');
             const bodypartsRow = lines[1].split(',');
             const coordsRow = lines[2].split(',');
+            const coordinateLabels = new Set(coordsRow.slice(1).map(value => (value || '').trim().toLowerCase()));
+            if (!coordinateLabels.has('x') || !coordinateLabels.has('y') || !coordinateLabels.has('likelihood')) {
+                throw new Error('CSV does not look like a standard DLC export with x, y, and likelihood columns.');
+            }
             const rows = lines.slice(3).map(line => line.split(','));
             const columns = [];
             for (let i = 1; i < Math.min(bodypartsRow.length, coordsRow.length); i++) {
@@ -2319,10 +2620,11 @@
                     columnMap[part][col.coord] = col.index;
                 }
             });
-            pawNames.forEach(paw => {
-                if (!columnMap[paw].x || !columnMap[paw].y || !columnMap[paw].likelihood) {
-                    throw new Error(`Missing x/y/likelihood columns for ${paw}.`);
-                }
+            validateRequiredColumns(columnMap, {
+                RF: 'RF',
+                LF: 'LF',
+                RH: 'RH',
+                LH: 'LH'
             });
 
             const frames = parsed.rows.map((row, frameIndex) => {
@@ -2689,14 +2991,7 @@
                 });
             });
             const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'foot_fall_contacts.csv');
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            downloadBlob(blob, buildExportName(footFallState?.label || 'foot_fall', 'foot_fall_contacts', 'csv'));
         }
 
         function renderFootFallPawCanvases() {
@@ -2914,7 +3209,7 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `foot_fall_${paw}.${isMp4 ? 'mp4' : 'webm'}`;
+                link.download = buildExportName(footFallState?.label || 'foot_fall', `foot_fall_${paw.toLowerCase()}`, isMp4 ? 'mp4' : 'webm');
                 link.click();
                 setTimeout(() => URL.revokeObjectURL(url), 500);
                 drawFootFallPawFrame(paw, 0);
@@ -2976,10 +3271,7 @@
                         width: 8 * dpi,
                         height: 5 * dpi
                     });
-                    const link = document.createElement('a');
-                    link.download = `${target.name}_${dpi}dpi.png`;
-                    link.href = dataUrl;
-                    link.click();
+                    downloadDataUrl(dataUrl, buildExportName(footFallState?.label || 'foot_fall', `${target.name}_${dpi}dpi`, 'png'));
                 } catch (error) {
                     console.error(`Failed to export ${target.name}`, error);
                 }
@@ -3061,13 +3353,7 @@
                 ].join(','));
             });
             const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'foot_fall_multi_samples.csv');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            downloadBlob(blob, buildExportName('kima', 'foot_fall_multi_samples', 'csv'));
         }
 
         function getTreadmillSettings() {
@@ -3154,10 +3440,13 @@
                 });
                 resolved[key] = cols;
             });
-            Object.entries(resolved).forEach(([key, cols]) => {
-                if (!cols.x || !cols.y || !cols.likelihood) {
-                    throw new Error(`Missing treadmill columns for ${key}.`);
-                }
+            validateRequiredColumns(resolved, {
+                toe: 'toe',
+                mtp: 'mtp',
+                ankle: 'ankle',
+                knee: 'knee',
+                hip: 'hip',
+                iliac: 'iliac crest'
             });
 
             const absoluteFrames = parsed.rows.map((row, frameIndex) => {
@@ -3586,7 +3875,7 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `treadmill_sequence.${supportedMime.includes('mp4') ? 'mp4' : 'webm'}`;
+                link.download = buildExportName(treadmillState?.label || 'treadmill', 'treadmill_sequence', supportedMime.includes('mp4') ? 'mp4' : 'webm');
                 link.click();
                 setTimeout(() => URL.revokeObjectURL(url), 500);
                 updateTreadmillFramePreview(0);
@@ -3615,13 +3904,7 @@
                 lines.push([cycle.index, cycle.startFrame, cycle.endFrame, cycle.stepTime, cycle.cadence, cycle.stride, cycle.toeClearance].join(','));
             });
             const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = 'treadmill_cycles.csv';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            downloadBlob(blob, buildExportName(treadmillState?.label || 'treadmill', 'treadmill_cycles', 'csv'));
         }
 
         async function exportTreadmillImages() {
@@ -3635,10 +3918,7 @@
             for (const target of targets) {
                 try {
                     const dataUrl = await Plotly.toImage(target.div, { format: 'png', width: 8 * dpi, height: 5 * dpi });
-                    const link = document.createElement('a');
-                    link.href = dataUrl;
-                    link.download = `${target.name}_${dpi}dpi.png`;
-                    link.click();
+                    downloadDataUrl(dataUrl, buildExportName(treadmillState?.label || 'treadmill', `${target.name}_${dpi}dpi`, 'png'));
                 } catch (error) {
                     console.error(error);
                 }
@@ -3718,10 +3998,11 @@
                     columns[name][col.coord] = col.index;
                 }
             });
-            paws.forEach(paw => {
-                if (!columns[paw].x || !columns[paw].y || !columns[paw].likelihood) {
-                    throw new Error(`Missing Cat Walk columns for ${paw}.`);
-                }
+            validateRequiredColumns(columns, {
+                rf: 'RF',
+                lf: 'LF',
+                rh: 'RH',
+                lh: 'LH'
             });
             const frames = parsed.rows.map((row, frameIndex) => {
                 const points = {};
@@ -4003,13 +4284,7 @@
                 lines.push([`"${row.metric}"`, `"${row.group}"`, row.index, row.value].join(','));
             });
             const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = 'cat_walk_metrics.csv';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            downloadBlob(blob, buildExportName(catWalkState?.label || 'cat_walk', 'cat_walk_metrics', 'csv'));
         }
 
         function showCatWalkStatus(type, message) {
@@ -4058,10 +4333,10 @@
         }
 
         // --- All other functions (unchanged) ---
-        function parseCSV(csvText, label = '') { try { setProcessing(true, 'Processing CSV file...'); currentDatasetLabel = label || 'current'; selectedFrames = []; angleDistributions = {}; sequenceFrames = []; sequenceCurrentIndex = 0; userModifiedSelection = false; stopSequencePlayback(); if (sequencePanel) sequencePanel.classList.add('hidden'); const lines = csvText.split('\n').filter(line => line.trim()); if (lines.length < 3) throw new Error("CSV must have at least 3 rows."); const dataLines = lines.slice(2); csvData = dataLines.map(line => line.split(',')); __gaitCache = null; __gaitComputedFor = null; processData(); calculateAllAngles(); showStatus('success', `File loaded! ${csvData.length} frames detected.`); downloadBtn.disabled = false; generateInteractivePlot(); } catch (error) { showStatus('error', 'Error parsing CSV: ' + error.message); csvData = null; currentDatasetLabel = 'current'; downloadBtn.disabled = true; } finally { setProcessing(false); } }
+        function parseCSV(csvText, label = '') { try { setProcessing(true, 'Processing CSV file...'); currentDatasetLabel = label || 'current'; selectedFrames = []; angleDistributions = {}; sequenceFrames = []; sequenceCurrentIndex = 0; userModifiedSelection = false; stopSequencePlayback(); if (sequencePanel) sequencePanel.classList.add('hidden'); const lines = csvText.split('\n').filter(line => line.trim()); if (lines.length < 3) throw new Error("CSV must have at least 3 rows."); const dataLines = lines.slice(2); csvData = dataLines.map(line => line.split(',')); if (!csvData.length) throw new Error('No frame data found after the header rows.'); __gaitCache = null; __gaitComputedFor = null; processData(); calculateAllAngles(); showStatus('success', `Loaded ${label || 'dataset'} with ${csvData.length} frames.`); downloadBtn.disabled = false; generateInteractivePlot(); } catch (error) { showStatus('error', 'Error parsing CSV: ' + error.message); csvData = null; currentDatasetLabel = 'current'; downloadBtn.disabled = true; } finally { setProcessing(false); } }
         function generateInteractivePlot() { if (!csvData) return; ensureDefaultSelections(sequenceFrames); const { canvas, plotContext } = generatePlotCanvas({ isForDownload: false }); displayResults(canvas, plotContext); updateSequencePlayer({ forceAuto: sequenceFrames.length === 0 }); }
         function displayResults(displayCanvas, plotContext) { results.innerHTML = ''; const plotContainer = document.createElement('div'); plotContainer.id = 'plot-container'; displayCanvas.style.maxWidth = '100%'; displayCanvas.style.height = 'auto'; displayCanvas.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'; displayCanvas.style.borderRadius = '0.5rem'; const hoverCanvas = document.createElement('canvas'); hoverCanvas.id = 'hover-canvas'; hoverCanvas.width = displayCanvas.width; hoverCanvas.height = displayCanvas.height; hoverCanvas.style.maxWidth = '100%'; hoverCanvas.style.height = 'auto'; const tooltip = document.createElement('div'); tooltip.id = 'tooltip'; plotContainer.append(displayCanvas, hoverCanvas, tooltip); results.appendChild(plotContainer); requestAnimationFrame(() => { const rect = displayCanvas.getBoundingClientRect(); hoverCanvas.style.width = `${rect.width}px`; hoverCanvas.style.height = `${rect.height}px`; plotContainer.addEventListener('mousemove', e => handleCanvasHover(e, plotContext)); plotContainer.addEventListener('mouseleave', handleCanvasLeave); plotContainer.addEventListener('click', e => handleCanvasClick(e, plotContext)); }); }
-        function generateDownloadableImage() { setProcessing(true, 'Generating high-resolution image...'); setTimeout(() => { try { const { canvas } = generatePlotCanvas({ isForDownload: true }); const link = document.createElement('a'); link.download = 'gait_analysis_plot.png'; link.href = canvas.toDataURL('image/png'); link.click(); } catch (error) { console.error("Download failed:", error); } finally { setProcessing(false); } }, 100); }
+        function generateDownloadableImage() { setProcessing(true, 'Generating high-resolution image...'); setTimeout(() => { try { const { canvas } = generatePlotCanvas({ isForDownload: true }); const filename = buildExportName(currentDatasetLabel || 'single_sample', 'gait_analysis_plot', 'png'); downloadDataUrl(canvas.toDataURL('image/png'), filename); } catch (error) { console.error("Download failed:", error); } finally { setProcessing(false); } }, 100); }
         function generatePlotCanvas(options) { const { isForDownload } = options; const displayWidth = 800; const displayHeight = 700; const dpi = parseInt(document.getElementById('dpiSlider').value); const canvas = document.createElement('canvas'); canvas.width = isForDownload ? dpi * 8 : displayWidth; canvas.height = isForDownload ? dpi * 7 : displayHeight; const scaleFactor = canvas.width / displayWidth; const ctx = canvas.getContext('2d'); const downloadBackgroundType = document.getElementById('backgroundType').value; const interactiveBackgroundColor = document.getElementById('plotBackgroundColor').value; const textColor = document.getElementById('textColor').value; const plotTitle = document.getElementById('plotTitle').value; const xAxisLabel = document.getElementById('xAxisLabel').value; const yAxisLabel = document.getElementById('yAxisLabel').value; const frameStep = parseInt(document.getElementById('frameStep').value) || 1; if (isForDownload) { if (downloadBackgroundType === 'white') { ctx.fillStyle = 'white'; ctx.fillRect(0, 0, canvas.width, canvas.height); } else if (downloadBackgroundType === 'black') { ctx.fillStyle = 'black'; ctx.fillRect(0, 0, canvas.width, canvas.height); } } else { ctx.fillStyle = interactiveBackgroundColor; ctx.fillRect(0, 0, canvas.width, canvas.height); } const allPointsForBounds = allNormalizedPoints.filter(p => p).flat().flatMap(p => Object.values(p)); if (allPointsForBounds.length === 0) throw new Error('No valid points found to plot.'); const minX = Math.min(...allPointsForBounds.map(p => p.x)); const maxX = Math.max(...allPointsForBounds.map(p => p.x)); const minY = Math.min(...allPointsForBounds.map(p => p.y)); const maxY = Math.max(...allPointsForBounds.map(p => p.y)); const padding = 100 * scaleFactor; const scale = Math.min((canvas.width - 2 * padding) / (maxX - minX || 1), (canvas.height - 2 * padding) / (maxY - minY || 1)) * 0.9; const offsetX = canvas.width / 2 - ((maxX + minX) / 2) * scale; const offsetY = (canvas.height - (120 * scaleFactor)) / 2 - ((maxY + minY) / 2) * scale; const backgroundFrameColor = document.getElementById('backgroundFrameColor').value; const backgroundOpacity = parseInt(document.getElementById('backgroundOpacity').value) / 100; const colors = { toe: document.getElementById('colorToe').value, mtp: document.getElementById('colorMtp').value, ankle: document.getElementById('colorAnkle').value, knee: document.getElementById('colorKnee').value, hip: document.getElementById('colorHip').value, iliac: document.getElementById('colorIliac').value }; const highlightedLineWidth = parseInt(document.getElementById('lineWidth').value) * scaleFactor; const highlightedPointSize = parseInt(document.getElementById('pointSize').value) * scaleFactor; ctx.globalAlpha = backgroundOpacity; for (let i = 0; i < allNormalizedPoints.length; i += frameStep) { const points = allNormalizedPoints[i]; if (points && !selectedFrames.includes(i)) { drawStickFigure(ctx, points, scale, offsetX, offsetY, backgroundFrameColor, 1.5 * scaleFactor, null, 0); } } ctx.globalAlpha = 1.0; selectedFrames.forEach(frameIndex => { const points = allNormalizedPoints[frameIndex]; if (points) { drawStickFigure(ctx, points, scale, offsetX, offsetY, null, highlightedLineWidth, colors, highlightedPointSize); } }); ctx.globalAlpha = 1.0; ctx.fillStyle = textColor; const baseTextSize = parseInt(document.getElementById('textSize').value); ctx.font = `bold ${(baseTextSize + 6) * scaleFactor}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.fillText(plotTitle, canvas.width / 2, 50 * scaleFactor); ctx.font = `${baseTextSize * scaleFactor}px Inter, sans-serif`; ctx.fillText(xAxisLabel, canvas.width / 2, canvas.height - (40 * scaleFactor)); ctx.save(); ctx.translate(50 * scaleFactor, canvas.height / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillText(yAxisLabel, 0, 0); ctx.restore(); drawLegend(ctx, colors, canvas.width, canvas.height, highlightedPointSize, textColor, scaleFactor); const plotContext = isForDownload ? null : { scale: scale / scaleFactor, offsetX: offsetX / scaleFactor, offsetY: offsetY / scaleFactor }; return { canvas, plotContext }; }
         function calculateAngle(p1, p2, p3) { if (!p1 || !p2 || !p3) return null; const angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x); const angle2 = Math.atan2(p3.y - p2.y, p3.x - p2.x); let angle = (angle2 - angle1) * 180 / Math.PI; if (angle < 0) angle += 360; return angle > 180 ? 360 - angle : angle; }
         function calculateHorizontalAngle(p1, p2) { if (!p1 || !p2) return null; return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI; }
@@ -4643,7 +4918,7 @@
                 const url = URL.createObjectURL(blob);
                 const downloadLink = document.createElement('a');
                 downloadLink.href = url;
-                downloadLink.download = `kima_sequence.${isMp4 ? 'mp4' : 'webm'}`;
+                downloadLink.download = buildExportName(currentDatasetLabel || 'single_sample', 'sequence', isMp4 ? 'mp4' : 'webm');
                 downloadLink.click();
                 setTimeout(() => URL.revokeObjectURL(url), 500);
                 if (sequenceStatus) {
@@ -4704,10 +4979,7 @@
                 if (sequenceStatus) sequenceStatus.textContent = 'Unable to render strip for download.';
                 return;
             }
-            const link = document.createElement('a');
-            link.href = tempCanvas.toDataURL('image/png');
-            link.download = 'kima_sequence_strip.png';
-            link.click();
+            downloadDataUrl(tempCanvas.toDataURL('image/png'), buildExportName(currentDatasetLabel || 'single_sample', 'sequence_strip_300dpi', 'png'));
             if (sequenceStatus) sequenceStatus.textContent = 'Strip PNG downloaded at 300 DPI.';
         }
 
@@ -4858,11 +5130,7 @@
                 lines.push(row.join(','));
             });
             const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'kima_multi_samples.csv';
-            link.click();
-            setTimeout(() => URL.revokeObjectURL(link.href), 500);
+            downloadBlob(blob, buildExportName('kima', 'multi_samples', 'csv'));
         }
 
         function setPcaDatasetFromSamples(samples) {
@@ -5115,7 +5383,7 @@
         }
         function setProcessing(processing, message = '') { if (processing) { processingStatus.innerHTML = `<div class="status info p-4 rounded-md flex items-center"><div class="spinner mr-3"></div>${message}</div>`; } else { processingStatus.innerHTML = ''; } }
         function showStatus(type, message) { fileStatus.innerHTML = `<div class="status ${type} p-4 rounded-md">${message}</div>`; }
-        function processFile(file) { if (!file || !file.name.toLowerCase().endsWith('.csv')) { showStatus('error', 'Please select a CSV file'); return; } const reader = new FileReader(); reader.onload = (e) => parseCSV(e.target.result, file.name || 'uploaded'); reader.readAsText(file); }
+        function processFile(file) { if (!file || !file.name.toLowerCase().endsWith('.csv')) { showStatus('error', 'Please select a valid CSV file.'); return; } const reader = new FileReader(); reader.onload = (e) => parseCSV(e.target.result, file.name || 'uploaded'); reader.readAsText(file); }
         function processData() { const threshold = parseFloat(document.getElementById('threshold').value); allNormalizedPoints = computeNormalizedPointsFromRows(csvData, threshold); }
     
 // === Gait metrics (non-intrusive) ===
@@ -5269,14 +5537,7 @@ function exportParametersCSV() {
     });
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'gait_parameters.csv');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadBlob(blob, buildExportName(currentDatasetLabel || 'single_sample', 'gait_parameters', 'csv'));
 }
 
 // Hook into existing UI without changing it
@@ -5310,10 +5571,10 @@ setInterval(()=>{
 </script>
 <footer class="site-footer">
     <div class="site-footer-inner">
-        <p>Developed by Manoj Kumar · <a href="https://github.com/mano2991" target="_blank" rel="noopener noreferrer">github.com/mano2991</a></p>
+        <p>Developed by manoj · <a href="https://github.com/mano2991" target="_blank" rel="noopener noreferrer">github.com/mano2991</a></p>
         <div class="site-footer-meta">
-            <span>&copy; 2026 Manoj Kumar</span>
-            <span>KiMA</span>
+            <span>&copy; 2026 manoj</span>
+            <span>KiMA Suite v1.0</span>
             <span>Licensed under the MIT License</span>
         </div>
     </div>
