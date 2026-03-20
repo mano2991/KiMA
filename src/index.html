@@ -186,6 +186,10 @@
             border-color: var(--primary);
         }
 
+        .theme-toggle * {
+            pointer-events: none;
+        }
+
         .color-picker input[type="color"] {
             -webkit-appearance: none;
             width: 40px;
@@ -269,34 +273,52 @@
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 6px;
-            border-radius: 4px;
-            background: linear-gradient(to right, #e5e7eb 0%, var(--primary) 0%);
+            height: 4px;
+            border-radius: 999px;
+            background: #dbe4f0;
             outline: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: none;
         }
 
         .dpi-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 22px;
-            height: 22px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: var(--primary);
+            background: #ffffff;
             cursor: pointer;
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            border: 2px solid var(--primary);
+            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
             transition: all 0.2s ease;
         }
 
         .dpi-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            transform: scale(1.08);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.22);
+        }
+
+        .dpi-slider::-moz-range-track {
+            height: 4px;
+            border-radius: 999px;
+            background: #dbe4f0;
+        }
+
+        .dpi-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
         }
 
         .slider-container {
             position: relative;
             margin: 0.75rem 0;
+            max-width: 180px;
+            width: 100%;
         }
 
         .slider-labels {
@@ -517,6 +539,43 @@
             margin: 1.25rem auto 0;
             font-weight: 400;
             line-height: 1.7;
+        }
+
+        .site-footer {
+            margin-top: 3rem;
+            padding: 1.5rem 1rem 2.25rem;
+            border-top: 1px solid var(--panel-border);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(15, 23, 42, 0.03));
+            color: var(--muted);
+        }
+
+        body.theme-dark .site-footer {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0), rgba(255, 255, 255, 0.04));
+        }
+
+        .site-footer a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .site-footer a:hover {
+            color: var(--primary-dark);
+        }
+
+        .site-footer-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem 1.5rem;
+        }
+
+        .site-footer-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
         }
 
         /* Breadcrumb Styles */
@@ -774,26 +833,23 @@
             </div>
         </div>
         <div class="landing-grid-three mt-6">
-            <div class="landing-card wip-card">
+            <div class="landing-card" data-section-target="footFallSection">
                 <img class="landing-media" src="images/FootFall.png" alt="FootFall Heatmap">
-                <span class="work-badge">Work in progress</span>
                 <h3>Foot Fall Analysis</h3>
-                <p>Automated detection of paw placements with spatial density plots and outlier mapping.</p>
-                <p class="card-footer">Coming soon for detailed stance diagnostics.</p>
+                <p>Analyze RF, LF, RH, and LH paw contacts from DLC output with contact maps, timelines, and summary metrics.</p>
+                <p class="card-footer">Dedicated workflow for paw placement and stance diagnostics.</p>
             </div>
-            <div class="landing-card wip-card">
+            <div class="landing-card" data-section-target="catWalkSection">
                 <img class="landing-media" src="images/catwalk.png" alt="Cat Walk Visualization">
-                <span class="work-badge">Work in progress</span>
                 <h3>Cat Walk</h3>
-                <p>High-speed runway analytics with paw timing, symmetry radar plots, and exportable overlays.</p>
-                <p class="card-footer">Optimized for standard CatWalk™ datasets.</p>
+                <p>Runway paw-placement analysis with stride length, stride width, and projected contact maps.</p>
+                <p class="card-footer">Optimized for standard CatWalk-style DLC paw datasets.</p>
             </div>
-            <div class="landing-card wip-card">
+            <div class="landing-card" data-section-target="treadmillSection">
                 <img class="landing-media" src="images/kinematics.png" alt="Treadmill Analysis">
-                <span class="work-badge">Work in progress</span>
                 <h3>Treadmill Analysis</h3>
-                <p>Synchronize treadmill speed logs with stick plots to profile fatigue and adaptive gait changes.</p>
-                <p class="card-footer">Expected release after Foot Fall module.</p>
+                <p>Track hindlimb kinematics across a treadmill run with time-series plots, cycle trends, and fatigue-style comparisons.</p>
+                <p class="card-footer">Dedicated workflow for continuous treadmill gait analysis.</p>
             </div>
         </div>
     </div>
@@ -1162,6 +1218,501 @@
         </div>
     </div>
 
+    <div id="footFallSection" class="hidden">
+        <div class="breadcrumb-container">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item" data-back-home style="cursor: pointer;">Home</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">Foot Fall Analysis</span>
+                    </div>
+                    <button id="themeToggleFootFall" class="theme-toggle" type="button">
+                        <span class="theme-toggle-icon">🌞</span>
+                        <span class="theme-toggle-label">Light Mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+            <div class="header p-8 text-center">
+                <h1 class="text-4xl font-bold tracking-tight">KiMA - Foot Fall Analysis</h1>
+                <p class="text-lg text-slate-300 mt-2">Dedicated paw-contact analysis for RF, LF, RH, and LH DeepLabCut outputs</p>
+            </div>
+
+            <div class="content flex flex-col lg:flex-row gap-8 p-8">
+                <div class="controls-panel lg:w-1/3 space-y-6">
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                        <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="footFallUploadArea">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            <p class="mt-2 text-sm text-gray-600">Click to upload Foot Fall CSV</p>
+                            <p class="text-xs text-gray-500">DLC CSV with RF, LF, RH, LH body parts</p>
+                            <input type="file" id="footFallFile" accept=".csv" class="hidden">
+                        </div>
+                        <div id="footFallStatus" class="mt-4"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Detection Settings</h2>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Likelihood Threshold</label>
+                            <input type="number" id="footFallLikelihood" value="0.5" min="0" max="1" step="0.05" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Movement Threshold (px/frame)</label>
+                            <input type="number" id="footFallSpeedThreshold" value="8" min="0.1" step="0.5" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Minimum Contact Frames</label>
+                            <input type="number" id="footFallMinFrames" value="3" min="1" step="1" class="w-full mt-1">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-sm font-medium">Frames Per Second</label>
+                            <input type="number" id="footFallFps" value="30" min="1" step="1" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mt-4 border-t pt-4">
+                            <label class="text-sm font-bold block mb-2">Paws To Plot</label>
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+                                <label class="flex items-center gap-2"><input type="checkbox" id="footFallShowRF" checked> RF</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" id="footFallShowLF" checked> LF</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" id="footFallShowRH" checked> RH</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" id="footFallShowLH" checked> LH</label>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4 border-t pt-4">
+                            <label class="text-sm font-bold block mb-2">Colors</label>
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+                                <div class="color-picker text-sm flex items-center"><span>RF</span><input type="color" id="footFallColorRF" value="#ef4444" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>LF</span><input type="color" id="footFallColorLF" value="#3b82f6" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>RH</span><input type="color" id="footFallColorRH" value="#10b981" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>LH</span><input type="color" id="footFallColorLH" value="#f59e0b" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center col-span-2"><span>Background</span><input type="color" id="footFallBackgroundColor" value="#ffffff" class="ml-auto"></div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4 border-t pt-4">
+                            <label class="text-sm font-bold block mb-2">Image Export</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">DPI</label>
+                                    <select id="footFallDpi" class="w-full mt-1">
+                                        <option value="100">100 DPI</option>
+                                        <option value="200">200 DPI</option>
+                                        <option value="300" selected>300 DPI</option>
+                                        <option value="600">600 DPI</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">Export</label>
+                                    <button class="btn btn-success w-full text-sm py-2 mt-1" id="footFallExportImagesBtn" disabled>Download Images</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
+                        <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
+                        <button class="btn w-full text-base py-3 btn-success" id="footFallExportBtn" disabled>Download Foot Fall Contacts CSV</button>
+                        <p class="text-xs text-green-700 mt-2">Exports detected stance/contact windows for all paws</p>
+                    </div>
+                </div>
+
+                <div class="results-panel lg:w-2/3 flex flex-col gap-6">
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">🧾 Summary</h2>
+                        <p class="text-sm text-slate-500 mb-4">Simple counts and averages so users can quickly understand the result.</p>
+                        <div id="footFallSummary"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📊 Total Foot Fall Count</h2>
+                        <p class="text-sm text-slate-500 mb-4">One bar per paw showing how many foot falls were detected.</p>
+                        <div id="footFallCountPlot" class="w-full h-[320px] lg:h-[360px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📍 2D Paw-Only Plot</h2>
+                        <p class="text-sm text-slate-500 mb-4">Only the paw traces and detected foot falls are shown, using the full run length as the axis range.</p>
+                        <div id="footFallPlot" class="w-full h-[420px] lg:h-[520px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📉 Paw Line Plot With Contact Peaks</h2>
+                        <p class="text-sm text-slate-500 mb-4">Each line shows paw position across frames, with contact markers placed where foot fall is detected.</p>
+                        <div id="footFallSignalPlot" class="w-full h-[360px] lg:h-[420px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">🎥 Separate Paw Videos</h2>
+                        <p class="text-sm text-slate-500 mb-4">Each paw is shown alone on the same axis range to make the foot fall pattern easier to read.</p>
+                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                            <button class="btn text-xs py-2 px-3" id="footFallPlayBtn">Play</button>
+                            <button class="btn text-xs py-2 px-3 bg-slate-600 hover:bg-slate-700 text-white" id="footFallPauseBtn">Pause</button>
+                            <label class="flex items-center gap-2 text-sm">Frame
+                                <input type="range" id="footFallFrameSlider" min="0" max="0" value="0" class="w-56">
+                            </label>
+                            <span id="footFallFrameLabel" class="text-sm text-slate-500">Frame 0</span>
+                        </div>
+                        <div class="grid lg:grid-cols-2 gap-6">
+                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                                <div class="flex items-center justify-between gap-3 mb-3">
+                                    <h3 class="text-base font-semibold" style="color:#ef4444">RF Paw</h3>
+                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="RF">Download RF Video</button>
+                                </div>
+                                <canvas id="footFallCanvasRF" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
+                            </div>
+                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                                <div class="flex items-center justify-between gap-3 mb-3">
+                                    <h3 class="text-base font-semibold" style="color:#3b82f6">LF Paw</h3>
+                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="LF">Download LF Video</button>
+                                </div>
+                                <canvas id="footFallCanvasLF" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
+                            </div>
+                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                                <div class="flex items-center justify-between gap-3 mb-3">
+                                    <h3 class="text-base font-semibold" style="color:#10b981">RH Paw</h3>
+                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="RH">Download RH Video</button>
+                                </div>
+                                <canvas id="footFallCanvasRH" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
+                            </div>
+                            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                                <div class="flex items-center justify-between gap-3 mb-3">
+                                    <h3 class="text-base font-semibold" style="color:#f59e0b">LH Paw</h3>
+                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="LH">Download LH Video</button>
+                                </div>
+                                <canvas id="footFallCanvasLH" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
+                            </div>
+                        </div>
+                        <div id="footFallVideoStatus" class="text-sm text-slate-500 mt-4"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📋 Detected Contacts</h2>
+                        <p class="text-sm text-slate-500 mb-4">Start/end frame, duration, and contact center for every detected stance window.</p>
+                        <div style="max-height:360px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-slate-50 sticky top-0">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left font-semibold">Paw</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Contact #</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Start</th>
+                                        <th class="px-3 py-2 text-right font-semibold">End</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Frames</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Duration (s)</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Center X</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Center Y</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="footFallContactsBody">
+                                    <tr><td colspan="8" class="px-3 py-8 text-center text-gray-400">Upload a Foot Fall CSV to begin</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">🧪 Multiple Sample Foot Fall Analysis</h2>
+                        <p class="text-sm text-slate-500 mb-4">Batch process multiple animals, assign treatment/group labels, and export combined foot-fall summaries.</p>
+                        <div class="border border-dashed border-slate-300 rounded-xl p-4 bg-slate-50">
+                            <label class="text-sm font-semibold text-slate-700">Upload Foot Fall CSV files (multiple allowed)</label>
+                            <input type="file" id="footFallMultiInput" accept=".csv" multiple class="mt-2 w-full border border-gray-300 rounded-lg p-3 bg-white">
+                            <div id="footFallMultiStatus" class="mt-3 text-sm text-slate-600"></div>
+                        </div>
+                        <div class="mt-4 border border-slate-200 rounded-xl overflow-hidden">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left">Sample</th>
+                                        <th class="px-3 py-2 text-left">Group</th>
+                                        <th class="px-3 py-2 text-right">RF</th>
+                                        <th class="px-3 py-2 text-right">LF</th>
+                                        <th class="px-3 py-2 text-right">RH</th>
+                                        <th class="px-3 py-2 text-right">LH</th>
+                                        <th class="px-3 py-2 text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="footFallMultiBody">
+                                    <tr><td colspan="7" class="px-4 py-6 text-center text-slate-400">Upload multiple Foot Fall files to begin</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex flex-wrap gap-4 mt-4">
+                            <button class="btn btn-success px-4 py-2 text-sm" id="footFallMultiExportBtn" disabled>Export Combined Foot Fall CSV</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="treadmillSection" class="hidden">
+        <div class="breadcrumb-container">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item" data-back-home style="cursor: pointer;">Home</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">Treadmill Analysis</span>
+                    </div>
+                    <button id="themeToggleTreadmill" class="theme-toggle" type="button">
+                        <span class="theme-toggle-icon">🌞</span>
+                        <span class="theme-toggle-label">Light Mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+            <div class="header p-8 text-center">
+                <h1 class="text-4xl font-bold tracking-tight">KiMA - Treadmill Analysis</h1>
+                <p class="text-lg text-slate-300 mt-2">Continuous hindlimb tracking for treadmill gait quality, cycle stability, and fatigue-style comparisons</p>
+            </div>
+            <div class="content flex flex-col lg:flex-row gap-8 p-8">
+                <div class="controls-panel lg:w-1/3 space-y-6">
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                        <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="treadmillUploadArea">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            <p class="mt-2 text-sm text-gray-600">Click to upload Treadmill CSV</p>
+                            <p class="text-xs text-gray-500">DLC CSV with toe, mtp, ankle, knee, hip, iliac crest</p>
+                            <input type="file" id="treadmillFile" accept=".csv" class="hidden">
+                        </div>
+                        <div id="treadmillStatus" class="mt-4"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Settings</h2>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Likelihood Threshold</label>
+                            <input type="number" id="treadmillLikelihood" value="0.5" min="0" max="1" step="0.05" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Frames Per Second</label>
+                            <input type="number" id="treadmillFps" value="30" min="1" step="1" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Cycle Block Count</label>
+                            <input type="number" id="treadmillBlockCount" value="3" min="2" max="6" step="1" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4 border-t pt-4">
+                            <label class="text-sm font-bold block mb-2">Colors</label>
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+                                <div class="color-picker text-sm flex items-center"><span>Toe</span><input type="color" id="treadmillColorToe" value="#ef4444" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>Ankle</span><input type="color" id="treadmillColorAnkle" value="#3b82f6" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>Knee</span><input type="color" id="treadmillColorKnee" value="#10b981" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>Hip</span><input type="color" id="treadmillColorHip" value="#f59e0b" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center col-span-2"><span>Background</span><input type="color" id="treadmillBackgroundColor" value="#ffffff" class="ml-auto"></div>
+                            </div>
+                        </div>
+                        <div class="form-group border-t pt-4">
+                            <label class="text-sm font-bold block mb-2">Image Export</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">DPI</label>
+                                    <select id="treadmillDpi" class="w-full mt-1">
+                                        <option value="100">100 DPI</option>
+                                        <option value="200">200 DPI</option>
+                                        <option value="300" selected>300 DPI</option>
+                                        <option value="600">600 DPI</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">Export</label>
+                                    <button class="btn btn-success w-full text-sm py-2 mt-1" id="treadmillExportImagesBtn" disabled>Download Images</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
+                        <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
+                        <button class="btn w-full text-base py-3 btn-success" id="treadmillExportCyclesBtn" disabled>Download Treadmill Cycle CSV</button>
+                        <p class="text-xs text-green-700 mt-2">Exports per-cycle treadmill metrics and joint summaries</p>
+                    </div>
+                </div>
+
+                <div class="results-panel lg:w-2/3 flex flex-col gap-6">
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">🧾 Summary</h2>
+                        <p class="text-sm text-slate-500 mb-4">Continuous treadmill summary with cycle count, cadence, stride proxy, and toe clearance.</p>
+                        <div id="treadmillSummary"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">🎞️ Treadmill Player</h2>
+                        <p class="text-sm text-slate-500 mb-4">Play the tracked hindlimb as a normalized stick figure through the treadmill run.</p>
+                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                            <button class="btn text-xs py-2 px-3" id="treadmillPlayBtn">Play</button>
+                            <button class="btn text-xs py-2 px-3 bg-slate-600 hover:bg-slate-700 text-white" id="treadmillPauseBtn">Pause</button>
+                            <button class="btn btn-success text-xs py-2 px-3" id="treadmillVideoBtn">Download Video</button>
+                            <label class="flex items-center gap-2 text-sm">Frame
+                                <input type="range" id="treadmillFrameSlider" min="0" max="0" value="0" class="w-56">
+                            </label>
+                            <span id="treadmillFrameLabel" class="text-sm text-slate-500">Frame 0</span>
+                        </div>
+                        <canvas id="treadmillCanvas" width="960" height="520" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
+                        <div id="treadmillVideoStatus" class="text-sm text-slate-500 mt-3"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📈 Joint Angles Over Time</h2>
+                        <p class="text-sm text-slate-500 mb-4">Toe, ankle, knee, and hip behavior through the full treadmill session.</p>
+                        <div id="treadmillAnglesPlot" class="w-full h-[360px] lg:h-[420px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">🏃 Cycle Trends</h2>
+                        <p class="text-sm text-slate-500 mb-4">Cycle-by-cycle cadence, stride proxy, and toe clearance to show stability or fatigue over time.</p>
+                        <div id="treadmillCyclesPlot" class="w-full h-[360px] lg:h-[420px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📊 Early / Mid / Late Comparison</h2>
+                        <p class="text-sm text-slate-500 mb-4">Compare treadmill performance blocks across the run.</p>
+                        <div id="treadmillBlocksPlot" class="w-full h-[320px] lg:h-[380px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📋 Per-Cycle Metrics</h2>
+                        <p class="text-sm text-slate-500 mb-4">Each row summarizes one detected treadmill cycle.</p>
+                        <div style="max-height:360px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-slate-50 sticky top-0">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left font-semibold">Cycle</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Start</th>
+                                        <th class="px-3 py-2 text-right font-semibold">End</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Duration (s)</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Cadence</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Stride</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Toe Clearance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="treadmillCyclesBody">
+                                    <tr><td colspan="7" class="px-3 py-8 text-center text-gray-400">Upload a treadmill CSV to begin</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="catWalkSection" class="hidden">
+        <div class="breadcrumb-container">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item" data-back-home style="cursor: pointer;">Home</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">Cat Walk</span>
+                    </div>
+                    <button id="themeToggleCatWalk" class="theme-toggle" type="button">
+                        <span class="theme-toggle-icon">🌞</span>
+                        <span class="theme-toggle-label">Light Mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+            <div class="header p-8 text-center">
+                <h1 class="text-4xl font-bold tracking-tight">KiMA - Cat Walk Analysis</h1>
+                <p class="text-lg text-slate-300 mt-2">Runway-based paw contact analysis for stride length and stride width</p>
+            </div>
+            <div class="content flex flex-col lg:flex-row gap-8 p-8">
+                <div class="controls-panel lg:w-1/3 space-y-6">
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                        <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="catWalkUploadArea">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            <p class="mt-2 text-sm text-gray-600">Click to upload Cat Walk CSV</p>
+                            <p class="text-xs text-gray-500">DLC CSV with rf, lf, rh, lh paw tracks</p>
+                            <input type="file" id="catWalkFile" accept=".csv" class="hidden">
+                        </div>
+                        <div id="catWalkStatus" class="mt-4"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Settings</h2>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Likelihood Threshold</label>
+                            <input type="number" id="catWalkLikelihood" value="0.5" min="0" max="1" step="0.05" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Movement Threshold (px/frame)</label>
+                            <input type="number" id="catWalkSpeedThreshold" value="8" min="0.1" step="0.5" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="text-sm font-medium">Minimum Contact Frames</label>
+                            <input type="number" id="catWalkMinFrames" value="3" min="1" step="1" class="w-full mt-1">
+                        </div>
+                        <div class="form-group mb-4 border-t pt-4">
+                            <label class="text-sm font-bold block mb-2">Colors</label>
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+                                <div class="color-picker text-sm flex items-center"><span>RF</span><input type="color" id="catWalkColorRF" value="#ef4444" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>LF</span><input type="color" id="catWalkColorLF" value="#3b82f6" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>RH</span><input type="color" id="catWalkColorRH" value="#10b981" class="ml-auto"></div>
+                                <div class="color-picker text-sm flex items-center"><span>LH</span><input type="color" id="catWalkColorLH" value="#f59e0b" class="ml-auto"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
+                        <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
+                        <button class="btn w-full text-base py-3 btn-success" id="catWalkExportBtn" disabled>Download Cat Walk Metrics CSV</button>
+                        <p class="text-xs text-green-700 mt-2">Exports projected contacts, stride lengths, and stride widths</p>
+                    </div>
+                </div>
+
+                <div class="results-panel lg:w-2/3 flex flex-col gap-6">
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">🧾 Summary</h2>
+                        <p class="text-sm text-slate-500 mb-4">Runway-projected paw metrics computed from detected contact points.</p>
+                        <div id="catWalkSummary"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📍 Projected Paw Contact Map</h2>
+                        <p class="text-sm text-slate-500 mb-4">Contact points are projected into runway length and lateral width coordinates.</p>
+                        <div id="catWalkMapPlot" class="w-full h-[380px] lg:h-[440px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📏 Stride Length</h2>
+                        <p class="text-sm text-slate-500 mb-4">Stride length is computed between successive contacts of the same paw along the runway axis.</p>
+                        <div id="catWalkStridePlot" class="w-full h-[340px] lg:h-[400px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">↔️ Stride Width</h2>
+                        <p class="text-sm text-slate-500 mb-4">Stride width is computed as the lateral separation between left and right fore or hind paw contacts.</p>
+                        <div id="catWalkWidthPlot" class="w-full h-[320px] lg:h-[380px]"></div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold mb-2">📋 Stride Metrics</h2>
+                        <p class="text-sm text-slate-500 mb-4">Projected stride length values and paired width values used for the summary plots.</p>
+                        <div style="max-height:360px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-slate-50 sticky top-0">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left font-semibold">Metric</th>
+                                        <th class="px-3 py-2 text-left font-semibold">Group</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Index</th>
+                                        <th class="px-3 py-2 text-right font-semibold">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="catWalkMetricsBody">
+                                    <tr><td colspan="4" class="px-3 py-8 text-center text-gray-400">Upload a Cat Walk CSV to begin</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let csvData = null;
         let allNormalizedPoints = [];
@@ -1176,6 +1727,12 @@
         let pcaMetricKeys = [];
         let multiStickSamples = [];
         let currentDatasetLabel = 'current';
+        let footFallState = null;
+        let footFallBatchSamples = [];
+        let footFallPlaybackInterval = null;
+        let treadmillState = null;
+        let treadmillPlaybackInterval = null;
+        let catWalkState = null;
         const DEFAULT_SELECTED_FRAMES = 10;
         const MAX_SEQUENCE_FRAMES = 20;
         const SEQUENCE_PLAYBACK_DELAY = 400;
@@ -1208,6 +1765,9 @@
         const singleSampleSectionEl = document.getElementById('singleSampleSection');
         const multiSampleSectionEl = document.getElementById('multiSampleSection');
         const pcaSectionEl = document.getElementById('pcaSection');
+        const footFallSectionEl = document.getElementById('footFallSection');
+        const treadmillSectionEl = document.getElementById('treadmillSection');
+        const catWalkSectionEl = document.getElementById('catWalkSection');
         const multiCsvInput = document.getElementById('multiCsvInput');
         const multiSamplesStatus = document.getElementById('multiSamplesStatus');
         const multiSamplesTableBody = document.getElementById('multiSamplesTableBody');
@@ -1222,6 +1782,57 @@
         const multiStickInput = document.getElementById('multiStickInput');
         const multiStickStatus = document.getElementById('multiStickStatus');
         const multiStickList = document.getElementById('multiStickList');
+        const footFallUploadArea = document.getElementById('footFallUploadArea');
+        const footFallFile = document.getElementById('footFallFile');
+        const footFallStatus = document.getElementById('footFallStatus');
+        const footFallSummary = document.getElementById('footFallSummary');
+        const footFallCountPlot = document.getElementById('footFallCountPlot');
+        const footFallPlot = document.getElementById('footFallPlot');
+        const footFallSignalPlot = document.getElementById('footFallSignalPlot');
+        const footFallVideoStatus = document.getElementById('footFallVideoStatus');
+        const footFallContactsBody = document.getElementById('footFallContactsBody');
+        const footFallExportBtn = document.getElementById('footFallExportBtn');
+        const footFallExportImagesBtn = document.getElementById('footFallExportImagesBtn');
+        const footFallPlayBtn = document.getElementById('footFallPlayBtn');
+        const footFallPauseBtn = document.getElementById('footFallPauseBtn');
+        const footFallFrameSlider = document.getElementById('footFallFrameSlider');
+        const footFallFrameLabel = document.getElementById('footFallFrameLabel');
+        const footFallMultiInput = document.getElementById('footFallMultiInput');
+        const footFallMultiStatus = document.getElementById('footFallMultiStatus');
+        const footFallMultiBody = document.getElementById('footFallMultiBody');
+        const footFallMultiExportBtn = document.getElementById('footFallMultiExportBtn');
+        const treadmillUploadArea = document.getElementById('treadmillUploadArea');
+        const treadmillFile = document.getElementById('treadmillFile');
+        const treadmillStatus = document.getElementById('treadmillStatus');
+        const treadmillSummary = document.getElementById('treadmillSummary');
+        const treadmillCanvas = document.getElementById('treadmillCanvas');
+        const treadmillVideoStatus = document.getElementById('treadmillVideoStatus');
+        const treadmillAnglesPlot = document.getElementById('treadmillAnglesPlot');
+        const treadmillCyclesPlot = document.getElementById('treadmillCyclesPlot');
+        const treadmillBlocksPlot = document.getElementById('treadmillBlocksPlot');
+        const treadmillCyclesBody = document.getElementById('treadmillCyclesBody');
+        const treadmillFrameSlider = document.getElementById('treadmillFrameSlider');
+        const treadmillFrameLabel = document.getElementById('treadmillFrameLabel');
+        const treadmillPlayBtn = document.getElementById('treadmillPlayBtn');
+        const treadmillPauseBtn = document.getElementById('treadmillPauseBtn');
+        const treadmillVideoBtn = document.getElementById('treadmillVideoBtn');
+        const treadmillExportCyclesBtn = document.getElementById('treadmillExportCyclesBtn');
+        const treadmillExportImagesBtn = document.getElementById('treadmillExportImagesBtn');
+        const catWalkUploadArea = document.getElementById('catWalkUploadArea');
+        const catWalkFile = document.getElementById('catWalkFile');
+        const catWalkStatus = document.getElementById('catWalkStatus');
+        const catWalkSummary = document.getElementById('catWalkSummary');
+        const catWalkMapPlot = document.getElementById('catWalkMapPlot');
+        const catWalkStridePlot = document.getElementById('catWalkStridePlot');
+        const catWalkWidthPlot = document.getElementById('catWalkWidthPlot');
+        const catWalkMetricsBody = document.getElementById('catWalkMetricsBody');
+        const catWalkExportBtn = document.getElementById('catWalkExportBtn');
+        const footFallPawCanvases = {
+            RF: document.getElementById('footFallCanvasRF'),
+            LF: document.getElementById('footFallCanvasLF'),
+            RH: document.getElementById('footFallCanvasRH'),
+            LH: document.getElementById('footFallCanvasLH')
+        };
         const themeToggleBtn = document.getElementById('themeToggle');
         const themeToggleIcon = document.getElementById('themeToggleIcon');
         const themeToggleLabel = document.getElementById('themeToggleLabel');
@@ -1229,7 +1840,10 @@
             homeSection: homeSectionEl,
             singleSampleSection: singleSampleSectionEl,
             multiSampleSection: multiSampleSectionEl,
-            pcaSection: pcaSectionEl
+            pcaSection: pcaSectionEl,
+            footFallSection: footFallSectionEl,
+            treadmillSection: treadmillSectionEl,
+            catWalkSection: catWalkSectionEl
         };
         const THEME_STORAGE_KEY = 'kima-theme';
         
@@ -1238,6 +1852,18 @@
             uploadArea.addEventListener('click', () => csvFile.click());
             csvFile.addEventListener('change', (e) => processFile(e.target.files[0]));
             downloadBtn.addEventListener('click', generateDownloadableImage);
+            if (footFallUploadArea && footFallFile) {
+                footFallUploadArea.addEventListener('click', () => footFallFile.click());
+                footFallFile.addEventListener('change', (e) => processFootFallFile(e.target.files[0]));
+            }
+            if (treadmillUploadArea && treadmillFile) {
+                treadmillUploadArea.addEventListener('click', () => treadmillFile.click());
+                treadmillFile.addEventListener('change', (e) => processTreadmillFile(e.target.files[0]));
+            }
+            if (catWalkUploadArea && catWalkFile) {
+                catWalkUploadArea.addEventListener('click', () => catWalkFile.click());
+                catWalkFile.addEventListener('change', (e) => processCatWalkFile(e.target.files[0]));
+            }
             document.querySelectorAll('[data-section-target]').forEach(card => {
                 card.addEventListener('click', () => showSection(card.dataset.sectionTarget));
             });
@@ -1330,6 +1956,78 @@
             if (multiStickList) {
                 multiStickList.addEventListener('click', handleMultiStickLibraryAction);
             }
+            if (footFallExportBtn) {
+                footFallExportBtn.addEventListener('click', exportFootFallContactsCsv);
+            }
+            if (footFallExportImagesBtn) {
+                footFallExportImagesBtn.addEventListener('click', exportFootFallImages);
+            }
+            document.querySelectorAll('.footfall-video-btn').forEach(btn => {
+                btn.addEventListener('click', () => downloadFootFallPawVideo(btn.dataset.paw));
+            });
+            ['footFallLikelihood', 'footFallSpeedThreshold', 'footFallMinFrames', 'footFallFps', 'footFallShowRF', 'footFallShowLF', 'footFallShowRH', 'footFallShowLH', 'footFallColorRF', 'footFallColorLF', 'footFallColorRH', 'footFallColorLH', 'footFallBackgroundColor'].forEach(id => {
+                const control = document.getElementById(id);
+                if (control) {
+                    control.addEventListener('input', () => {
+                        if (footFallState && footFallState.rawCsvText) {
+                            reanalyzeFootFall();
+                        }
+                    });
+                }
+            });
+            if (footFallPlayBtn) {
+                footFallPlayBtn.addEventListener('click', startFootFallPlayback);
+            }
+            if (footFallPauseBtn) {
+                footFallPauseBtn.addEventListener('click', stopFootFallPlayback);
+            }
+            if (footFallFrameSlider) {
+                footFallFrameSlider.addEventListener('input', () => {
+                    stopFootFallPlayback();
+                    updateFootFallFramePreview(parseInt(footFallFrameSlider.value || '0', 10));
+                });
+            }
+            if (footFallMultiInput) {
+                footFallMultiInput.addEventListener('change', handleFootFallMultiUpload);
+            }
+            if (footFallMultiBody) {
+                footFallMultiBody.addEventListener('input', handleFootFallMultiGroupEdit);
+            }
+            if (footFallMultiExportBtn) {
+                footFallMultiExportBtn.addEventListener('click', exportFootFallMultiCsv);
+            }
+            ['treadmillLikelihood', 'treadmillFps', 'treadmillBlockCount', 'treadmillColorToe', 'treadmillColorAnkle', 'treadmillColorKnee', 'treadmillColorHip', 'treadmillBackgroundColor'].forEach(id => {
+                const control = document.getElementById(id);
+                if (control) {
+                    control.addEventListener('input', () => {
+                        if (treadmillState && treadmillState.rawCsvText) {
+                            reanalyzeTreadmill();
+                        }
+                    });
+                }
+            });
+            if (treadmillPlayBtn) treadmillPlayBtn.addEventListener('click', startTreadmillPlayback);
+            if (treadmillPauseBtn) treadmillPauseBtn.addEventListener('click', stopTreadmillPlayback);
+            if (treadmillFrameSlider) {
+                treadmillFrameSlider.addEventListener('input', () => {
+                    stopTreadmillPlayback();
+                    updateTreadmillFramePreview(parseInt(treadmillFrameSlider.value || '0', 10));
+                });
+            }
+            if (treadmillVideoBtn) treadmillVideoBtn.addEventListener('click', downloadTreadmillVideo);
+            if (treadmillExportCyclesBtn) treadmillExportCyclesBtn.addEventListener('click', exportTreadmillCyclesCsv);
+            if (treadmillExportImagesBtn) treadmillExportImagesBtn.addEventListener('click', exportTreadmillImages);
+            ['catWalkLikelihood', 'catWalkSpeedThreshold', 'catWalkMinFrames', 'catWalkColorRF', 'catWalkColorLF', 'catWalkColorRH', 'catWalkColorLH'].forEach(id => {
+                const control = document.getElementById(id);
+                if (control) {
+                    control.addEventListener('input', () => {
+                        if (catWalkState && catWalkState.rawCsvText) {
+                            reanalyzeCatWalk();
+                        }
+                    });
+                }
+            });
+            if (catWalkExportBtn) catWalkExportBtn.addEventListener('click', exportCatWalkCsv);
             if (sequenceCanvas) {
                 sequenceCanvas.addEventListener('click', () => {
                     if (!sequenceFrames.length) return;
@@ -1517,7 +2215,1848 @@
                 Plotly.newPlot(targetDivId, data, layout, {responsive: true}).then(resolve);
             });
         }
-        
+
+        function getFootFallSettings() {
+            return {
+                likelihoodThreshold: parseFloat(document.getElementById('footFallLikelihood')?.value || '0.5'),
+                speedThreshold: parseFloat(document.getElementById('footFallSpeedThreshold')?.value || '8'),
+                minFrames: Math.max(1, parseInt(document.getElementById('footFallMinFrames')?.value || '3', 10)),
+                fps: Math.max(1, parseInt(document.getElementById('footFallFps')?.value || '30', 10))
+            };
+        }
+
+        function getSelectedFootFallPaws() {
+            return ['RF', 'LF', 'RH', 'LH'].filter(paw => document.getElementById(`footFallShow${paw}`)?.checked !== false);
+        }
+
+        function getFootFallColors() {
+            const fallback = { RF: '#ef4444', LF: '#3b82f6', RH: '#10b981', LH: '#f59e0b' };
+            return {
+                RF: document.getElementById('footFallColorRF')?.value || fallback.RF,
+                LF: document.getElementById('footFallColorLF')?.value || fallback.LF,
+                RH: document.getElementById('footFallColorRH')?.value || fallback.RH,
+                LH: document.getElementById('footFallColorLH')?.value || fallback.LH
+            };
+        }
+
+        function getFootFallBackgroundColor() {
+            return document.getElementById('footFallBackgroundColor')?.value || '#ffffff';
+        }
+
+        function processFootFallFile(file) {
+            if (!file || !file.name.toLowerCase().endsWith('.csv')) {
+                showFootFallStatus('error', 'Please select a valid CSV file.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => analyzeFootFallCsv(e.target.result, file.name || 'uploaded');
+            reader.readAsText(file);
+        }
+
+        function reanalyzeFootFall() {
+            if (!footFallState || !footFallState.rawCsvText) return;
+            analyzeFootFallCsv(footFallState.rawCsvText, footFallState.label || 'current-footfall');
+        }
+
+        function analyzeFootFallCsv(csvText, label = '') {
+            try {
+                const settings = getFootFallSettings();
+                const parsed = parseDlcMultiHeaderCsv(csvText);
+                const footFallData = buildFootFallData(parsed, settings);
+                const analysis = computeFootFallAnalysis(footFallData.frames, settings);
+                footFallState = {
+                    rawCsvText: csvText,
+                    label: label || 'current-footfall',
+                    settings,
+                    parsed,
+                    frames: footFallData.frames,
+                    paws: footFallData.paws,
+                    analysis
+                };
+                renderFootFallResults();
+                showFootFallStatus('success', `Foot Fall file loaded: ${analysis.frameCount} frames, ${analysis.totalContacts} detected contacts.`);
+                if (footFallExportBtn) footFallExportBtn.disabled = analysis.totalContacts === 0;
+                if (footFallExportImagesBtn) footFallExportImagesBtn.disabled = false;
+            } catch (error) {
+                console.error(error);
+                footFallState = null;
+                if (footFallExportBtn) footFallExportBtn.disabled = true;
+                if (footFallExportImagesBtn) footFallExportImagesBtn.disabled = true;
+                renderEmptyFootFallState();
+                showFootFallStatus('error', `Foot Fall parsing failed: ${error.message}`);
+            }
+        }
+
+        function parseDlcMultiHeaderCsv(csvText) {
+            const lines = (csvText || '').split(/\r?\n/).filter(line => line.trim());
+            if (lines.length < 4) throw new Error('CSV must contain DLC multi-row headers and frame data.');
+            const scorerRow = lines[0].split(',');
+            const bodypartsRow = lines[1].split(',');
+            const coordsRow = lines[2].split(',');
+            const rows = lines.slice(3).map(line => line.split(','));
+            const columns = [];
+            for (let i = 1; i < Math.min(bodypartsRow.length, coordsRow.length); i++) {
+                const bodypart = (bodypartsRow[i] || '').trim();
+                const coord = (coordsRow[i] || '').trim().toLowerCase();
+                if (!bodypart || !coord) continue;
+                columns.push({
+                    index: i,
+                    scorer: (scorerRow[i] || '').trim(),
+                    bodypart,
+                    coord
+                });
+            }
+            return { columns, rows };
+        }
+
+        function buildFootFallData(parsed, settings) {
+            const pawNames = ['RF', 'LF', 'RH', 'LH'];
+            const columnMap = {};
+            pawNames.forEach(paw => { columnMap[paw] = {}; });
+            parsed.columns.forEach(col => {
+                const part = col.bodypart.toUpperCase();
+                if (pawNames.includes(part) && ['x', 'y', 'likelihood'].includes(col.coord)) {
+                    columnMap[part][col.coord] = col.index;
+                }
+            });
+            pawNames.forEach(paw => {
+                if (!columnMap[paw].x || !columnMap[paw].y || !columnMap[paw].likelihood) {
+                    throw new Error(`Missing x/y/likelihood columns for ${paw}.`);
+                }
+            });
+
+            const frames = parsed.rows.map((row, frameIndex) => {
+                const paws = {};
+                pawNames.forEach(paw => {
+                    const x = parseFloat(row[columnMap[paw].x]);
+                    const y = parseFloat(row[columnMap[paw].y]);
+                    const likelihood = parseFloat(row[columnMap[paw].likelihood]);
+                    paws[paw] = Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(likelihood) && likelihood >= settings.likelihoodThreshold
+                        ? { x, y, likelihood }
+                        : null;
+                });
+                return { frameIndex, paws };
+            });
+
+            return { frames, paws: pawNames };
+        }
+
+        function computeFootFallAnalysis(frames, settings) {
+            const pawColors = getFootFallColors();
+            const paws = ['RF', 'LF', 'RH', 'LH'];
+            const contactsByPaw = {};
+            const perPawStats = {};
+            const signalByPaw = {};
+            let totalContacts = 0;
+            const allPoints = [];
+
+            paws.forEach(paw => {
+                const sequence = frames.map(frame => ({ frameIndex: frame.frameIndex, point: frame.paws[paw] }));
+                sequence.forEach(entry => {
+                    if (entry.point) allPoints.push({ ...entry.point, paw, frameIndex: entry.frameIndex });
+                });
+                const contacts = detectFootFallContacts(sequence, settings).map((contact, index) => ({
+                    ...contact,
+                    paw,
+                    color: pawColors[paw],
+                    index: index + 1
+                }));
+                contactsByPaw[paw] = contacts;
+                totalContacts += contacts.length;
+
+                const durations = contacts.map(contact => contact.durationSec).filter(Number.isFinite);
+                const gaps = [];
+                for (let i = 1; i < contacts.length; i++) {
+                    const gapFrames = contacts[i].startFrame - contacts[i - 1].endFrame;
+                    gaps.push(gapFrames / settings.fps);
+                }
+                perPawStats[paw] = {
+                    paw,
+                    color: pawColors[paw],
+                    contactCount: contacts.length,
+                    meanDuration: meanArray(durations),
+                    meanGap: meanArray(gaps),
+                    meanX: meanArray(contacts.map(contact => contact.centerX)),
+                    meanY: meanArray(contacts.map(contact => contact.centerY))
+                };
+                signalByPaw[paw] = buildFootFallSignal(sequence, contacts);
+            });
+
+            const bounds = computeFootFallBounds(allPoints);
+
+            return {
+                paws,
+                pawColors,
+                frameCount: frames.length,
+                contactsByPaw,
+                perPawStats,
+                signalByPaw,
+                totalContacts,
+                bounds
+            };
+        }
+
+        function detectFootFallContacts(sequence, settings) {
+            const contacts = [];
+            let current = null;
+            for (let i = 0; i < sequence.length; i++) {
+                const currentEntry = sequence[i];
+                const prevEntry = i > 0 ? sequence[i - 1] : null;
+                const point = currentEntry.point;
+                let speed = Infinity;
+                if (point && prevEntry && prevEntry.point) {
+                    speed = Math.hypot(point.x - prevEntry.point.x, point.y - prevEntry.point.y);
+                }
+                const isContactFrame = Boolean(point) && (i === 0 || !Number.isFinite(speed) || speed <= settings.speedThreshold);
+
+                if (isContactFrame) {
+                    if (!current) {
+                        current = {
+                            startFrame: currentEntry.frameIndex,
+                            endFrame: currentEntry.frameIndex,
+                            points: [point]
+                        };
+                    } else {
+                        current.endFrame = currentEntry.frameIndex;
+                        current.points.push(point);
+                    }
+                } else if (current) {
+                    const frameCount = current.endFrame - current.startFrame + 1;
+                    if (frameCount >= settings.minFrames) {
+                        contacts.push(finalizeFootFallContact(current, settings));
+                    }
+                    current = null;
+                }
+            }
+            if (current) {
+                const frameCount = current.endFrame - current.startFrame + 1;
+                if (frameCount >= settings.minFrames) {
+                    contacts.push(finalizeFootFallContact(current, settings));
+                }
+            }
+            return contacts;
+        }
+
+        function finalizeFootFallContact(contact, settings) {
+            const xs = contact.points.map(point => point.x);
+            const ys = contact.points.map(point => point.y);
+            const frameCount = contact.endFrame - contact.startFrame + 1;
+            return {
+                startFrame: contact.startFrame,
+                endFrame: contact.endFrame,
+                frameCount,
+                durationSec: frameCount / settings.fps,
+                centerX: meanArray(xs),
+                centerY: meanArray(ys)
+            };
+        }
+
+        function buildFootFallSignal(sequence, contacts) {
+            const validY = sequence.map(entry => entry.point?.y).filter(Number.isFinite);
+            const baseline = percentile(validY, 0.35);
+            const contactFrames = new Set();
+            contacts.forEach(contact => {
+                for (let frame = contact.startFrame; frame <= contact.endFrame; frame++) {
+                    contactFrames.add(frame);
+                }
+            });
+            const frames = sequence.map(entry => entry.frameIndex);
+            const raw = sequence.map(entry => {
+                const y = entry.point?.y;
+                if (!Number.isFinite(y) || !Number.isFinite(baseline)) return 0;
+                return Math.max(0, y - baseline);
+            });
+            const smoothed = smoothArray(raw, 5);
+            const flattened = smoothed.map((value, idx) => contactFrames.has(frames[idx]) ? -value : 0);
+            const minValue = Math.min(...flattened, 0);
+            return {
+                baseline: Number.isFinite(baseline) ? baseline : 0,
+                frames,
+                values: flattened,
+                minValue
+            };
+        }
+
+        function renderFootFallResults() {
+            if (!footFallState || !footFallState.analysis) {
+                renderEmptyFootFallState();
+                return;
+            }
+            if (footFallFrameSlider) {
+                footFallFrameSlider.max = String(Math.max(footFallState.frames.length - 1, 0));
+                footFallFrameSlider.value = '0';
+            }
+            updateFootFallFrameLabel(0);
+            renderFootFallSummary();
+            renderFootFallContactTable();
+            renderFootFallPlotlyCharts();
+            renderFootFallPawCanvases();
+        }
+
+        function renderEmptyFootFallState() {
+            if (footFallSummary) {
+                footFallSummary.innerHTML = '<p class="text-sm text-slate-500">Upload a Foot Fall CSV to compute paw contacts.</p>';
+            }
+            if (footFallContactsBody) {
+                footFallContactsBody.innerHTML = '<tr><td colspan="8" class="px-3 py-8 text-center text-gray-400">Upload a Foot Fall CSV to begin</td></tr>';
+            }
+            stopFootFallPlayback();
+            if (footFallCountPlot) Plotly.purge(footFallCountPlot);
+            if (footFallPlot) Plotly.purge(footFallPlot);
+            if (footFallSignalPlot) Plotly.purge(footFallSignalPlot);
+            Object.values(footFallPawCanvases).forEach(canvas => clearFootFallCanvas(canvas));
+            if (footFallVideoStatus) footFallVideoStatus.textContent = '';
+            if (footFallFrameSlider) {
+                footFallFrameSlider.max = '0';
+                footFallFrameSlider.value = '0';
+            }
+            updateFootFallFrameLabel(0);
+        }
+
+        function renderFootFallSummary() {
+            const { analysis } = footFallState;
+            const rows = analysis.paws.map(paw => {
+                const stat = analysis.perPawStats[paw];
+                return `
+                    <tr class="border-b border-slate-100">
+                        <td class="px-3 py-2 font-semibold" style="color:${stat.color}">${paw}</td>
+                        <td class="px-3 py-2 text-right">${stat.contactCount}</td>
+                        <td class="px-3 py-2 text-right">${formatMaybeNumber(stat.meanDuration, 3)}</td>
+                        <td class="px-3 py-2 text-right">${formatMaybeNumber(stat.meanGap, 3)}</td>
+                        <td class="px-3 py-2 text-right">${formatMaybeNumber(stat.meanX, 2)}</td>
+                        <td class="px-3 py-2 text-right">${formatMaybeNumber(stat.meanY, 2)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            footFallSummary.innerHTML = `
+                <div class="mb-4 text-sm text-slate-700">
+                    Frames: <b>${analysis.frameCount}</b> &nbsp;|&nbsp;
+                    Total contacts: <b>${analysis.totalContacts}</b> &nbsp;|&nbsp;
+                    FPS: <b>${footFallState.settings.fps}</b>
+                </div>
+                <div style="max-height:260px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-slate-50 sticky top-0">
+                            <tr>
+                                <th class="px-3 py-2 text-left font-semibold">Paw</th>
+                                <th class="px-3 py-2 text-right font-semibold">Contacts</th>
+                                <th class="px-3 py-2 text-right font-semibold">Mean Contact (s)</th>
+                                <th class="px-3 py-2 text-right font-semibold">Mean Gap (s)</th>
+                                <th class="px-3 py-2 text-right font-semibold">Mean X</th>
+                                <th class="px-3 py-2 text-right font-semibold">Mean Y</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function renderFootFallContactTable() {
+            const rows = [];
+            footFallState.analysis.paws.forEach(paw => {
+                footFallState.analysis.contactsByPaw[paw].forEach(contact => {
+                    rows.push(`
+                        <tr class="border-b border-slate-100">
+                            <td class="px-3 py-2 font-semibold" style="color:${contact.color}">${paw}</td>
+                            <td class="px-3 py-2 text-right">${contact.index}</td>
+                            <td class="px-3 py-2 text-right">${contact.startFrame}</td>
+                            <td class="px-3 py-2 text-right">${contact.endFrame}</td>
+                            <td class="px-3 py-2 text-right">${contact.frameCount}</td>
+                            <td class="px-3 py-2 text-right">${formatMaybeNumber(contact.durationSec, 3)}</td>
+                            <td class="px-3 py-2 text-right">${formatMaybeNumber(contact.centerX, 2)}</td>
+                            <td class="px-3 py-2 text-right">${formatMaybeNumber(contact.centerY, 2)}</td>
+                        </tr>
+                    `);
+                });
+            });
+            footFallContactsBody.innerHTML = rows.length
+                ? rows.join('')
+                : '<tr><td colspan="8" class="px-3 py-8 text-center text-gray-400">No contacts detected with the current settings.</td></tr>';
+        }
+
+        function renderFootFallPlotlyCharts() {
+            const { analysis, frames } = footFallState;
+            const selectedPaws = getSelectedFootFallPaws();
+            const scatterTraces = [];
+            const signalTraces = [];
+
+            analysis.paws.forEach((paw) => {
+                if (!selectedPaws.includes(paw)) return;
+                const color = analysis.pawColors[paw];
+                const pawPoints = frames
+                    .map(frame => frame.paws[paw] ? { ...frame.paws[paw], frameIndex: frame.frameIndex } : null)
+                    .filter(Boolean);
+                scatterTraces.push({
+                    x: pawPoints.map(point => point.x),
+                    y: pawPoints.map(point => point.y),
+                    mode: 'markers',
+                    name: `${paw} paw`,
+                    marker: { color, size: 5, opacity: 0.35 },
+                    hovertemplate: `${paw}<br>x=%{x:.2f}<br>y=%{y:.2f}<extra></extra>`
+                });
+
+                const contacts = analysis.contactsByPaw[paw];
+                const signal = analysis.signalByPaw[paw];
+                scatterTraces.push({
+                    x: contacts.map(contact => contact.centerX),
+                    y: contacts.map(contact => contact.centerY),
+                    mode: 'markers+text',
+                    name: `${paw} contacts`,
+                    text: contacts.map(contact => `${paw}${contact.index}`),
+                    textposition: 'top center',
+                    marker: { color, size: 10, line: { color: '#111827', width: 1 } },
+                    hovertemplate: `${paw}<br>start=%{customdata[0]}<br>end=%{customdata[1]}<br>duration=%{customdata[2]:.3f}s<extra></extra>`,
+                    customdata: contacts.map(contact => [contact.startFrame, contact.endFrame, contact.durationSec])
+                });
+
+                signalTraces.push({
+                    x: signal.frames,
+                    y: signal.values,
+                    mode: 'lines',
+                    name: `${paw} line`,
+                    line: { color, width: 2 },
+                    hovertemplate: `${paw}<br>frame=%{x}<br>peak=%{y:.2f}<extra></extra>`
+                });
+                signalTraces.push({
+                    x: contacts.map(contact => Math.round((contact.startFrame + contact.endFrame) / 2)),
+                    y: contacts.map(contact => {
+                        const idx = signal.frames.indexOf(Math.round((contact.startFrame + contact.endFrame) / 2));
+                        return idx >= 0 ? signal.values[idx] : signal.minValue;
+                    }),
+                    mode: 'markers',
+                    name: `${paw} contacts`,
+                    marker: { color, size: 10, symbol: 'triangle-down', line: { color: '#111827', width: 1 } },
+                    hovertemplate: `${paw}<br>contact frame=%{x}<br>peak=%{y:.2f}<extra></extra>`
+                });
+            });
+
+            Plotly.newPlot(footFallCountPlot, [{
+                x: selectedPaws,
+                y: selectedPaws.map(paw => analysis.perPawStats[paw].contactCount),
+                type: 'bar',
+                text: selectedPaws.map(paw => String(analysis.perPawStats[paw].contactCount)),
+                textposition: 'auto',
+                marker: {
+                    color: selectedPaws.map(paw => analysis.pawColors[paw]),
+                    line: { color: '#111827', width: 1 }
+                },
+                hovertemplate: 'Paw=%{x}<br>Count=%{y}<extra></extra>'
+            }], {
+                title: { text: 'Total Foot Fall Count Per Paw' },
+                xaxis: { title: 'Paw' },
+                yaxis: { title: 'Detected Foot Falls', rangemode: 'tozero' },
+                margin: { l: 60, r: 20, b: 60, t: 50 }
+            }, { responsive: true });
+
+            Plotly.newPlot(footFallPlot, scatterTraces, {
+                title: { text: '2D Paw-Only Foot Fall Plot' },
+                xaxis: { title: 'Run Length (X)', range: [analysis.bounds.minX, analysis.bounds.maxX] },
+                yaxis: { title: 'Paw Position (Y)', range: [analysis.bounds.maxY, analysis.bounds.minY] },
+                paper_bgcolor: getFootFallBackgroundColor(),
+                plot_bgcolor: getFootFallBackgroundColor(),
+                margin: { l: 60, r: 20, b: 60, t: 50 },
+                legend: { orientation: 'h' }
+            }, { responsive: true });
+
+            Plotly.newPlot(footFallSignalPlot, signalTraces, {
+                title: { text: 'Straight Baseline With Downward Foot-Fall Peaks' },
+                xaxis: { title: 'Frame' },
+                yaxis: { title: 'Foot-Fall Peak', range: [Math.min(...selectedPaws.map(paw => analysis.signalByPaw[paw]?.minValue || 0), -1), 1] },
+                paper_bgcolor: getFootFallBackgroundColor(),
+                plot_bgcolor: getFootFallBackgroundColor(),
+                margin: { l: 60, r: 20, b: 60, t: 50 },
+                legend: { orientation: 'h' }
+            }, { responsive: true });
+        }
+
+        function exportFootFallContactsCsv() {
+            if (!footFallState || !footFallState.analysis || footFallState.analysis.totalContacts === 0) return;
+            const lines = ['paw,contact_index,start_frame,end_frame,frame_count,duration_sec,center_x,center_y'];
+            footFallState.analysis.paws.forEach(paw => {
+                footFallState.analysis.contactsByPaw[paw].forEach(contact => {
+                    lines.push([
+                        paw,
+                        contact.index,
+                        contact.startFrame,
+                        contact.endFrame,
+                        contact.frameCount,
+                        contact.durationSec.toFixed(6),
+                        contact.centerX.toFixed(6),
+                        contact.centerY.toFixed(6)
+                    ].join(','));
+                });
+            });
+            const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'foot_fall_contacts.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function renderFootFallPawCanvases() {
+            if (!footFallState || !footFallState.analysis) return;
+            footFallState.analysis.paws.forEach(paw => drawFootFallPawFrame(paw, 0));
+        }
+
+        function drawFootFallPawFrame(paw, framePointer = 0, overrideCanvas = null) {
+            if (!footFallState || !footFallState.analysis) return;
+            const canvas = overrideCanvas || footFallPawCanvases[paw];
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const { pawColors, contactsByPaw, signalByPaw } = footFallState.analysis;
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 44;
+            const footerHeight = 62;
+            const plotBottom = height - footerHeight;
+            const frameIndex = Math.max(0, Math.min(framePointer, footFallState.frames.length - 1));
+            const color = pawColors[paw];
+            const signal = signalByPaw[paw];
+            const totalFrames = Math.max(1, signal.frames.length - 1);
+            const minSignal = Math.min(signal.minValue || 0, -1);
+            const projectX = (frame) => padding + (frame / totalFrames) * (width - padding * 2);
+            const projectY = (value) => {
+                const normalized = (value - minSignal) / (0 - minSignal || 1);
+                return plotBottom - padding - normalized * (plotBottom - padding * 2);
+            };
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = getFootFallBackgroundColor();
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(padding, plotBottom - padding);
+            ctx.lineTo(width - padding, plotBottom - padding);
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, plotBottom - padding);
+            ctx.stroke();
+
+            const baselineY = projectY(0);
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(padding, baselineY);
+            ctx.lineTo(width - padding, baselineY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = '#475569';
+            ctx.font = '14px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Frame', width / 2, plotBottom - 10);
+            ctx.save();
+            ctx.translate(14, plotBottom / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Foot-Fall Peak', 0, 0);
+            ctx.restore();
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            signal.frames.forEach((frame, index) => {
+                const px = projectX(frame);
+                const py = projectY(signal.values[index]);
+                if (index === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            });
+            ctx.stroke();
+
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, plotBottom, width, footerHeight);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, plotBottom);
+            ctx.lineTo(width, plotBottom);
+            ctx.stroke();
+
+            contactsByPaw[paw].forEach(contact => {
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.25;
+                ctx.beginPath();
+                const centerFrame = Math.round((contact.startFrame + contact.endFrame) / 2);
+                const idx = signal.frames.indexOf(centerFrame);
+                const peakValue = idx >= 0 ? signal.values[idx] : signal.minValue;
+                ctx.arc(projectX(centerFrame), projectY(peakValue), 7, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+
+            const currentValue = signal.values[frameIndex] || 0;
+            ctx.fillStyle = color;
+            ctx.strokeStyle = '#111827';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(projectX(frameIndex), projectY(currentValue), 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 18px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`${paw} Paw`, 16, plotBottom + 22);
+            ctx.font = '14px Inter, sans-serif';
+            ctx.fillStyle = '#475569';
+            ctx.fillText(`Frame ${frameIndex} / ${Math.max(footFallState.frames.length - 1, 0)}`, 16, plotBottom + 42);
+            ctx.textAlign = 'right';
+            ctx.fillText(`Detected foot falls: ${contactsByPaw[paw].length}`, width - 16, plotBottom + 22);
+            ctx.fillText(`Baseline at 0, downward peaks show contact`, width - 16, plotBottom + 42);
+        }
+
+        function clearFootFallCanvas(canvas) {
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = getFootFallBackgroundColor();
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '16px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Upload data to preview paw movement', canvas.width / 2, canvas.height / 2);
+        }
+
+        function updateFootFallFrameLabel(frameIndex) {
+            if (footFallFrameLabel) footFallFrameLabel.textContent = `Frame ${frameIndex}`;
+        }
+
+        function updateFootFallFramePreview(frameIndex) {
+            if (!footFallState || !footFallState.frames?.length) return;
+            const bounded = Math.max(0, Math.min(frameIndex, footFallState.frames.length - 1));
+            if (footFallFrameSlider) footFallFrameSlider.value = String(bounded);
+            updateFootFallFrameLabel(bounded);
+            footFallState.analysis.paws.forEach(paw => drawFootFallPawFrame(paw, bounded));
+        }
+
+        function startFootFallPlayback() {
+            if (!footFallState || !footFallState.frames?.length) return;
+            stopFootFallPlayback();
+            let pointer = parseInt(footFallFrameSlider?.value || '0', 10);
+            updateFootFallFramePreview(pointer);
+            footFallPlaybackInterval = setInterval(() => {
+                pointer = (pointer + 1) % footFallState.frames.length;
+                updateFootFallFramePreview(pointer);
+            }, Math.max(40, Math.round(1000 / Math.max(5, footFallState.settings.fps))));
+        }
+
+        function stopFootFallPlayback() {
+            if (footFallPlaybackInterval) {
+                clearInterval(footFallPlaybackInterval);
+                footFallPlaybackInterval = null;
+            }
+        }
+
+        function downloadFootFallPawVideo(paw) {
+            const canvas = footFallPawCanvases[paw];
+            if (!canvas || !footFallState || !footFallState.frames?.length) {
+                if (footFallVideoStatus) footFallVideoStatus.textContent = 'Load Foot Fall data before exporting paw videos.';
+                return;
+            }
+            if (typeof MediaRecorder === 'undefined') {
+                if (footFallVideoStatus) footFallVideoStatus.textContent = 'Browser does not support video export.';
+                return;
+            }
+            const preferredMimeTypes = [
+                'video/mp4;codecs="avc1.42E01E, mp4a.40.2"',
+                'video/mp4;codecs="avc1.42E01E"',
+                'video/mp4',
+                'video/webm;codecs=vp9',
+                'video/webm;codecs=vp8',
+                'video/webm'
+            ];
+            let supportedMime = null;
+            for (const type of preferredMimeTypes) {
+                if (!MediaRecorder.isTypeSupported || MediaRecorder.isTypeSupported(type)) {
+                    supportedMime = type;
+                    break;
+                }
+            }
+            if (!supportedMime) {
+                if (footFallVideoStatus) footFallVideoStatus.textContent = 'Video format not supported in this browser.';
+                return;
+            }
+            let stream;
+            try {
+                stream = canvas.captureStream(Math.max(5, footFallState.settings.fps));
+            } catch (error) {
+                console.error('Foot Fall captureStream failed', error);
+                if (footFallVideoStatus) footFallVideoStatus.textContent = 'Canvas capture not supported in this browser.';
+                return;
+            }
+            let recorder;
+            try {
+                recorder = new MediaRecorder(stream, { mimeType: supportedMime });
+            } catch (error) {
+                console.error('Foot Fall MediaRecorder init failed', error);
+                if (footFallVideoStatus) footFallVideoStatus.textContent = 'MediaRecorder initialization failed.';
+                return;
+            }
+
+            const chunks = [];
+            let pointer = 0;
+            let timer = null;
+            const totalFrames = footFallState.frames.length;
+            recorder.ondataavailable = (event) => {
+                if (event.data && event.data.size > 0) chunks.push(event.data);
+            };
+            recorder.onstop = () => {
+                if (timer) clearInterval(timer);
+                const isMp4 = supportedMime.includes('mp4');
+                const blob = new Blob(chunks, { type: supportedMime });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `foot_fall_${paw}.${isMp4 ? 'mp4' : 'webm'}`;
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(url), 500);
+                drawFootFallPawFrame(paw, 0);
+                if (footFallVideoStatus) footFallVideoStatus.textContent = `${paw} paw video downloaded.`;
+            };
+            recorder.onerror = (event) => {
+                console.error('Foot Fall MediaRecorder error', event);
+                if (timer) clearInterval(timer);
+                drawFootFallPawFrame(paw, 0);
+                if (footFallVideoStatus) footFallVideoStatus.textContent = `${paw} paw video export failed.`;
+            };
+
+            recorder.start();
+            if (footFallVideoStatus) footFallVideoStatus.textContent = `Recording ${paw} paw video...`;
+            timer = setInterval(() => {
+                drawFootFallPawFrame(paw, pointer);
+                pointer += 1;
+                if (pointer >= totalFrames) {
+                    clearInterval(timer);
+                    timer = null;
+                    setTimeout(() => recorder.stop(), 250);
+                }
+            }, Math.max(40, Math.round(1000 / Math.max(5, footFallState.settings.fps))));
+        }
+
+        function computeFootFallBounds(points) {
+            if (!points.length) {
+                return { minX: 0, maxX: 1, minY: 0, maxY: 1 };
+            }
+            const xs = points.map(point => point.x);
+            const ys = points.map(point => point.y);
+            const minX = Math.min(...xs);
+            const maxX = Math.max(...xs);
+            const minY = Math.min(...ys);
+            const maxY = Math.max(...ys);
+            const padX = Math.max(10, (maxX - minX) * 0.05);
+            const padY = Math.max(10, (maxY - minY) * 0.05);
+            return {
+                minX: minX - padX,
+                maxX: maxX + padX,
+                minY: minY - padY,
+                maxY: maxY + padY
+            };
+        }
+
+        async function exportFootFallImages() {
+            if (!footFallState || !footFallState.analysis) return;
+            const dpi = parseInt(document.getElementById('footFallDpi')?.value || '300', 10);
+            const exportTargets = [
+                { div: footFallCountPlot, name: 'foot_fall_count' },
+                { div: footFallPlot, name: 'foot_fall_2d_plot' },
+                { div: footFallSignalPlot, name: 'foot_fall_line_plot' }
+            ];
+            for (const target of exportTargets) {
+                if (!target.div) continue;
+                try {
+                    const dataUrl = await Plotly.toImage(target.div, {
+                        format: 'png',
+                        width: 8 * dpi,
+                        height: 5 * dpi
+                    });
+                    const link = document.createElement('a');
+                    link.download = `${target.name}_${dpi}dpi.png`;
+                    link.href = dataUrl;
+                    link.click();
+                } catch (error) {
+                    console.error(`Failed to export ${target.name}`, error);
+                }
+            }
+        }
+
+        async function handleFootFallMultiUpload(event) {
+            const files = Array.from(event.target?.files || []);
+            if (!files.length) return;
+            footFallBatchSamples = [];
+            if (footFallMultiStatus) footFallMultiStatus.textContent = 'Processing Foot Fall batch files...';
+            for (const file of files) {
+                try {
+                    const csvText = await file.text();
+                    const settings = getFootFallSettings();
+                    const parsed = parseDlcMultiHeaderCsv(csvText);
+                    const footFallData = buildFootFallData(parsed, settings);
+                    const analysis = computeFootFallAnalysis(footFallData.frames, settings);
+                    footFallBatchSamples.push({
+                        sampleName: file.name.replace(/\.csv$/i, ''),
+                        group: '',
+                        counts: {
+                            RF: analysis.perPawStats.RF.contactCount,
+                            LF: analysis.perPawStats.LF.contactCount,
+                            RH: analysis.perPawStats.RH.contactCount,
+                            LH: analysis.perPawStats.LH.contactCount
+                        },
+                        total: analysis.totalContacts
+                    });
+                    if (footFallMultiStatus) footFallMultiStatus.textContent = `Processed ${file.name}`;
+                } catch (error) {
+                    console.error(error);
+                    if (footFallMultiStatus) footFallMultiStatus.textContent = `${file.name}: ${error.message}`;
+                }
+            }
+            renderFootFallMultiTable();
+            if (footFallMultiStatus) footFallMultiStatus.textContent = `Processed ${footFallBatchSamples.length} Foot Fall samples.`;
+        }
+
+        function renderFootFallMultiTable() {
+            if (!footFallMultiBody) return;
+            if (!footFallBatchSamples.length) {
+                footFallMultiBody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-slate-400">Upload multiple Foot Fall files to begin</td></tr>';
+                if (footFallMultiExportBtn) footFallMultiExportBtn.disabled = true;
+                return;
+            }
+            footFallMultiBody.innerHTML = footFallBatchSamples.map((sample, idx) => `
+                <tr class="border-b border-slate-100">
+                    <td class="px-3 py-2 text-left">${sample.sampleName}</td>
+                    <td class="px-3 py-2 text-left"><input type="text" data-footfall-sample-index="${idx}" value="${sample.group || ''}" class="border border-slate-300 rounded-md px-2 py-1 w-full" placeholder="e.g., Treated"></td>
+                    <td class="px-3 py-2 text-right">${sample.counts.RF}</td>
+                    <td class="px-3 py-2 text-right">${sample.counts.LF}</td>
+                    <td class="px-3 py-2 text-right">${sample.counts.RH}</td>
+                    <td class="px-3 py-2 text-right">${sample.counts.LH}</td>
+                    <td class="px-3 py-2 text-right font-semibold">${sample.total}</td>
+                </tr>
+            `).join('');
+            if (footFallMultiExportBtn) footFallMultiExportBtn.disabled = false;
+        }
+
+        function handleFootFallMultiGroupEdit(event) {
+            const idx = parseInt(event.target?.dataset?.footfallSampleIndex || '-1', 10);
+            if (idx < 0 || !footFallBatchSamples[idx]) return;
+            footFallBatchSamples[idx].group = event.target.value;
+        }
+
+        function exportFootFallMultiCsv() {
+            if (!footFallBatchSamples.length) return;
+            const lines = ['sample,group,RF,LF,RH,LH,total'];
+            footFallBatchSamples.forEach(sample => {
+                lines.push([
+                    `"${sample.sampleName}"`,
+                    `"${sample.group || ''}"`,
+                    sample.counts.RF,
+                    sample.counts.LF,
+                    sample.counts.RH,
+                    sample.counts.LH,
+                    sample.total
+                ].join(','));
+            });
+            const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'foot_fall_multi_samples.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function getTreadmillSettings() {
+            return {
+                likelihoodThreshold: parseFloat(document.getElementById('treadmillLikelihood')?.value || '0.5'),
+                fps: Math.max(1, parseInt(document.getElementById('treadmillFps')?.value || '30', 10)),
+                blockCount: Math.max(2, parseInt(document.getElementById('treadmillBlockCount')?.value || '3', 10))
+            };
+        }
+
+        function getTreadmillColors() {
+            return {
+                toe: document.getElementById('treadmillColorToe')?.value || '#ef4444',
+                ankle: document.getElementById('treadmillColorAnkle')?.value || '#3b82f6',
+                knee: document.getElementById('treadmillColorKnee')?.value || '#10b981',
+                hip: document.getElementById('treadmillColorHip')?.value || '#f59e0b',
+                line: '#475569'
+            };
+        }
+
+        function getTreadmillBackgroundColor() {
+            return document.getElementById('treadmillBackgroundColor')?.value || '#ffffff';
+        }
+
+        function processTreadmillFile(file) {
+            if (!file || !file.name.toLowerCase().endsWith('.csv')) {
+                showTreadmillStatus('error', 'Please select a valid treadmill CSV file.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => analyzeTreadmillCsv(e.target.result, file.name || 'uploaded');
+            reader.readAsText(file);
+        }
+
+        function reanalyzeTreadmill() {
+            if (!treadmillState || !treadmillState.rawCsvText) return;
+            analyzeTreadmillCsv(treadmillState.rawCsvText, treadmillState.label || 'current-treadmill');
+        }
+
+        function analyzeTreadmillCsv(csvText, label = '') {
+            try {
+                const settings = getTreadmillSettings();
+                const parsed = parseDlcMultiHeaderCsv(csvText);
+                const data = buildTreadmillData(parsed, settings);
+                const analysis = computeTreadmillAnalysis(data, settings);
+                treadmillState = {
+                    rawCsvText: csvText,
+                    label: label || 'current-treadmill',
+                    settings,
+                    data,
+                    analysis
+                };
+                renderTreadmillResults();
+                showTreadmillStatus('success', `Treadmill file loaded: ${analysis.validFrames} valid frames, ${analysis.cycles.length} cycles detected.`);
+                if (treadmillExportCyclesBtn) treadmillExportCyclesBtn.disabled = analysis.cycles.length === 0;
+                if (treadmillExportImagesBtn) treadmillExportImagesBtn.disabled = false;
+            } catch (error) {
+                console.error(error);
+                treadmillState = null;
+                renderEmptyTreadmillState();
+                if (treadmillExportCyclesBtn) treadmillExportCyclesBtn.disabled = true;
+                if (treadmillExportImagesBtn) treadmillExportImagesBtn.disabled = true;
+                showTreadmillStatus('error', `Treadmill parsing failed: ${error.message}`);
+            }
+        }
+
+        function buildTreadmillData(parsed, settings) {
+            const aliases = {
+                toe: ['toe'],
+                mtp: ['mtp'],
+                ankle: ['ankle'],
+                knee: ['knee'],
+                hip: ['hip'],
+                iliac: ['iliac crest', 'iliac_crest', 'iliac']
+            };
+            const resolved = {};
+            Object.entries(aliases).forEach(([key, options]) => {
+                const cols = {};
+                parsed.columns.forEach(col => {
+                    const name = (col.bodypart || '').trim().toLowerCase();
+                    if (options.includes(name) && ['x', 'y', 'likelihood'].includes(col.coord)) {
+                        cols[col.coord] = col.index;
+                    }
+                });
+                resolved[key] = cols;
+            });
+            Object.entries(resolved).forEach(([key, cols]) => {
+                if (!cols.x || !cols.y || !cols.likelihood) {
+                    throw new Error(`Missing treadmill columns for ${key}.`);
+                }
+            });
+
+            const absoluteFrames = parsed.rows.map((row, frameIndex) => {
+                const points = {};
+                Object.entries(resolved).forEach(([key, cols]) => {
+                    const x = parseFloat(row[cols.x]);
+                    const y = parseFloat(row[cols.y]);
+                    const likelihood = parseFloat(row[cols.likelihood]);
+                    if (Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(likelihood) && likelihood >= settings.likelihoodThreshold) {
+                        points[key] = { x, y, likelihood };
+                    }
+                });
+                return { frameIndex, points };
+            });
+
+            const normalizedPoints = absoluteFrames.map(frame => {
+                const points = frame.points;
+                if (!points.iliac || Object.keys(points).length < 6) return null;
+                const refX = points.iliac.x;
+                const refY = points.iliac.y;
+                return {
+                    toe: { x: points.toe.x - refX, y: points.toe.y - refY },
+                    mtp: { x: points.mtp.x - refX, y: points.mtp.y - refY },
+                    ankle: { x: points.ankle.x - refX, y: points.ankle.y - refY },
+                    knee: { x: points.knee.x - refX, y: points.knee.y - refY },
+                    hip: { x: points.hip.x - refX, y: points.hip.y - refY },
+                    iliac: { x: 0, y: 0 }
+                };
+            });
+
+            return { absoluteFrames, normalizedPoints };
+        }
+
+        function computeTreadmillAnalysis(data, settings) {
+            const normalized = data.normalizedPoints;
+            const validFrames = normalized.filter(Boolean).length;
+            const angleSeries = computeTreadmillAngleSeries(normalized);
+            const validFrameIndices = normalized.map((points, index) => points ? index : -1).filter(index => index >= 0);
+            const gaitData = computeGaitMetricsFromPoints(normalized) || { cycles: [], nCycles: 0, cadenceMean: NaN, strideMean: NaN, stanceMean: NaN, swingMean: NaN };
+            const cycles = gaitData.cycles.map((cycle, idx) => {
+                const toeClearance = computeCycleToeClearance(data.absoluteFrames, cycle.startFrame, cycle.endFrame);
+                return {
+                    ...cycle,
+                    index: idx + 1,
+                    toeClearance
+                };
+            });
+            const blockSummaries = computeTreadmillBlocks(cycles, settings.blockCount);
+            const summary = {
+                validFrames,
+                nCycles: cycles.length,
+                cadenceMean: gaitData.cadenceMean,
+                strideMean: gaitData.strideMean,
+                stanceMean: gaitData.stanceMean,
+                swingMean: gaitData.swingMean,
+                toeClearanceMean: meanArray(cycles.map(cycle => cycle.toeClearance))
+            };
+            return {
+                validFrames,
+                angleSeries,
+                validFrameIndices,
+                cycles,
+                blockSummaries,
+                summary,
+                bounds: computeNormalizedStickBounds(normalized)
+            };
+        }
+
+        function computeTreadmillAngleSeries(pointsList) {
+            const out = { frame: [], toe: [], ankle: [], knee: [], hip: [] };
+            pointsList.forEach((points, frameIndex) => {
+                if (!points) return;
+                out.frame.push(frameIndex);
+                out.toe.push(calculateAngle(points.toe, points.mtp, points.ankle));
+                out.ankle.push(calculateAngle(points.mtp, points.ankle, points.knee));
+                out.knee.push(calculateAngle(points.ankle, points.knee, points.hip));
+                out.hip.push(calculateAngle(points.knee, points.hip, points.iliac));
+            });
+            return out;
+        }
+
+        function computeCycleToeClearance(absoluteFrames, startFrame, endFrame) {
+            const ys = [];
+            for (let frame = startFrame; frame <= endFrame && frame < absoluteFrames.length; frame++) {
+                const y = absoluteFrames[frame]?.points?.toe?.y;
+                if (Number.isFinite(y)) ys.push(y);
+            }
+            if (!ys.length) return NaN;
+            return Math.max(...ys) - Math.min(...ys);
+        }
+
+        function computeTreadmillBlocks(cycles, blockCount) {
+            if (!cycles.length) return [];
+            const blocks = [];
+            const size = Math.ceil(cycles.length / blockCount);
+            for (let index = 0; index < blockCount; index++) {
+                const start = index * size;
+                const group = cycles.slice(start, start + size);
+                if (!group.length) continue;
+                blocks.push({
+                    label: index === 0 ? 'Early' : index === blockCount - 1 ? 'Late' : `Mid ${index}`,
+                    cadence: meanArray(group.map(cycle => cycle.cadence)),
+                    stride: meanArray(group.map(cycle => cycle.stride)),
+                    clearance: meanArray(group.map(cycle => cycle.toeClearance))
+                });
+            }
+            return blocks;
+        }
+
+        function computeNormalizedStickBounds(pointsList) {
+            const allPoints = (pointsList || []).filter(Boolean).flatMap(points => Object.values(points));
+            if (!allPoints.length) return { minX: -1, maxX: 1, minY: -1, maxY: 1 };
+            return {
+                minX: Math.min(...allPoints.map(point => point.x)),
+                maxX: Math.max(...allPoints.map(point => point.x)),
+                minY: Math.min(...allPoints.map(point => point.y)),
+                maxY: Math.max(...allPoints.map(point => point.y))
+            };
+        }
+
+        function renderTreadmillResults() {
+            if (!treadmillState || !treadmillState.analysis) {
+                renderEmptyTreadmillState();
+                return;
+            }
+            if (treadmillFrameSlider) {
+                treadmillFrameSlider.max = String(Math.max(treadmillState.data.normalizedPoints.length - 1, 0));
+                treadmillFrameSlider.value = '0';
+            }
+            updateTreadmillFrameLabel(0);
+            renderTreadmillSummary();
+            renderTreadmillPlots();
+            renderTreadmillCyclesTable();
+            updateTreadmillFramePreview(0);
+        }
+
+        function renderEmptyTreadmillState() {
+            stopTreadmillPlayback();
+            if (treadmillSummary) treadmillSummary.innerHTML = '<p class="text-sm text-slate-500">Upload a treadmill CSV to compute continuous gait metrics.</p>';
+            if (treadmillAnglesPlot) Plotly.purge(treadmillAnglesPlot);
+            if (treadmillCyclesPlot) Plotly.purge(treadmillCyclesPlot);
+            if (treadmillBlocksPlot) Plotly.purge(treadmillBlocksPlot);
+            if (treadmillCyclesBody) treadmillCyclesBody.innerHTML = '<tr><td colspan="7" class="px-3 py-8 text-center text-gray-400">Upload a treadmill CSV to begin</td></tr>';
+            clearTreadmillCanvas();
+            if (treadmillFrameSlider) {
+                treadmillFrameSlider.max = '0';
+                treadmillFrameSlider.value = '0';
+            }
+            updateTreadmillFrameLabel(0);
+            if (treadmillVideoStatus) treadmillVideoStatus.textContent = '';
+        }
+
+        function renderTreadmillSummary() {
+            const { summary, blockSummaries } = treadmillState.analysis;
+            treadmillSummary.innerHTML = `
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Valid Frames</div><div class="text-xl font-semibold">${summary.validFrames}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Cycles</div><div class="text-xl font-semibold">${summary.nCycles}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Cadence</div><div class="text-xl font-semibold">${formatMaybeNumber(summary.cadenceMean, 1)}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Stride Proxy</div><div class="text-xl font-semibold">${formatMaybeNumber(summary.strideMean, 1)}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Toe Clearance</div><div class="text-xl font-semibold">${formatMaybeNumber(summary.toeClearanceMean, 1)}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Blocks</div><div class="text-xl font-semibold">${blockSummaries.length}</div></div>
+                </div>
+            `;
+        }
+
+        function renderTreadmillPlots() {
+            const { angleSeries, cycles, blockSummaries } = treadmillState.analysis;
+            const colors = getTreadmillColors();
+            const bg = getTreadmillBackgroundColor();
+
+            Plotly.newPlot(treadmillAnglesPlot, [
+                {
+                    y: angleSeries.toe.filter(Number.isFinite),
+                    type: 'violin',
+                    name: 'Toe/MTP',
+                    points: false,
+                    fillcolor: colors.toe,
+                    line: { color: colors.toe, width: 1.5 },
+                    box: { visible: true, fillcolor: '#ffffff', line: { color: '#111827' } },
+                    meanline: { visible: true }
+                },
+                {
+                    y: angleSeries.ankle.filter(Number.isFinite),
+                    type: 'violin',
+                    name: 'Ankle',
+                    points: false,
+                    fillcolor: colors.ankle,
+                    line: { color: colors.ankle, width: 1.5 },
+                    box: { visible: true, fillcolor: '#ffffff', line: { color: '#111827' } },
+                    meanline: { visible: true }
+                },
+                {
+                    y: angleSeries.knee.filter(Number.isFinite),
+                    type: 'violin',
+                    name: 'Knee',
+                    points: false,
+                    fillcolor: colors.knee,
+                    line: { color: colors.knee, width: 1.5 },
+                    box: { visible: true, fillcolor: '#ffffff', line: { color: '#111827' } },
+                    meanline: { visible: true }
+                },
+                {
+                    y: angleSeries.hip.filter(Number.isFinite),
+                    type: 'violin',
+                    name: 'Hip',
+                    points: false,
+                    fillcolor: colors.hip,
+                    line: { color: colors.hip, width: 1.5 },
+                    box: { visible: true, fillcolor: '#ffffff', line: { color: '#111827' } },
+                    meanline: { visible: true }
+                }
+            ], {
+                title: { text: 'Joint Angle Distribution (Violin + Box)' },
+                xaxis: { title: 'Joint' },
+                yaxis: { title: 'Angle (deg)' },
+                paper_bgcolor: bg,
+                plot_bgcolor: bg,
+                margin: { l: 60, r: 20, b: 60, t: 50 }
+            }, { responsive: true });
+
+            Plotly.newPlot(treadmillCyclesPlot, [
+                { x: cycles.map(cycle => cycle.index), y: cycles.map(cycle => cycle.cadence), type: 'scatter', mode: 'lines+markers', name: 'Cadence', line: { color: colors.toe, width: 2 } },
+                { x: cycles.map(cycle => cycle.index), y: cycles.map(cycle => cycle.stride), type: 'scatter', mode: 'lines+markers', name: 'Stride', line: { color: colors.ankle, width: 2 } },
+                { x: cycles.map(cycle => cycle.index), y: cycles.map(cycle => cycle.toeClearance), type: 'scatter', mode: 'lines+markers', name: 'Toe Clearance', line: { color: colors.knee, width: 2 } }
+            ], {
+                title: { text: 'Per-Cycle Treadmill Trends' },
+                xaxis: { title: 'Cycle' },
+                yaxis: { title: 'Metric Value' },
+                paper_bgcolor: bg,
+                plot_bgcolor: bg,
+                margin: { l: 60, r: 20, b: 60, t: 50 }
+            }, { responsive: true });
+
+            Plotly.newPlot(treadmillBlocksPlot, [
+                { x: blockSummaries.map(block => block.label), y: blockSummaries.map(block => block.cadence), type: 'bar', name: 'Cadence', marker: { color: colors.toe } },
+                { x: blockSummaries.map(block => block.label), y: blockSummaries.map(block => block.stride), type: 'bar', name: 'Stride', marker: { color: colors.ankle } },
+                { x: blockSummaries.map(block => block.label), y: blockSummaries.map(block => block.clearance), type: 'bar', name: 'Toe Clearance', marker: { color: colors.knee } }
+            ], {
+                title: { text: 'Early / Mid / Late Treadmill Comparison' },
+                barmode: 'group',
+                xaxis: { title: 'Run Block' },
+                yaxis: { title: 'Mean Value' },
+                paper_bgcolor: bg,
+                plot_bgcolor: bg,
+                margin: { l: 60, r: 20, b: 60, t: 50 }
+            }, { responsive: true });
+        }
+
+        function renderTreadmillCyclesTable() {
+            const rows = treadmillState.analysis.cycles.map(cycle => `
+                <tr class="border-b border-slate-100">
+                    <td class="px-3 py-2 text-left">${cycle.index}</td>
+                    <td class="px-3 py-2 text-right">${cycle.startFrame}</td>
+                    <td class="px-3 py-2 text-right">${cycle.endFrame}</td>
+                    <td class="px-3 py-2 text-right">${formatMaybeNumber(cycle.stepTime, 3)}</td>
+                    <td class="px-3 py-2 text-right">${formatMaybeNumber(cycle.cadence, 2)}</td>
+                    <td class="px-3 py-2 text-right">${formatMaybeNumber(cycle.stride, 2)}</td>
+                    <td class="px-3 py-2 text-right">${formatMaybeNumber(cycle.toeClearance, 2)}</td>
+                </tr>
+            `).join('');
+            treadmillCyclesBody.innerHTML = rows || '<tr><td colspan="7" class="px-3 py-8 text-center text-gray-400">No cycles detected with the current settings.</td></tr>';
+        }
+
+        function drawTreadmillFrame(frameIndex = 0) {
+            if (!treadmillCanvas || !treadmillState?.data?.normalizedPoints) return;
+            const ctx = treadmillCanvas.getContext('2d');
+            const width = treadmillCanvas.width;
+            const height = treadmillCanvas.height;
+            const footerHeight = 56;
+            const plotBottom = height - footerHeight;
+            const padding = 46;
+            const points = treadmillState.data.normalizedPoints[Math.max(0, Math.min(frameIndex, treadmillState.data.normalizedPoints.length - 1))];
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = getTreadmillBackgroundColor();
+            ctx.fillRect(0, 0, width, height);
+            if (!points) {
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '16px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Frame unavailable for drawing', width / 2, height / 2);
+                return;
+            }
+            const bounds = treadmillState.analysis.bounds;
+            const scale = Math.min((width - padding * 2) / (bounds.maxX - bounds.minX || 1), (plotBottom - padding * 2) / (bounds.maxY - bounds.minY || 1)) * 0.85;
+            const offsetX = width / 2 - ((bounds.maxX + bounds.minX) / 2) * scale;
+            const offsetY = (plotBottom / 2) - ((bounds.maxY + bounds.minY) / 2) * scale;
+            const colors = {
+                toe: getTreadmillColors().toe,
+                mtp: '#f97316',
+                ankle: getTreadmillColors().ankle,
+                knee: getTreadmillColors().knee,
+                hip: getTreadmillColors().hip,
+                iliac: '#8b5cf6'
+            };
+            drawStickFigure(ctx, points, scale, offsetX, offsetY, null, 4, colors, 8);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, plotBottom, width, footerHeight);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.beginPath();
+            ctx.moveTo(0, plotBottom);
+            ctx.lineTo(width, plotBottom);
+            ctx.stroke();
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 18px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('Treadmill Stick Player', 16, plotBottom + 22);
+            ctx.font = '14px Inter, sans-serif';
+            ctx.fillStyle = '#475569';
+            ctx.fillText(`Frame ${frameIndex} / ${Math.max(treadmillState.data.normalizedPoints.length - 1, 0)}`, 16, plotBottom + 42);
+            ctx.textAlign = 'right';
+            ctx.fillText(`Cycles detected: ${treadmillState.analysis.cycles.length}`, width - 16, plotBottom + 22);
+            ctx.fillText(`Continuous hindlimb kinematics`, width - 16, plotBottom + 42);
+        }
+
+        function getNearestValidTreadmillFrame(frameIndex = 0) {
+            const validFrames = treadmillState?.analysis?.validFrameIndices || [];
+            if (!validFrames.length) return 0;
+            let best = validFrames[0];
+            let bestDistance = Math.abs(best - frameIndex);
+            for (const candidate of validFrames) {
+                const distance = Math.abs(candidate - frameIndex);
+                if (distance < bestDistance) {
+                    best = candidate;
+                    bestDistance = distance;
+                }
+            }
+            return best;
+        }
+
+        function getNextValidTreadmillFrame(currentFrame = 0) {
+            const validFrames = treadmillState?.analysis?.validFrameIndices || [];
+            if (!validFrames.length) return 0;
+            const next = validFrames.find(frame => frame > currentFrame);
+            return Number.isFinite(next) ? next : validFrames[0];
+        }
+
+        function clearTreadmillCanvas() {
+            if (!treadmillCanvas) return;
+            const ctx = treadmillCanvas.getContext('2d');
+            ctx.clearRect(0, 0, treadmillCanvas.width, treadmillCanvas.height);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, treadmillCanvas.width, treadmillCanvas.height);
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '16px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Upload treadmill data to preview motion', treadmillCanvas.width / 2, treadmillCanvas.height / 2);
+        }
+
+        function updateTreadmillFrameLabel(frameIndex) {
+            if (treadmillFrameLabel) treadmillFrameLabel.textContent = `Frame ${frameIndex}`;
+        }
+
+        function updateTreadmillFramePreview(frameIndex) {
+            if (!treadmillState?.data?.normalizedPoints) return;
+            const bounded = getNearestValidTreadmillFrame(Math.max(0, Math.min(frameIndex, treadmillState.data.normalizedPoints.length - 1)));
+            if (treadmillFrameSlider) treadmillFrameSlider.value = String(bounded);
+            updateTreadmillFrameLabel(bounded);
+            drawTreadmillFrame(bounded);
+        }
+
+        function startTreadmillPlayback() {
+            if (!treadmillState?.data?.normalizedPoints?.length) return;
+            stopTreadmillPlayback();
+            let pointer = getNearestValidTreadmillFrame(parseInt(treadmillFrameSlider?.value || '0', 10));
+            updateTreadmillFramePreview(pointer);
+            treadmillPlaybackInterval = setInterval(() => {
+                pointer = getNextValidTreadmillFrame(pointer);
+                updateTreadmillFramePreview(pointer);
+            }, Math.max(40, Math.round(1000 / Math.max(5, treadmillState.settings.fps))));
+        }
+
+        function stopTreadmillPlayback() {
+            if (treadmillPlaybackInterval) {
+                clearInterval(treadmillPlaybackInterval);
+                treadmillPlaybackInterval = null;
+            }
+        }
+
+        function downloadTreadmillVideo() {
+            if (!treadmillCanvas || !treadmillState?.data?.normalizedPoints?.length) {
+                if (treadmillVideoStatus) treadmillVideoStatus.textContent = 'Load treadmill data before exporting video.';
+                return;
+            }
+            if (typeof MediaRecorder === 'undefined') {
+                if (treadmillVideoStatus) treadmillVideoStatus.textContent = 'Browser does not support video export.';
+                return;
+            }
+            const preferredMimeTypes = ['video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+            let supportedMime = null;
+            for (const type of preferredMimeTypes) {
+                if (!MediaRecorder.isTypeSupported || MediaRecorder.isTypeSupported(type)) {
+                    supportedMime = type;
+                    break;
+                }
+            }
+            if (!supportedMime) {
+                if (treadmillVideoStatus) treadmillVideoStatus.textContent = 'Video format not supported in this browser.';
+                return;
+            }
+            let stream;
+            try {
+                stream = treadmillCanvas.captureStream(Math.max(5, treadmillState.settings.fps));
+            } catch (error) {
+                console.error(error);
+                if (treadmillVideoStatus) treadmillVideoStatus.textContent = 'Canvas capture not supported.';
+                return;
+            }
+            let recorder;
+            try {
+                recorder = new MediaRecorder(stream, { mimeType: supportedMime });
+            } catch (error) {
+                console.error(error);
+                if (treadmillVideoStatus) treadmillVideoStatus.textContent = 'MediaRecorder initialization failed.';
+                return;
+            }
+            const chunks = [];
+            let pointer = 0;
+            let timer = null;
+            recorder.ondataavailable = (event) => {
+                if (event.data && event.data.size > 0) chunks.push(event.data);
+            };
+            recorder.onstop = () => {
+                if (timer) clearInterval(timer);
+                const blob = new Blob(chunks, { type: supportedMime });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `treadmill_sequence.${supportedMime.includes('mp4') ? 'mp4' : 'webm'}`;
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(url), 500);
+                updateTreadmillFramePreview(0);
+                if (treadmillVideoStatus) treadmillVideoStatus.textContent = 'Treadmill video downloaded.';
+            };
+            recorder.start();
+            if (treadmillVideoStatus) treadmillVideoStatus.textContent = 'Recording treadmill video...';
+            pointer = getNearestValidTreadmillFrame(0);
+            timer = setInterval(() => {
+                drawTreadmillFrame(pointer);
+                const nextPointer = getNextValidTreadmillFrame(pointer);
+                if (nextPointer === treadmillState.analysis.validFrameIndices[0] && pointer !== nextPointer) {
+                    clearInterval(timer);
+                    timer = null;
+                    setTimeout(() => recorder.stop(), 250);
+                    return;
+                }
+                pointer = nextPointer;
+            }, Math.max(40, Math.round(1000 / Math.max(5, treadmillState.settings.fps))));
+        }
+
+        function exportTreadmillCyclesCsv() {
+            if (!treadmillState?.analysis?.cycles?.length) return;
+            const lines = ['cycle,start_frame,end_frame,duration_sec,cadence,stride,toe_clearance'];
+            treadmillState.analysis.cycles.forEach(cycle => {
+                lines.push([cycle.index, cycle.startFrame, cycle.endFrame, cycle.stepTime, cycle.cadence, cycle.stride, cycle.toeClearance].join(','));
+            });
+            const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = 'treadmill_cycles.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        async function exportTreadmillImages() {
+            if (!treadmillState?.analysis) return;
+            const dpi = parseInt(document.getElementById('treadmillDpi')?.value || '300', 10);
+            const targets = [
+                { div: treadmillAnglesPlot, name: 'treadmill_angles' },
+                { div: treadmillCyclesPlot, name: 'treadmill_cycles' },
+                { div: treadmillBlocksPlot, name: 'treadmill_blocks' }
+            ];
+            for (const target of targets) {
+                try {
+                    const dataUrl = await Plotly.toImage(target.div, { format: 'png', width: 8 * dpi, height: 5 * dpi });
+                    const link = document.createElement('a');
+                    link.href = dataUrl;
+                    link.download = `${target.name}_${dpi}dpi.png`;
+                    link.click();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+
+        function showTreadmillStatus(type, message) {
+            if (!treadmillStatus) return;
+            treadmillStatus.className = `mt-4 status ${type}`;
+            treadmillStatus.textContent = message;
+        }
+
+        function getCatWalkSettings() {
+            return {
+                likelihoodThreshold: parseFloat(document.getElementById('catWalkLikelihood')?.value || '0.5'),
+                speedThreshold: parseFloat(document.getElementById('catWalkSpeedThreshold')?.value || '8'),
+                minFrames: Math.max(1, parseInt(document.getElementById('catWalkMinFrames')?.value || '3', 10))
+            };
+        }
+
+        function getCatWalkColors() {
+            return {
+                rf: document.getElementById('catWalkColorRF')?.value || '#ef4444',
+                lf: document.getElementById('catWalkColorLF')?.value || '#3b82f6',
+                rh: document.getElementById('catWalkColorRH')?.value || '#10b981',
+                lh: document.getElementById('catWalkColorLH')?.value || '#f59e0b'
+            };
+        }
+
+        function processCatWalkFile(file) {
+            if (!file || !file.name.toLowerCase().endsWith('.csv')) {
+                showCatWalkStatus('error', 'Please select a valid Cat Walk CSV file.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => analyzeCatWalkCsv(e.target.result, file.name || 'uploaded');
+            reader.readAsText(file);
+        }
+
+        function reanalyzeCatWalk() {
+            if (!catWalkState || !catWalkState.rawCsvText) return;
+            analyzeCatWalkCsv(catWalkState.rawCsvText, catWalkState.label || 'current-catwalk');
+        }
+
+        function analyzeCatWalkCsv(csvText, label = '') {
+            try {
+                const settings = getCatWalkSettings();
+                const parsed = parseDlcMultiHeaderCsv(csvText);
+                const data = buildCatWalkData(parsed, settings);
+                const analysis = computeCatWalkAnalysis(data.frames, settings);
+                catWalkState = {
+                    rawCsvText: csvText,
+                    label: label || 'current-catwalk',
+                    settings,
+                    data,
+                    analysis
+                };
+                renderCatWalkResults();
+                if (catWalkExportBtn) catWalkExportBtn.disabled = false;
+                showCatWalkStatus('success', `Cat Walk file loaded: ${analysis.totalContacts} contact windows, ${analysis.strideLengthRows.length} stride lengths, ${analysis.strideWidthRows.length} stride widths.`);
+            } catch (error) {
+                console.error(error);
+                catWalkState = null;
+                renderEmptyCatWalkState();
+                if (catWalkExportBtn) catWalkExportBtn.disabled = true;
+                showCatWalkStatus('error', `Cat Walk parsing failed: ${error.message}`);
+            }
+        }
+
+        function buildCatWalkData(parsed, settings) {
+            const paws = ['rf', 'lf', 'rh', 'lh'];
+            const columns = {};
+            paws.forEach(paw => { columns[paw] = {}; });
+            parsed.columns.forEach(col => {
+                const name = (col.bodypart || '').trim().toLowerCase();
+                if (paws.includes(name) && ['x', 'y', 'likelihood'].includes(col.coord)) {
+                    columns[name][col.coord] = col.index;
+                }
+            });
+            paws.forEach(paw => {
+                if (!columns[paw].x || !columns[paw].y || !columns[paw].likelihood) {
+                    throw new Error(`Missing Cat Walk columns for ${paw}.`);
+                }
+            });
+            const frames = parsed.rows.map((row, frameIndex) => {
+                const points = {};
+                paws.forEach(paw => {
+                    const x = parseFloat(row[columns[paw].x]);
+                    const y = parseFloat(row[columns[paw].y]);
+                    const likelihood = parseFloat(row[columns[paw].likelihood]);
+                    points[paw] = Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(likelihood) && likelihood >= settings.likelihoodThreshold
+                        ? { x, y, likelihood }
+                        : null;
+                });
+                return { frameIndex, points };
+            });
+            return { frames, paws };
+        }
+
+        function computeCatWalkAnalysis(frames, settings) {
+            const paws = ['rf', 'lf', 'rh', 'lh'];
+            const colors = getCatWalkColors();
+            const contactsByPaw = {};
+            const allContacts = [];
+            paws.forEach(paw => {
+                const sequence = frames.map(frame => ({ frameIndex: frame.frameIndex, point: frame.points[paw] }));
+                const contacts = detectCatWalkContacts(sequence, settings).map((contact, index) => ({
+                    ...contact,
+                    paw,
+                    index: index + 1,
+                    color: colors[paw]
+                }));
+                contactsByPaw[paw] = contacts;
+                allContacts.push(...contacts);
+            });
+            const axis = estimateCatWalkAxis(allContacts);
+            const projectedContactsByPaw = {};
+            paws.forEach(paw => {
+                projectedContactsByPaw[paw] = contactsByPaw[paw].map(contact => {
+                    const projected = projectPointOntoCatWalkAxis(contact.centerX, contact.centerY, axis);
+                    return { ...contact, along: projected.along, lateral: projected.lateral };
+                }).sort((a, b) => a.along - b.along);
+            });
+            const strideLengthRows = [];
+            paws.forEach(paw => {
+                const contacts = projectedContactsByPaw[paw];
+                for (let i = 1; i < contacts.length; i++) {
+                    strideLengthRows.push({
+                        metric: 'Stride Length',
+                        group: paw.toUpperCase(),
+                        index: i,
+                        value: Math.abs(contacts[i].along - contacts[i - 1].along)
+                    });
+                }
+            });
+            const strideWidthRows = [
+                ...computeCatWalkPairWidths(projectedContactsByPaw.rf, projectedContactsByPaw.lf, 'Fore Width'),
+                ...computeCatWalkPairWidths(projectedContactsByPaw.rh, projectedContactsByPaw.lh, 'Hind Width')
+            ];
+            return {
+                paws,
+                colors,
+                totalContacts: allContacts.length,
+                axis,
+                contactsByPaw: projectedContactsByPaw,
+                strideLengthRows,
+                strideWidthRows
+            };
+        }
+
+        function detectCatWalkContacts(sequence, settings) {
+            const contacts = [];
+            let current = null;
+            for (let i = 0; i < sequence.length; i++) {
+                const entry = sequence[i];
+                const prev = i > 0 ? sequence[i - 1] : null;
+                const point = entry.point;
+                let speed = Infinity;
+                if (point && prev?.point) {
+                    speed = Math.hypot(point.x - prev.point.x, point.y - prev.point.y);
+                }
+                const isContact = Boolean(point) && (i === 0 || !Number.isFinite(speed) || speed <= settings.speedThreshold);
+                if (isContact) {
+                    if (!current) {
+                        current = { startFrame: entry.frameIndex, endFrame: entry.frameIndex, points: [point] };
+                    } else {
+                        current.endFrame = entry.frameIndex;
+                        current.points.push(point);
+                    }
+                } else if (current) {
+                    if ((current.endFrame - current.startFrame + 1) >= settings.minFrames) {
+                        contacts.push(finalizeCatWalkContact(current));
+                    }
+                    current = null;
+                }
+            }
+            if (current && (current.endFrame - current.startFrame + 1) >= settings.minFrames) {
+                contacts.push(finalizeCatWalkContact(current));
+            }
+            return contacts;
+        }
+
+        function finalizeCatWalkContact(contact) {
+            return {
+                startFrame: contact.startFrame,
+                endFrame: contact.endFrame,
+                frameCount: contact.endFrame - contact.startFrame + 1,
+                centerX: meanArray(contact.points.map(point => point.x)),
+                centerY: meanArray(contact.points.map(point => point.y))
+            };
+        }
+
+        function estimateCatWalkAxis(contacts) {
+            const xs = contacts.map(contact => contact.centerX).filter(Number.isFinite);
+            const ys = contacts.map(contact => contact.centerY).filter(Number.isFinite);
+            const meanX = meanArray(xs);
+            const meanY = meanArray(ys);
+            let covXX = 0, covYY = 0, covXY = 0;
+            for (let i = 0; i < xs.length; i++) {
+                const dx = xs[i] - meanX;
+                const dy = ys[i] - meanY;
+                covXX += dx * dx;
+                covYY += dy * dy;
+                covXY += dx * dy;
+            }
+            const theta = 0.5 * Math.atan2(2 * covXY, covXX - covYY);
+            return {
+                originX: meanX,
+                originY: meanY,
+                ux: Math.cos(theta),
+                uy: Math.sin(theta),
+                vx: -Math.sin(theta),
+                vy: Math.cos(theta)
+            };
+        }
+
+        function projectPointOntoCatWalkAxis(x, y, axis) {
+            const dx = x - axis.originX;
+            const dy = y - axis.originY;
+            return {
+                along: dx * axis.ux + dy * axis.uy,
+                lateral: dx * axis.vx + dy * axis.vy
+            };
+        }
+
+        function computeCatWalkPairWidths(leftContacts, rightContacts, label) {
+            const rows = [];
+            const used = new Set();
+            leftContacts.forEach((leftContact, index) => {
+                let bestIdx = -1;
+                let bestDistance = Infinity;
+                rightContacts.forEach((rightContact, rightIdx) => {
+                    if (used.has(rightIdx)) return;
+                    const distance = Math.abs(leftContact.along - rightContact.along);
+                    if (distance < bestDistance) {
+                        bestDistance = distance;
+                        bestIdx = rightIdx;
+                    }
+                });
+                if (bestIdx >= 0) {
+                    used.add(bestIdx);
+                    rows.push({
+                        metric: 'Stride Width',
+                        group: label,
+                        index: index + 1,
+                        value: Math.abs(leftContact.lateral - rightContacts[bestIdx].lateral)
+                    });
+                }
+            });
+            return rows;
+        }
+
+        function renderCatWalkResults() {
+            if (!catWalkState?.analysis) {
+                renderEmptyCatWalkState();
+                return;
+            }
+            renderCatWalkSummary();
+            renderCatWalkPlots();
+            renderCatWalkMetricsTable();
+        }
+
+        function renderEmptyCatWalkState() {
+            if (catWalkSummary) catWalkSummary.innerHTML = '<p class="text-sm text-slate-500">Upload a Cat Walk CSV to compute stride length and stride width.</p>';
+            if (catWalkMapPlot) Plotly.purge(catWalkMapPlot);
+            if (catWalkStridePlot) Plotly.purge(catWalkStridePlot);
+            if (catWalkWidthPlot) Plotly.purge(catWalkWidthPlot);
+            if (catWalkMetricsBody) catWalkMetricsBody.innerHTML = '<tr><td colspan="4" class="px-3 py-8 text-center text-gray-400">Upload a Cat Walk CSV to begin</td></tr>';
+        }
+
+        function renderCatWalkSummary() {
+            const { analysis } = catWalkState;
+            catWalkSummary.innerHTML = `
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Contacts</div><div class="text-xl font-semibold">${analysis.totalContacts}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Stride Length Values</div><div class="text-xl font-semibold">${analysis.strideLengthRows.length}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Stride Width Values</div><div class="text-xl font-semibold">${analysis.strideWidthRows.length}</div></div>
+                    <div class="panel p-4 bg-slate-50"><div class="text-xs text-slate-500">Fore/Hind Width</div><div class="text-xl font-semibold">${['Fore Width','Hind Width'].filter(label => analysis.strideWidthRows.some(row => row.group === label)).length}</div></div>
+                </div>
+            `;
+        }
+
+        function renderCatWalkPlots() {
+            const { analysis } = catWalkState;
+            const mapTraces = analysis.paws.map(paw => ({
+                x: analysis.contactsByPaw[paw].map(contact => contact.along),
+                y: analysis.contactsByPaw[paw].map(contact => contact.lateral),
+                type: 'scatter',
+                mode: 'markers+text',
+                name: paw.toUpperCase(),
+                text: analysis.contactsByPaw[paw].map(contact => `${paw.toUpperCase()}${contact.index}`),
+                textposition: 'top center',
+                marker: { color: analysis.colors[paw], size: 9, line: { color: '#111827', width: 1 } }
+            }));
+            Plotly.newPlot(catWalkMapPlot, mapTraces, {
+                title: { text: 'Projected Paw Contact Map' },
+                xaxis: { title: 'Runway Length Axis' },
+                yaxis: { title: 'Runway Width Axis' },
+                margin: { l: 60, r: 20, b: 60, t: 50 }
+            }, { responsive: true });
+
+            const strideGroups = ['RF', 'LF', 'RH', 'LH'];
+            const strideTraces = strideGroups.map(group => {
+                const key = group.toLowerCase();
+                const values = analysis.strideLengthRows.filter(row => row.group === group).map(row => row.value);
+                return {
+                    y: values,
+                    type: 'violin',
+                    name: group,
+                    points: false,
+                    fillcolor: analysis.colors[key],
+                    line: { color: analysis.colors[key], width: 1.5 },
+                    box: { visible: true, fillcolor: '#ffffff', line: { color: '#111827' } },
+                    meanline: { visible: true }
+                };
+            });
+            Plotly.newPlot(catWalkStridePlot, strideTraces, {
+                title: { text: 'Stride Length Distribution' },
+                xaxis: { title: 'Paw' },
+                yaxis: { title: 'Stride Length (projected)' },
+                margin: { l: 60, r: 20, b: 60, t: 50 }
+            }, { responsive: true });
+
+            const widthColors = { 'Fore Width': '#8b5cf6', 'Hind Width': '#0f766e' };
+            const widthTraces = ['Fore Width', 'Hind Width'].map(group => ({
+                y: analysis.strideWidthRows.filter(row => row.group === group).map(row => row.value),
+                type: 'violin',
+                name: group,
+                points: false,
+                fillcolor: widthColors[group],
+                line: { color: widthColors[group], width: 1.5 },
+                box: { visible: true, fillcolor: '#ffffff', line: { color: '#111827' } },
+                meanline: { visible: true }
+            }));
+            Plotly.newPlot(catWalkWidthPlot, widthTraces, {
+                title: { text: 'Stride Width Distribution' },
+                xaxis: { title: 'Pair' },
+                yaxis: { title: 'Stride Width (projected)' },
+                margin: { l: 60, r: 20, b: 60, t: 50 }
+            }, { responsive: true });
+        }
+
+        function renderCatWalkMetricsTable() {
+            const rows = [
+                ...catWalkState.analysis.strideLengthRows,
+                ...catWalkState.analysis.strideWidthRows
+            ];
+            catWalkMetricsBody.innerHTML = rows.length ? rows.map(row => `
+                <tr class="border-b border-slate-100">
+                    <td class="px-3 py-2 text-left">${row.metric}</td>
+                    <td class="px-3 py-2 text-left">${row.group}</td>
+                    <td class="px-3 py-2 text-right">${row.index}</td>
+                    <td class="px-3 py-2 text-right">${formatMaybeNumber(row.value, 3)}</td>
+                </tr>
+            `).join('') : '<tr><td colspan="4" class="px-3 py-8 text-center text-gray-400">No stride metrics detected with the current settings.</td></tr>';
+        }
+
+        function exportCatWalkCsv() {
+            if (!catWalkState?.analysis) return;
+            const lines = ['metric,group,index,value'];
+            [...catWalkState.analysis.strideLengthRows, ...catWalkState.analysis.strideWidthRows].forEach(row => {
+                lines.push([`"${row.metric}"`, `"${row.group}"`, row.index, row.value].join(','));
+            });
+            const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = 'cat_walk_metrics.csv';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function showCatWalkStatus(type, message) {
+            if (!catWalkStatus) return;
+            catWalkStatus.className = `mt-4 status ${type}`;
+            catWalkStatus.textContent = message;
+        }
+
+        function showFootFallStatus(type, message) {
+            if (!footFallStatus) return;
+            footFallStatus.className = `mt-4 status ${type}`;
+            footFallStatus.textContent = message;
+        }
+
+        function meanArray(values) {
+            const valid = (values || []).filter(Number.isFinite);
+            return valid.length ? valid.reduce((sum, value) => sum + value, 0) / valid.length : NaN;
+        }
+
+        function percentile(values, fraction = 0.5) {
+            const valid = (values || []).filter(Number.isFinite).sort((a, b) => a - b);
+            if (!valid.length) return NaN;
+            const index = Math.max(0, Math.min(valid.length - 1, Math.round((valid.length - 1) * fraction)));
+            return valid[index];
+        }
+
+        function smoothArray(values, windowSize = 5) {
+            const source = Array.isArray(values) ? values : [];
+            const half = Math.floor(windowSize / 2);
+            return source.map((_, index) => {
+                let sum = 0;
+                let count = 0;
+                for (let offset = -half; offset <= half; offset++) {
+                    const cursor = index + offset;
+                    if (cursor >= 0 && cursor < source.length && Number.isFinite(source[cursor])) {
+                        sum += source[cursor];
+                        count += 1;
+                    }
+                }
+                return count ? sum / count : 0;
+            });
+        }
+
+        function formatMaybeNumber(value, digits = 2) {
+            return Number.isFinite(value) ? value.toFixed(digits) : 'NA';
+        }
+
         // --- All other functions (unchanged) ---
         function parseCSV(csvText, label = '') { try { setProcessing(true, 'Processing CSV file...'); currentDatasetLabel = label || 'current'; selectedFrames = []; angleDistributions = {}; sequenceFrames = []; sequenceCurrentIndex = 0; userModifiedSelection = false; stopSequencePlayback(); if (sequencePanel) sequencePanel.classList.add('hidden'); const lines = csvText.split('\n').filter(line => line.trim()); if (lines.length < 3) throw new Error("CSV must have at least 3 rows."); const dataLines = lines.slice(2); csvData = dataLines.map(line => line.split(',')); __gaitCache = null; __gaitComputedFor = null; processData(); calculateAllAngles(); showStatus('success', `File loaded! ${csvData.length} frames detected.`); downloadBtn.disabled = false; generateInteractivePlot(); } catch (error) { showStatus('error', 'Error parsing CSV: ' + error.message); csvData = null; currentDatasetLabel = 'current'; downloadBtn.disabled = true; } finally { setProcessing(false); } }
         function generateInteractivePlot() { if (!csvData) return; ensureDefaultSelections(sequenceFrames); const { canvas, plotContext } = generatePlotCanvas({ isForDownload: false }); displayResults(canvas, plotContext); updateSequencePlayer({ forceAuto: sequenceFrames.length === 0 }); }
@@ -2769,5 +5308,15 @@ setInterval(()=>{
     }
 }, 1200);
 </script>
+<footer class="site-footer">
+    <div class="site-footer-inner">
+        <p>Developed by Manoj Kumar · <a href="https://github.com/mano2991" target="_blank" rel="noopener noreferrer">github.com/mano2991</a></p>
+        <div class="site-footer-meta">
+            <span>&copy; 2026 Manoj Kumar</span>
+            <span>KiMA</span>
+            <span>Licensed under the MIT License</span>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

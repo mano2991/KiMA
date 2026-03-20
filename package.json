@@ -2,12 +2,12 @@
   "name": "kima-gait-analysis",
   "version": "1.0.0",
   "description": "KiMA - Kinematics Motion Analysis for Spinal Cord Injury models",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "start": "webpack serve --mode development",
+    "start": "webpack serve --mode development --port 8282",
     "build": "webpack --mode production",
     "dev": "webpack --mode development --watch",
-    "serve": "python -m http.server 8000"
+    "serve": "python3 -m http.server 8282 -d dist"
   },
   "keywords": [
     "gait-analysis",

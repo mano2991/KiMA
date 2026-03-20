@@ -16,7 +16,12 @@ module.exports = {
         directory: path.join(__dirname, 'dist'),
       },
       {
-        directory: path.join(__dirname),
+        directory: path.join(__dirname, 'legacy'),
+        publicPath: '/legacy',
+      },
+      {
+        directory: path.join(__dirname, 'samples'),
+        publicPath: '/samples',
       },
     ],
     compress: true,
@@ -57,9 +62,8 @@ module.exports = {
           to: 'images',
         },
         {
-          from: '*.csv',
-          to: '[name][ext]',
-          context: path.resolve(__dirname),
+          from: 'samples/csv',
+          to: 'samples/csv',
         },
       ],
     }),
