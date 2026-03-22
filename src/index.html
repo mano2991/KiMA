@@ -55,6 +55,13 @@
         }
 
         .container { max-width: 1600px; }
+        .marketing-shell {
+            max-width: min(1760px, calc(100vw - 2rem));
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+        }
         .hidden { display: none; }
 
         .panel {
@@ -283,16 +290,30 @@
         }
 
         .hero-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
             border-radius: 1.75rem;
-            padding: 2.5rem;
+            width: 100%;
+            padding: 2rem 1rem;
             background:
                 linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.9)),
                 linear-gradient(135deg, #1e293b, #475569);
             color: #f8fafc;
             box-shadow: 0 24px 48px rgba(15, 23, 42, 0.14);
+            text-align: left;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-panel {
+                padding: 2.35rem 1.2rem;
+            }
         }
 
         .hero-kicker {
+            display: block;
+            width: 100%;
+            margin: 0;
             font-size: 0.8rem;
             font-weight: 700;
             letter-spacing: 0.28em;
@@ -303,6 +324,21 @@
         .hero-panel .hero-subtitle {
             color: #f8fafc;
             opacity: 0.86;
+        }
+
+        .hero-copy-stack {
+            display: grid;
+            gap: 0.85rem;
+            margin-top: 1.15rem;
+        }
+
+        .hero-copy {
+            margin: 0;
+            padding: 0;
+            font-size: 1.05rem;
+            line-height: 1.72;
+            color: rgba(248, 250, 252, 0.88);
+            text-align: left;
         }
 
         .doc-grid {
@@ -704,22 +740,33 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
-            display: inline-block;
+            display: block;
             font-weight: 800;
         }
 
         .hero-heading {
+            display: block;
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
             font-size: clamp(2.75rem, 5vw, 4.5rem);
             font-weight: 800;
             line-height: 1.1;
             letter-spacing: -0.02em;
+            text-indent: 0;
         }
 
         .hero-subtitle {
+            display: block;
+            width: 100%;
             font-size: 1.1rem;
             color: var(--muted);
-            max-width: 800px;
-            margin: 1.25rem auto 0;
+            max-width: none;
+            margin: 1.25rem 0 0;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0;
+            text-indent: 0;
             font-weight: 400;
             line-height: 1.7;
         }
@@ -981,7 +1028,7 @@
     </style>
 </head>
 <body>
-    <div id="homeSection" class="container mx-auto my-10 px-6">
+    <div id="homeSection" class="marketing-shell my-10">
         <div class="top-nav mb-8">
             <div class="nav-brand">
                 <span class="nav-brand-title">KiMA</span>
@@ -1001,8 +1048,10 @@
         <div class="hero-panel mb-8">
             <p class="hero-kicker">KiMA</p>
             <h1 class="hero-heading brand-gradient mt-3">Kinematics motion analysis for locomotor recovery studies</h1>
-            <p class="hero-subtitle mt-4 max-w-4xl">KiMA is an integrated platform for gait analysis in locomotor recovery studies. It brings ladder and rung analysis, foot fall, CatWalk, treadmill, batch comparison, and PCA into one environment.</p>
-            <p class="hero-subtitle max-w-4xl">Use the Manual page for structured guidance and screenshots. Use the Tools page to open the analysis modules directly.</p>
+            <div class="hero-copy-stack">
+                <p class="hero-copy">KiMA is an integrated platform for gait analysis in locomotor recovery studies. It brings ladder and rung analysis, foot fall, CatWalk, treadmill, batch comparison, and PCA into one environment.</p>
+                <p class="hero-copy">Use the Manual page for structured guidance and screenshots. Use the Tools page to open the analysis modules directly.</p>
+            </div>
         </div>
 
         <div class="panel rounded-2xl p-6 mt-8">
@@ -1013,7 +1062,7 @@
                     <p>The platform is particularly relevant to spinal cord injury locomotor studies, where investigators may need to examine individual runs, compare multiple animals, inspect paw-placement patterns, evaluate treadmill behavior, and prepare figures and summary tables for downstream analysis.</p>
                     <p>Rather than forcing all experiments into one generic pipeline, KiMA organizes the work into dedicated modules. This structure makes the workflow clearer, preserves experiment-specific logic, and reduces the risk of using the wrong analysis path for a dataset.</p>
                     <p>The current version includes ladder and rung hindlimb analysis, foot-fall assessment, CatWalk stride geometry, treadmill cycle analysis, and multi-sample workflows with PCA continuation.</p>
-                    <p>For detailed instructions, labeling requirements, screenshots, and tool-specific guidance, use the <strong>Manual</strong> page. For direct analysis, use the <strong>Tools</strong> page.</p>
+                    <p>For detailed instructions, labeling requirements, screenshots, and tool-specific guidance, use the <a href="#" class="text-blue-600 hover:underline font-semibold" data-section-target="manualSection">Manual</a> page. For direct analysis, use the <a href="#" class="text-blue-600 hover:underline font-semibold" data-section-target="toolsHubSection">Tools</a> page.</p>
                 </div>
                 <div class="space-y-4">
                     <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -1034,7 +1083,7 @@
     </div>
 
     <div id="toolsHubSection" class="hidden">
-        <div class="container mx-auto my-10 px-6">
+        <div class="marketing-shell my-10">
         <div class="top-nav mb-8">
             <div class="nav-brand">
                 <span class="nav-brand-title">KiMA</span>
@@ -1055,7 +1104,9 @@
             <div class="hero-panel mb-8">
                 <p class="hero-kicker">KiMA Tools</p>
                 <h1 class="hero-heading brand-gradient mt-3">Choose an analysis module</h1>
-                <p class="hero-subtitle mt-4 max-w-4xl">Open the tool that matches your experiment design. KiMA keeps the modules separate so the analysis stays clean for each data type.</p>
+                <div class="hero-copy-stack">
+                    <p class="hero-copy">Open the tool that matches your experiment design. KiMA keeps the modules separate so the analysis stays clean for each data type.</p>
+                </div>
             </div>
 
             <div class="panel rounded-2xl p-6 mb-8">
@@ -1098,7 +1149,7 @@
     </div>
 
     <div id="manualSection" class="hidden">
-        <div class="container mx-auto my-10 px-6">
+        <div class="marketing-shell my-10">
             <div class="top-nav mb-8">
                 <div class="nav-brand">
                     <span class="nav-brand-title">KiMA</span>
@@ -1119,8 +1170,10 @@
             <div class="hero-panel mb-8">
                 <p class="hero-kicker">Manual</p>
                 <h1 class="hero-heading brand-gradient mt-3">How to use KiMA</h1>
-                <p class="hero-subtitle mt-4">KiMA is organized by experiment type. The safest workflow is: choose the correct module, confirm the DeepLabCut labels, upload the CSV, review the plots and videos, then export the outputs you need.</p>
-                <p class="hero-subtitle">This manual is meant to work like a small read-the-docs page inside the app, so users can understand what each module expects, what it calculates, and how to read the output.</p>
+                <div class="hero-copy-stack">
+                    <p class="hero-copy">KiMA is organized by experiment type. The safest workflow is: choose the correct module, confirm the DeepLabCut labels, upload the CSV, review the plots and videos, then export the outputs you need.</p>
+                    <p class="hero-copy">This manual is meant to work like a small read-the-docs page inside the app, so users can understand what each module expects, what it calculates, and how to read the output.</p>
+                </div>
             </div>
 
             <div class="panel rounded-2xl p-6 mb-8">
@@ -2457,7 +2510,12 @@
                 catWalkFile.addEventListener('change', (e) => processCatWalkFile(e.target.files[0]));
             }
             document.querySelectorAll('[data-section-target]').forEach(card => {
-                card.addEventListener('click', () => showSection(card.dataset.sectionTarget));
+                card.addEventListener('click', (event) => {
+                    if (card.tagName === 'A') {
+                        event.preventDefault();
+                    }
+                    showSection(card.dataset.sectionTarget);
+                });
             });
             document.querySelectorAll('[data-back-home]').forEach(btn => {
                 btn.addEventListener('click', () => showSection('homeSection'));
