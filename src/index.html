@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KiMA - kinematics Motion Analysis for SCI</title>
+    <title>KiMA — Gait Analysis Suite</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M18 16h8v14l13-14h10L34.5 31.2 50 48H39.4L28 35.2V48h-10z' fill='%23f8fafc'/%3E%3C/svg%3E">
     <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pca-js@1.0.3/dist/pca.min.js"></script>
@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Legacy compat — kept for inline tailwind classes that reference old vars */
         :root {
             --bg: #f5f7fa;
             --text: #1a202c;
@@ -165,12 +166,12 @@
             opacity: 0.6;
         }
 
-        .btn-success {
+        .btn-secondary {
             background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
             box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
         }
 
-        .btn-success:hover {
+        .btn-secondary:hover {
             background: linear-gradient(135deg, var(--success-dark) 0%, #065f46 100%);
             box-shadow: 0 8px 16px rgba(16, 185, 129, 0.25);
         }
@@ -222,31 +223,7 @@
             border-color: rgba(71, 85, 105, 0.5);
         }
 
-        .nav-brand {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 2.5rem;
-            line-height: 1.15;
-        }
-
-        .nav-brand-title {
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #0f172a;
-        }
-
-        .nav-brand-subtitle {
-            font-size: 0.75rem;
-            color: var(--muted);
-            min-height: 0.9rem;
-        }
-
-        body.theme-dark .nav-brand-title {
-            color: #f8fafc;
-        }
+        /* nav-brand styles moved to main.css */
 
         .nav-links {
             display: flex;
@@ -482,57 +459,7 @@
             border-color: #374151;
         }
 
-        .dpi-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 4px;
-            border-radius: 999px;
-            background: #dbe4f0;
-            outline: none;
-            box-shadow: none;
-        }
-
-        .dpi-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            border: 2px solid var(--primary);
-            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
-            transition: all 0.2s ease;
-        }
-
-        .dpi-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.08);
-            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.22);
-        }
-
-        .dpi-slider::-moz-range-track {
-            height: 4px;
-            border-radius: 999px;
-            background: #dbe4f0;
-        }
-
-        .dpi-slider::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            border: 2px solid var(--primary);
-            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
-        }
-
-        .slider-container {
-            position: relative;
-            margin: 0.75rem 0;
-            max-width: 180px;
-            width: 100%;
-        }
+        /* slider styles moved to main.css */
 
         .slider-labels {
             display: flex;
@@ -951,23 +878,7 @@
             color: #15803d;
         }
 
-        body.theme-dark table {
-            background: #ffffff;
-            color: #1a202c;
-        }
-
-        body.theme-dark thead {
-            background: #f3f4f6;
-            color: #1f2937;
-        }
-
-        body.theme-dark tbody tr {
-            border-color: #e5e7eb;
-        }
-
-        body.theme-dark tbody tr:hover {
-            background: #f9fafb;
-        }
+        /* dark mode table styles moved to main.css */
 
         body.theme-dark .tab-header {
             border-color: #e5e7eb;
@@ -1028,213 +939,335 @@
     </style>
 </head>
 <body>
-    <div id="homeSection" class="marketing-shell my-10">
-        <div class="top-nav mb-8">
-            <div class="nav-brand">
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <!-- Persistent Navbar -->
+    <header class="site-header" role="banner">
+        <div class="site-header-inner">
+            <a class="nav-brand" href="javascript:void(0)" onclick="showSection('homeSection')">
                 <span class="nav-brand-title">KiMA</span>
-                <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-            </div>
-            <div class="nav-links">
+                <span class="nav-brand-subtitle">Gait Analysis Suite</span>
+            </a>
+            <nav class="nav-links" role="navigation" aria-label="Main navigation">
                 <button class="nav-link active" type="button" data-section-target="homeSection">Home</button>
                 <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
                 <button class="nav-link" type="button" data-section-target="toolsHubSection">Tools</button>
-                <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-            </div>
-            <button id="themeToggle" class="theme-toggle" type="button">
-                <span id="themeToggleIcon">🌞</span>
-                <span id="themeToggleLabel">Light Mode</span>
-            </button>
-        </div>
-        <div class="hero-panel mb-8">
-            <p class="hero-kicker">KiMA</p>
-            <h1 class="hero-heading brand-gradient mt-3">Kinematics motion analysis for locomotor recovery studies</h1>
-            <div class="hero-copy-stack">
-                <p class="hero-copy">KiMA is an integrated platform for gait analysis in locomotor recovery studies. It brings ladder and rung analysis, foot fall, CatWalk, treadmill, batch comparison, and PCA into one environment.</p>
-                <p class="hero-copy">Use the Manual page for structured guidance and screenshots. Use the Tools page to open the analysis modules directly.</p>
-            </div>
-        </div>
-
-        <div class="panel rounded-2xl p-6 mt-8">
-            <h2 class="text-xl font-semibold pb-4 mb-4">About KiMA</h2>
-            <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-8">
-                <div class="space-y-4 text-sm text-slate-600">
-                    <p>KiMA is a browser-based gait analysis suite developed for locomotor research. It is intended to support visual review, quantitative assessment, and export-ready reporting within a single environment.</p>
-                    <p>The platform is particularly relevant to spinal cord injury locomotor studies, where investigators may need to examine individual runs, compare multiple animals, inspect paw-placement patterns, evaluate treadmill behavior, and prepare figures and summary tables for downstream analysis.</p>
-                    <p>Rather than forcing all experiments into one generic pipeline, KiMA organizes the work into dedicated modules. This structure makes the workflow clearer, preserves experiment-specific logic, and reduces the risk of using the wrong analysis path for a dataset.</p>
-                    <p>The current version includes ladder and rung hindlimb analysis, foot-fall assessment, CatWalk stride geometry, treadmill cycle analysis, and multi-sample workflows with PCA continuation.</p>
-                    <p>For detailed instructions, labeling requirements, screenshots, and tool-specific guidance, use the <a href="#" class="text-blue-600 hover:underline font-semibold" data-section-target="manualSection">Manual</a> page. For direct analysis, use the <a href="#" class="text-blue-600 hover:underline font-semibold" data-section-target="toolsHubSection">Tools</a> page.</p>
-                </div>
-                <div class="space-y-4">
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Designed For</p>
-                        <p class="text-sm text-slate-600 mt-2">Researchers working on gait, locomotor recovery, spinal cord injury models, and quantitative movement analysis from DeepLabCut tracking data.</p>
-                    </div>
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Core Strength</p>
-                        <p class="text-sm text-slate-600 mt-2">One suite, separate experiment modules, export-ready outputs, and a workflow that supports both simple users and experienced analysts.</p>
-                    </div>
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Related Lab</p>
-                        <p class="text-sm text-slate-600 mt-2">KiMA sits alongside the broader research identity of the <a href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Venkatesh Lab</a>.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="toolsHubSection" class="hidden">
-        <div class="marketing-shell my-10">
-        <div class="top-nav mb-8">
-            <div class="nav-brand">
-                <span class="nav-brand-title">KiMA</span>
-                <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-            </div>
-            <div class="nav-links">
-                <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
-                <button class="nav-link active" type="button" data-section-target="toolsHubSection">Tools</button>
-                <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-            </div>
-                <button id="themeToggleTools" class="theme-toggle" type="button">
-                    <span class="theme-toggle-icon">🌞</span>
-                    <span class="theme-toggle-label">Light Mode</span>
+                <a class="nav-link nav-link-external" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
+            </nav>
+            <div class="nav-right">
+                <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                    <svg id="themeIconSun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg id="themeIconMoon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <button class="hamburger-btn" type="button" aria-label="Open menu" id="hamburgerBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
             </div>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
+            <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
+            <button class="nav-link" type="button" data-section-target="toolsHubSection">Tools</button>
+            <a class="nav-link nav-link-external" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
+        </div>
+    </header>
 
-            <div class="hero-panel mb-8">
-                <p class="hero-kicker">KiMA Tools</p>
-                <h1 class="hero-heading brand-gradient mt-3">Choose an analysis module</h1>
-                <div class="hero-copy-stack">
-                    <p class="hero-copy">Open the tool that matches your experiment design. KiMA keeps the modules separate so the analysis stays clean for each data type.</p>
-                </div>
+    <!-- Tools sub-navigation -->
+    <nav class="tools-subnav hidden" id="toolsSubnav" aria-label="Tool modules">
+        <div class="tools-subnav-inner">
+            <button class="tools-subnav-link" type="button" data-section-target="singleSampleSection">Ladder &amp; Rung</button>
+            <button class="tools-subnav-link" type="button" data-section-target="footFallSection">Foot Fall</button>
+            <button class="tools-subnav-link" type="button" data-section-target="catWalkSection">Cat Walk</button>
+            <button class="tools-subnav-link" type="button" data-section-target="treadmillSection">Treadmill</button>
+            <button class="tools-subnav-link" type="button" data-section-target="multiSampleSection">Batch Analysis</button>
+            <button class="tools-subnav-link" type="button" data-section-target="pcaSection">PCA</button>
+        </div>
+    </nav>
+
+    <main id="main" role="main">
+
+    <!-- HOME SECTION -->
+    <section id="homeSection" class="content-wrapper section-padding" aria-label="Home">
+        <div class="page-header">
+            <h1>KiMA</h1>
+            <p>Kinematics Motion Analysis for Spinal Cord Injury Locomotor Research</p>
+        </div>
+
+        <!-- About -->
+        <div style="max-width: var(--max-width-narrow); margin-bottom: var(--space-10);">
+            <p style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7; margin-bottom: var(--space-4);">
+                KiMA is a free, browser-based gait analysis suite built for researchers studying locomotor recovery after spinal cord injury. It takes pose-estimation data from <strong style="color: var(--text-primary);">DeepLabCut</strong> and turns it into publication-ready kinematic plots, gait parameters, and statistical summaries — all without installing any software.
+            </p>
+            <p style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
+                Developed by <strong style="color: var(--text-primary);">Manojkumar</strong> at the <strong style="color: var(--text-primary);">Venkatesh Lab</strong>, KiMA supports five experiment paradigms: ladder rung walking, foot-fall pattern detection, CatWalk spatial analysis, treadmill locomotion, and multi-animal batch comparison with PCA.
+            </p>
+        </div>
+
+        <!-- Key Features -->
+        <h2 style="font-size: var(--text-xl); font-weight: var(--font-semibold); margin-bottom: var(--space-5); border:none; padding:0;">Key Features</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-10);">
+            <div style="padding: var(--space-5); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); border-left: 3px solid var(--primary-500);">
+                <h3 style="font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-2);">No Installation Required</h3>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6;">Runs entirely in your browser. Your data stays on your machine — nothing is uploaded to any server.</p>
             </div>
+            <div style="padding: var(--space-5); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); border-left: 3px solid var(--primary-500);">
+                <h3 style="font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-2);">DeepLabCut Integration</h3>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6;">Directly reads CSV files exported from DeepLabCut. Just make sure your body-part labels match the expected naming convention.</p>
+            </div>
+            <div style="padding: var(--space-5); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); border-left: 3px solid var(--primary-500);">
+                <h3 style="font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-2);">Interactive Visualizations</h3>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6;">Powered by Plotly.js — zoom, pan, hover for values, and export high-resolution figures for publications.</p>
+            </div>
+            <div style="padding: var(--space-5); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); border-left: 3px solid var(--primary-500);">
+                <h3 style="font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-2);">Batch Processing &amp; PCA</h3>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6;">Process entire cohorts at once, assign treatment groups, and run principal component analysis to compare across animals.</p>
+            </div>
+            <div style="padding: var(--space-5); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); border-left: 3px solid var(--primary-500);">
+                <h3 style="font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-2);">Publication-Ready Exports</h3>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6;">Export plots as SVG/PNG, download gait metrics as CSV, and generate animated gait sequence videos.</p>
+            </div>
+            <div style="padding: var(--space-5); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); border-left: 3px solid var(--primary-500);">
+                <h3 style="font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-2);">Privacy First</h3>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6;">All analysis runs client-side in JavaScript. No data leaves your browser — suitable for pre-publication and sensitive datasets.</p>
+            </div>
+        </div>
 
-            <div class="panel rounded-2xl p-6 mb-8">
-                <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Suite</p>
-                        <h2 class="text-2xl font-semibold mt-1">All KiMA Modules</h2>
-                    </div>
+        <!-- Modules -->
+        <h2 style="font-size: var(--text-xl); font-weight: var(--font-semibold); margin-bottom: var(--space-5); border:none; padding:0;">Analysis Modules</h2>
+        <div class="modules-grid" id="homeModulesGrid">
+            <div class="module-card" data-section-target="singleSampleSection">
+                <h3>Ladder &amp; Rung</h3>
+                <p>Single-trial hindlimb kinematics from ladder/rung walking. Generates stick figures, joint angles, gait cycle parameters, and animated sequence playback.</p>
+                <span class="module-card-cta">Labels: <code>toe</code>, <code>mtp</code>, <code>ankle</code>, <code>knee</code>, <code>hip</code>, <code>iliac crest</code></span>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+            <div class="module-card" data-section-target="footFallSection">
+                <h3>Foot Fall</h3>
+                <p>Detect ground contacts for all four paws, visualize contact-peak signals, generate paw-specific 2D trajectory plots and per-paw videos.</p>
+                <span class="module-card-cta">Labels: <code>RF</code>, <code>LF</code>, <code>RH</code>, <code>LH</code> (x, y, likelihood)</span>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+            <div class="module-card" data-section-target="catWalkSection">
+                <h3>Cat Walk</h3>
+                <p>Spatial stepping analysis along a walkway. Calculates projected paw-contact maps, per-paw stride length, and fore/hind stride width.</p>
+                <span class="module-card-cta">Labels: <code>RF</code>, <code>LF</code>, <code>RH</code>, <code>LH</code> with paw coordinates</span>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+            <div class="module-card" data-section-target="treadmillSection">
+                <h3>Treadmill</h3>
+                <p>Continuous locomotion analysis with stick-figure player, cycle-by-cycle trends, joint-angle distributions, and early/mid/late block comparisons.</p>
+                <span class="module-card-cta">Labels: <code>toe</code>, <code>mtp</code>, <code>ankle</code>, <code>knee</code>, <code>hip</code>, <code>iliac crest</code></span>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+            <div class="module-card" data-section-target="multiSampleSection">
+                <h3>Batch &amp; PCA</h3>
+                <p>Process multiple animals in one session, assign treatment groups (e.g., SCI vs. sham), export combined metrics, and run PCA for group-level comparison.</p>
+                <span class="module-card-cta">Upload multiple CSVs from any single-trial module</span>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+        </div>
+
+        <!-- Quick Start -->
+        <div style="margin-top: var(--space-12);">
+            <h2 style="font-size: var(--text-xl); font-weight: var(--font-semibold); margin-bottom: var(--space-5); border:none; padding:0;">Quick Start</h2>
+            <div class="quick-start">
+                <div class="quick-start-step">
+                    <span class="quick-start-number">1</span>
+                    <span class="quick-start-title">Pick the module</span>
+                    <span class="quick-start-desc">Choose the tool that matches your experiment type (ladder, foot fall, catwalk, or treadmill).</span>
                 </div>
-                <div class="landing-grid-three">
-                    <div class="landing-card" data-section-target="singleSampleSection">
-                        <img class="landing-media" src="images/ladder.png" alt="Ladder and rung experiment">
-                        <h3>Ladder &amp; Rung Experiment</h3>
-                        <p>Analyze hindlimb gait from ladder and rung walking experiments with kinematics, parameters, and sequence views.</p>
-                    </div>
-                    <div class="landing-card" data-section-target="footFallSection">
-                        <img class="landing-media" src="images/FootFall.png" alt="Foot Fall analysis">
-                        <h3>Foot Fall Analysis</h3>
-                        <p>Detect paw contacts and show simple paw-specific signals, plots, and videos for RF, LF, RH, and LH.</p>
-                    </div>
-                    <div class="landing-card" data-section-target="catWalkSection">
-                        <img class="landing-media" src="images/catwalk.png" alt="Cat Walk analysis">
-                        <h3>Cat Walk Analysis</h3>
-                        <p>Measure projected stride length and stride width from paw-placement data collected on the runway.</p>
-                    </div>
-                    <div class="landing-card" data-section-target="treadmillSection">
-                        <img class="landing-media" src="images/kinematics.png" alt="Treadmill analysis">
-                        <h3>Treadmill Analysis</h3>
-                        <p>Track continuous hindlimb movement, cycle trends, angle distributions, and treadmill playback.</p>
-                    </div>
-                    <div class="landing-card" data-section-target="multiSampleSection">
-                        <img class="landing-media" src="images/M_L.png" alt="Batch and PCA workflow">
-                        <h3>Batch &amp; PCA Workflow</h3>
-                        <p>Process multiple animals, assign treatment groups, export the full metrics table, and continue to PCA from inside the same workflow.</p>
-                        <p class="card-footer">Main route for cohort comparison and PCA.</p>
-                    </div>
+                <div class="quick-start-step">
+                    <span class="quick-start-number">2</span>
+                    <span class="quick-start-title">Check your labels</span>
+                    <span class="quick-start-desc">Ensure your DeepLabCut CSV has the required body-part names. See the <a href="javascript:void(0)" onclick="showSection('manualSection')" style="color: var(--primary-500); text-decoration: underline;">Manual</a> for the full list.</span>
+                </div>
+                <div class="quick-start-step">
+                    <span class="quick-start-number">3</span>
+                    <span class="quick-start-title">Load data or try examples</span>
+                    <span class="quick-start-desc">Upload your CSV or click "Load Example Data" inside any module to test the workflow with sample files.</span>
+                </div>
+                <div class="quick-start-step">
+                    <span class="quick-start-number">4</span>
+                    <span class="quick-start-title">Analyze and export</span>
+                    <span class="quick-start-desc">Review interactive plots, tune settings if needed, then export figures (SVG/PNG), CSV metrics, or gait videos.</span>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="manualSection" class="hidden">
-        <div class="marketing-shell my-10">
-            <div class="top-nav mb-8">
-                <div class="nav-brand">
-                    <span class="nav-brand-title">KiMA</span>
-                    <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-                </div>
-                <div class="nav-links">
-                    <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                    <button class="nav-link active" type="button" data-section-target="manualSection">Manual</button>
-                    <button class="nav-link" type="button" data-section-target="toolsHubSection">Tools</button>
-                    <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-                </div>
-                <button id="themeToggleManual" class="theme-toggle" type="button">
-                    <span class="theme-toggle-icon">🌞</span>
-                    <span class="theme-toggle-label">Light Mode</span>
-                </button>
+        <!-- Supported Data Format -->
+        <div style="margin-top: var(--space-12); padding: var(--space-6); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+            <h2 style="font-size: var(--text-lg); font-weight: var(--font-semibold); margin-bottom: var(--space-3); border:none; padding:0;">Supported Data Format</h2>
+            <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-3);">
+                KiMA reads <strong style="color: var(--text-primary);">CSV files exported from DeepLabCut</strong>. The first three rows contain metadata (scorer name, body-part labels, and coordinate axes). Data rows follow with frame-by-frame x/y coordinates and likelihood scores for each tracked body part.
+            </p>
+            <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7;">
+                Each module expects specific body-part label names. If your DLC project uses different naming, rename the columns in the CSV header before uploading. Every module includes built-in example data so you can try the full workflow before using your own files.
+            </p>
+        </div>
+    </section>
+
+    <!-- TOOLS HUB - redirects to home modules grid -->
+    <section id="toolsHubSection" class="hidden content-wrapper section-padding" aria-label="Tools">
+        <div class="page-header">
+            <h1>Tools</h1>
+            <p>Choose an analysis module that matches your experiment</p>
+        </div>
+        <div class="modules-grid">
+            <div class="module-card" data-section-target="singleSampleSection">
+                <h3>Ladder &amp; Rung</h3>
+                <p>Analyze hindlimb gait from ladder and rung walking experiments with kinematics, parameters, and sequence views.</p>
+                <span class="module-card-link">Open &rarr;</span>
             </div>
+            <div class="module-card" data-section-target="footFallSection">
+                <h3>Foot Fall</h3>
+                <p>Detect paw contacts and show paw-specific signals, plots, and videos for RF, LF, RH, and LH.</p>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+            <div class="module-card" data-section-target="catWalkSection">
+                <h3>Cat Walk</h3>
+                <p>Measure projected stride length and stride width from paw-placement data collected on the runway.</p>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+            <div class="module-card" data-section-target="treadmillSection">
+                <h3>Treadmill</h3>
+                <p>Track continuous hindlimb movement, cycle trends, angle distributions, and treadmill playback.</p>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+            <div class="module-card" data-section-target="multiSampleSection">
+                <h3>Batch &amp; PCA</h3>
+                <p>Process multiple animals, assign treatment groups, export metrics, and continue to PCA analysis.</p>
+                <span class="module-card-link">Open &rarr;</span>
+            </div>
+        </div>
+    </section>
 
-            <div class="hero-panel mb-8">
-                <p class="hero-kicker">Manual</p>
-                <h1 class="hero-heading brand-gradient mt-3">How to use KiMA</h1>
-                <div class="hero-copy-stack">
-                    <p class="hero-copy">KiMA is organized by experiment type. The safest workflow is: choose the correct module, confirm the DeepLabCut labels, upload the CSV, review the plots and videos, then export the outputs you need.</p>
-                    <p class="hero-copy">This manual is meant to work like a small read-the-docs page inside the app, so users can understand what each module expects, what it calculates, and how to read the output.</p>
+    <!-- MANUAL SECTION -->
+    <section id="manualSection" class="hidden content-wrapper section-padding" aria-label="Manual">
+        <div class="page-header">
+            <h1>Manual</h1>
+            <p>How to use KiMA — workflow, labels, and module guides</p>
+        </div>
+
+        <div class="manual-toc-mobile">
+            <button class="manual-toc-toggle" type="button" id="manualTocToggle">On this page &#9662;</button>
+            <div class="manual-toc-dropdown" id="manualTocDropdown">
+                <a href="javascript:void(0)" data-manual-scroll="manual-before-start">Before You Start</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-labels">Required Labels</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-ladder">Ladder &amp; Rung</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-footfall">Foot Fall</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-catwalk">Cat Walk</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-treadmill">Treadmill</a>
+            </div>
+        </div>
+
+        <div class="manual-layout">
+            <aside class="manual-toc">
+                <a href="javascript:void(0)" data-manual-scroll="manual-before-start">Before You Start</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-labels">Required Labels</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-ladder">Ladder &amp; Rung</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-footfall">Foot Fall</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-catwalk">Cat Walk</a>
+                <a href="javascript:void(0)" data-manual-scroll="manual-treadmill">Treadmill</a>
+            </aside>
+
+            <div class="manual-content">
+                <h2 id="manual-before-start">Before You Start</h2>
+                <div class="callout-warning">
+                    <strong>Correct DLC labels matter.</strong> KiMA reads body-part names directly from your CSV. If names don't match expected labels, parsing will fail.
+                </div>
+                <div class="callout-warning">
+                    <strong>Choose the matching module.</strong> Don't use Foot Fall data in Ladder analysis or CatWalk data in Treadmill analysis. Each module expects a different body-part layout.
+                </div>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-top: var(--space-4);">Each tool has built-in example data so you can test the workflow before loading your own files.</p>
+
+                <h2 id="manual-labels">Required Labels</h2>
+                <div class="table-wrapper" style="margin: var(--space-4) 0;">
+                    <table class="label-table">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Module</th>
+                                <th class="text-left">Required Labels</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ladder / Treadmill</td>
+                                <td><code>toe</code>, <code>mtp</code>, <code>ankle</code>, <code>knee</code>, <code>hip</code>, <code>iliac crest</code></td>
+                            </tr>
+                            <tr>
+                                <td>Foot Fall / Cat Walk</td>
+                                <td><code>RF</code>, <code>LF</code>, <code>RH</code>, <code>LH</code> with <code>x</code>, <code>y</code>, <code>likelihood</code></td>
+                            </tr>
+                            <tr>
+                                <td>PCA</td>
+                                <td>Aggregated metrics CSV from KiMA batch analysis</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="manual-ladder">Ladder &amp; Rung</h2>
+                <div class="module-doc">
+                    <dl>
+                        <dt>Required labels</dt>
+                        <dd><code>toe</code>, <code>mtp</code>, <code>ankle</code>, <code>knee</code>, <code>hip</code>, <code>iliac crest</code></dd>
+                        <dt>What it shows</dt>
+                        <dd>Interactive stick plot, gait parameters, angle distributions, per-cycle gait metrics, and sequence playback.</dd>
+                        <dt>Best use</dt>
+                        <dd>Checking one animal or one trial in detail before going to batch analysis.</dd>
+                        <dt>How to use it</dt>
+                        <dd>Upload one CSV, inspect the plot first, then open Gait Parameters and Statistical Analysis, and finally export images or CSV outputs.</dd>
+                    </dl>
+                </div>
+
+                <h2 id="manual-footfall">Foot Fall</h2>
+                <div class="module-doc">
+                    <dl>
+                        <dt>Required labels</dt>
+                        <dd><code>RF</code>, <code>LF</code>, <code>RH</code>, <code>LH</code> with <code>x</code>, <code>y</code>, <code>likelihood</code></dd>
+                        <dt>What it shows</dt>
+                        <dd>Foot-fall counts, paw-only 2D plots, contact-peak signals, separate paw videos, and contact tables.</dd>
+                        <dt>Best use</dt>
+                        <dd>Simple visual interpretation of paw contact pattern and stance timing.</dd>
+                        <dt>How to use it</dt>
+                        <dd>Upload the paw CSV, tune likelihood and movement thresholds if needed, then review counts, contact peaks, and paw videos before exporting results.</dd>
+                    </dl>
+                </div>
+
+                <h2 id="manual-catwalk">Cat Walk</h2>
+                <div class="module-doc">
+                    <dl>
+                        <dt>Required labels</dt>
+                        <dd><code>RF</code>, <code>LF</code>, <code>RH</code>, <code>LH</code> with paw coordinates</dd>
+                        <dt>What it calculates</dt>
+                        <dd>Projected paw-contact map, stride length per paw, and fore/hind stride width.</dd>
+                        <dt>Best use</dt>
+                        <dd>Spatial stepping analysis along a walkway or CatWalk-like setup.</dd>
+                        <dt>How to use it</dt>
+                        <dd>Upload the CatWalk-style CSV, verify the projected map looks correct, then review the stride length and width plots and export the metrics table.</dd>
+                    </dl>
+                </div>
+
+                <h2 id="manual-treadmill">Treadmill</h2>
+                <div class="module-doc">
+                    <dl>
+                        <dt>Required labels</dt>
+                        <dd><code>toe</code>, <code>mtp</code>, <code>ankle</code>, <code>knee</code>, <code>hip</code>, <code>iliac crest</code></dd>
+                        <dt>What it shows</dt>
+                        <dd>Treadmill player, cycle summaries, joint-angle distributions, per-cycle trends, and early/mid/late comparisons.</dd>
+                        <dt>Best use</dt>
+                        <dd>Continuous locomotor monitoring rather than single-step inspection.</dd>
+                        <dt>How to use it</dt>
+                        <dd>Upload the treadmill CSV, review the stick player first, then inspect cycle trends and block comparisons before exporting the cycle table or images.</dd>
+                    </dl>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="panel rounded-2xl p-6 mb-8">
-                <h2 class="text-xl font-semibold pb-4 mb-4">Quick Start</h2>
-                <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-600">
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>1. Pick the correct module</strong></p>
-                        <p class="mt-2">Use Ladder & Rung for single hindlimb runs, Foot Fall for paw contacts, Cat Walk for stride geometry, Treadmill for continuous walking, and Batch & PCA for group comparison.</p>
-                    </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>2. Check the labels</strong></p>
-                        <p class="mt-2">Ladder and Treadmill require `toe`, `mtp`, `ankle`, `knee`, `hip`, `iliac crest`. Foot Fall and Cat Walk require `RF`, `LF`, `RH`, `LH`.</p>
-                    </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>3. Use the example inside the tool if needed</strong></p>
-                        <p class="mt-2">Each module has example-data controls in the upload area so users can test the workflow before loading their own files.</p>
-                    </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>4. Export results</strong></p>
-                        <p class="mt-2">Most modules support CSV export, image export, and in some cases video export. Batch should be used before PCA.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel rounded-2xl p-6 mb-8">
-                <h2 class="text-xl font-semibold pb-4 mb-4">Before You Start</h2>
-                <div class="grid md:grid-cols-3 gap-4 text-sm text-slate-600">
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>Correct DLC labels matter</strong></p>
-                        <p class="mt-2">KiMA reads body-part names directly. If the names do not match the expected labels, the tool will not parse correctly.</p>
-                    </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>Choose the matching module</strong></p>
-                        <p class="mt-2">Do not use Foot Fall data in Ladder analysis or CatWalk data in Treadmill analysis. Each module expects a different body-part layout.</p>
-                    </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>Use the built-in examples</strong></p>
-                        <p class="mt-2">Each tool has example-data actions in the upload panel. These are useful for learning the workflow before analyzing a real run.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel rounded-2xl p-6 mb-8">
-                <h2 class="text-xl font-semibold pb-4 mb-4">Required Labeling</h2>
-                <div class="grid md:grid-cols-3 gap-4 text-sm text-slate-600">
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>Ladder / Treadmill</strong></p>
-                        <p class="mt-2">Use `toe`, `mtp`, `ankle`, `knee`, `hip`, and `iliac crest`.</p>
-                    </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>Foot Fall / Cat Walk</strong></p>
-                        <p class="mt-2">Use `RF`, `LF`, `RH`, and `LH` with `x`, `y`, and `likelihood`.</p>
-                    </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                        <p><strong>PCA</strong></p>
-                        <p class="mt-2">Use the aggregated metrics CSV exported from KiMA multiple-sample analysis.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="doc-grid">
+    <!-- Old manual doc-grid kept for backwards compat but hidden -->
+    <div style="display:none">
+        <div class="doc-grid">
                 <article class="doc-card">
                     <img src="images/ladder.png" alt="Ladder and rung module">
                     <div class="doc-card-body">
@@ -1292,41 +1325,19 @@
                     </div>
                 </article>
             </div>
-        </div>
-    </div>
+    </div><!-- end hidden old manual doc-grid -->
 
-    <div id="singleSampleSection" class="hidden">
-        <div class="breadcrumb-container">
-            <div class="container mx-auto px-6 py-6 space-y-4">
-                <div class="top-nav">
-                    <div class="nav-brand">
-                        <span class="nav-brand-title">KiMA</span>
-                        <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-                    </div>
-                    <div class="nav-links">
-                        <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                        <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
-                        <button class="nav-link active" type="button" data-section-target="toolsHubSection">Tools</button>
-                        <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-                    </div>
-                    <button id="themeToggleSingle" class="theme-toggle" type="button">
-                        <span class="theme-toggle-icon">🌞</span>
-                        <span class="theme-toggle-label">Light Mode</span>
-                    </button>
-                </div>
-            </div>
+    <section id="singleSampleSection" class="hidden content-wrapper section-padding" aria-label="Ladder and Rung Analysis">
+        <div class="page-header">
+            <h1>Ladder &amp; Rung Analysis</h1>
+            <p>Single hindlimb run from ladder or rung walking experiments</p>
         </div>
-        <div class="container mx-auto px-6"></div>
-    <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-        <div class="header p-8 text-center">
-            <h1 class="text-4xl font-bold tracking-tight">KiMA - kinematics Motion Analysis for SCI</h1>
-            <p class="text-lg text-slate-300 mt-2">Analysis and Visualize the GAIT parameters from DeepLabCut data </p>
-        </div>
+    <div>
 
         <div class="content flex flex-col lg:flex-row gap-8 p-8">
             <div class="controls-panel lg:w-1/3 space-y-6">
                 <div class="panel rounded-xl p-6">
-                    <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                    <h2 class="text-xl font-semibold pb-4 mb-4">File Upload</h2>
                     <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="uploadArea">
                         <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         <p class="mt-2 text-sm text-gray-600">Click to upload or drag & drop</p>
@@ -1336,25 +1347,25 @@
                     <div class="flex flex-wrap gap-2 mt-4">
                         <button class="btn text-xs py-2 px-3" type="button" data-example-load="single_ladder_1">Load Example 1</button>
                         <button class="btn text-xs py-2 px-3" type="button" data-example-load="single_ladder_2">Load Example 2</button>
-                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung.csv" download>Download Example 1</a>
-                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung_2.csv" download>Download Example 2</a>
+                        <a class="btn btn-secondary text-xs py-2 px-3" href="samples/csv/Ladder_rung.csv" download>Download Example 1</a>
+                        <a class="btn btn-secondary text-xs py-2 px-3" href="samples/csv/Ladder_rung_2.csv" download>Download Example 2</a>
                     </div>
                     <div id="fileStatus" class="mt-4"></div>
                 </div>
 
-                <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
-                    <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
-                    <button class="btn w-full text-base py-3 btn-success" id="downloadParamsBtn" disabled>
+                <div class="panel rounded-xl p-6">
+                    <h2 class="text-xl font-semibold pb-4 mb-4 text-slate-800">Export Results</h2>
+                    <button class="btn w-full text-base py-3 btn-secondary" id="downloadParamsBtn" disabled>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
                         Download Parameters CSV
                     </button>
-                    <p class="text-xs text-green-700 mt-2">Exports all 46 gait parameters</p>
+                    <p class="text-xs text-slate-500 mt-2">Exports all 46 gait parameters</p>
                 </div>
 
                 <div class="panel rounded-xl p-6">
-                    <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Plot Styling</h2>
+                    <h2 class="text-xl font-semibold pb-4 mb-4">Plot Styling</h2>
                     <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Title</label> <input type="text" id="plotTitle" value="Gait Analysis Plot" class="mt-1 w-full"> </div>
                     <div class="grid grid-cols-2 gap-4 form-group mb-4"> <div><label class="text-sm font-medium">X-Axis Label</label><input type="text" id="xAxisLabel" value="X - Coordinate" class="mt-1 w-full"></div> <div><label class="text-sm font-medium">Y-Axis Label</label><input type="text" id="yAxisLabel" value="Y - Coordinate" class="mt-1 w-full"></div> </div>
                     <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Background Color</label> <div class="color-picker text-sm flex items-center mt-1"> <span>Background Color:</span> <input type="color" id="plotBackgroundColor" value="#ffffff" class="ml-auto"> </div> </div>
@@ -1363,7 +1374,7 @@
                     <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">Background / Unselected Frames</label> <div class="grid grid-cols-2 gap-4"> <div> <label class="text-xs font-medium text-gray-600">Color</label> <div class="color-picker text-sm flex items-center mt-1"><span>Frame Color:</span><input type="color" id="backgroundFrameColor" value="#94a3b8" class="ml-auto"></div> </div> <div> <label class="text-xs font-medium text-gray-600">Opacity</label> <input type="range" id="backgroundOpacity" min="0" max="100" value="10" class="w-full mt-1"> <div class="text-xs text-center text-gray-600" id="opacityValue">10%</div> </div> </div> <div class="mt-4"> <label class="text-sm font-medium text-gray-700">Frame Step</label> <input type="number" id="frameStep" value="1" min="1" class="w-full mt-1"> <p class="text-xs text-gray-500 mt-1">Draw one background frame every N steps to reduce clutter.</p> </div> </div>
                     <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">General Settings</label> <div class="mb-4"> <label class="text-sm font-medium">Labels & Title Color</label> <div class="color-picker text-sm flex items-center mt-1"><span>Text Color:</span><input type="color" id="textColor" value="#1e293b" class="ml-auto"></div> </div> <label class="text-sm font-medium">Likelihood Threshold</label> <input type="number" id="threshold" value="0.5" min="0" max="1" step="0.1" class="w-full mt-1"> </div>
                     <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold mb-3 block">Download Options (Interactive Plot)</label> <div class="download-options"> <div class="grid grid-cols-2 gap-4 mb-4"> <div> <label class="text-xs font-medium text-gray-600 mb-2 block">DPI Quality</label> <div class="slider-container"> <input type="range" id="dpiSlider" min="100" max="600" value="300" step="50" class="dpi-slider"> <div class="slider-labels"><span>100</span><span>600</span></div> </div> <div class="text-center text-sm font-semibold text-gray-700 mt-1" id="dpiValue">300 DPI</div> </div> <div> <label class="text-xs font-medium text-gray-600 mb-1 block">Background</label> <select id="backgroundType" class="w-full text-sm"> <option value="white">White Background</option> <option value="black">Black Background</option> <option value="transparent">Transparent Background</option> </select> </div> </div> <div class="text-xs text-gray-500 mb-2"><span id="imageSizeInfo">Image size: ~2400 x 2100 pixels</span></div> </div> </div>
-                    <div class="mt-6"> <button class="btn w-full text-base py-3 btn-success" id="downloadBtn" disabled> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg> Generate Downloadable PNG </button> </div>
+                    <div class="mt-6"> <button class="btn w-full text-base py-3 btn-secondary" id="downloadBtn" disabled> <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg> Generate Downloadable PNG </button> </div>
                 </div>
             </div>
 
@@ -1380,7 +1391,7 @@
                     
                     <div class="p-6 flex-grow flex flex-col">
                         <div id="interactivePlotTab" class="tab-content active flex-grow flex-col">
-                            <h2 class="text-xl font-semibold">📊 Interactive Plot</h2>
+                            <h2 class="text-xl font-semibold">Interactive Plot</h2>
                             <p class="text-sm text-slate-500 mb-4">Hover to see frame number. Click to select or deselect.</p>
                             <div id="processingStatus"></div>
                             <div id="results">
@@ -1389,7 +1400,7 @@
                             <div id="sequencePreviewPanel" class="mt-6 hidden">
                                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                                     <div>
-                                        <h3 class="text-lg font-semibold">🎞️ Stick Sequence Player</h3>
+                                        <h3 class="text-lg font-semibold">Stick Sequence Player</h3>
                                         <p class="text-sm text-slate-500">Plays up to 20 evenly spaced frames so you can inspect motion frame-by-frame.</p>
                                     </div>
                                     <div class="flex flex-wrap items-center gap-3 text-sm">
@@ -1397,9 +1408,9 @@
                                             <input type="number" id="sequenceSkipInput" min="1" value="1" class="w-20 border border-gray-300 rounded-md px-2 py-1">
                                         </label>
                                         <button class="btn text-xs py-2 px-3" id="sequenceAutoBtn">Auto</button>
-                                        <button class="btn btn-success text-xs py-2 px-3" id="sequencePlayBtn">Play</button>
-                                        <button class="btn text-xs py-2 px-3 bg-slate-600 hover:bg-slate-700 text-white" id="sequencePauseBtn">Pause</button>
-                                        <button class="btn text-xs py-2 px-3 bg-rose-600 hover:bg-rose-700 text-white" id="sequenceVideoBtn">Download Video</button>
+                                        <button class="btn btn-secondary text-xs py-2 px-3" id="sequencePlayBtn">Play</button>
+                                        <button class="btn btn-ghost btn-sm" id="sequencePauseBtn">Pause</button>
+                                        <button class="btn btn-secondary btn-sm" id="sequenceVideoBtn">Download Video</button>
                                     </div>
                                 </div>
                                 <div class="mt-4 border border-dashed border-gray-300 rounded-lg bg-slate-50 p-3">
@@ -1409,10 +1420,10 @@
                                 <div class="mt-6 border border-dashed border-gray-300 rounded-lg bg-white p-4">
                                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 mb-3">
                                         <div>
-                                            <h4 class="text-base font-semibold text-slate-800">🖼️ Linear Stick Strip</h4>
+                                            <h4 class="text-base font-semibold text-slate-800">Linear Stick Strip</h4>
                                             <p class="text-sm text-slate-500">Displays every sampled frame along one horizontal line for quick comparison.</p>
                                         </div>
-                                        <button class="btn text-xs py-2 px-3 btn-success" id="sequenceStaticDownloadBtn">Download PNG</button>
+                                        <button class="btn text-xs py-2 px-3 btn-secondary" id="sequenceStaticDownloadBtn">Download PNG</button>
                                     </div>
                                     <canvas id="sequenceStaticCanvas" width="2000" height="640" class="w-full rounded-md border border-gray-200 bg-slate-50"></canvas>
                                 </div>
@@ -1420,7 +1431,7 @@
                         </div>
 
                         <div id="gaitParametersTab" class="tab-content flex-col w-full">
-                            <h2 class="text-xl font-semibold mb-4">📋 Gait Parameters</h2>
+                            <h2 class="text-xl font-semibold mb-4">Gait Parameters</h2>
                             <div style="max-height:600px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:8px">
                                 <table class="min-w-full text-sm">
                                     <thead class="bg-blue-50 sticky top-0">
@@ -1439,11 +1450,11 @@
 
                         <div id="statsAnalysisTab" class="tab-content flex-col lg:flex-row gap-6 w-full">
                             <div class="lg:w-2/3">
-                                <h2 class="text-xl font-semibold mb-2">📈 Angle Distribution Analysis</h2>
+                                <h2 class="text-xl font-semibold mb-2">Angle Distribution Analysis</h2>
                                 <p class="text-sm text-slate-500 mb-4">Distribution of joint angles across the **entire dataset**.</p>
                                 <div id="statsPlot" class="w-full h-[400px] lg:h-[500px]"></div>
                             <div class="w-full border-t mt-6 pt-6">
-                                <h2 class="text-xl font-semibold mb-2">🏃 Gait Metrics (per-cycle means)</h2>
+                                <h2 class="text-xl font-semibold mb-2">Gait Metrics</h2>
                                 <p class="text-sm text-slate-500 mb-4">Cadence, stride, and swing/stance from foot speed (assumes 30 fps, foot=toe).</p>
                                 <div id="gaitMetricsPlot" class="w-full h-[360px] lg:h-[420px]"></div>
                                 <div id="gaitSummary" class="mt-3 text-sm text-slate-700"></div>
@@ -1517,7 +1528,7 @@
                                 </div>
                                 
                                 <div class="mt-6">
-                                    <button class="btn btn-success w-full text-sm py-2" id="downloadStatsBtn">
+                                    <button class="btn btn-secondary w-full text-sm py-2" id="downloadStatsBtn">
                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
                                         Download Chart
                                     </button>
@@ -1526,7 +1537,7 @@
                         </div>
 
                         <div id="multiSampleViewerTab" class="tab-content flex-col gap-4 w-full">
-                            <h2 class="text-xl font-semibold">🧾 Sample Stick Viewer</h2>
+                            <h2 class="text-xl font-semibold">Sample Stick Viewer</h2>
                             <p class="text-sm text-slate-500">Queue multiple DeepLabCut CSV files, then load each into the interactive stick plot without re-uploading.</p>
                             <div class="border border-dashed border-slate-300 rounded-xl p-4 bg-slate-50">
                                 <label class="text-sm font-semibold text-slate-700">Upload CSV files (multiple allowed)</label>
@@ -1554,31 +1565,14 @@
         </div>
     </div>
 
-    </div> <!-- close singleSampleSection -->
+    </section> <!-- close singleSampleSection -->
 
-    <div id="multiSampleSection" class="hidden">
-        <div class="breadcrumb-container">
-            <div class="container mx-auto px-6 py-6 space-y-4">
-                <div class="top-nav">
-                    <div class="nav-brand">
-                        <span class="nav-brand-title">KiMA</span>
-                        <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-                    </div>
-                    <div class="nav-links">
-                        <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                        <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
-                        <button class="nav-link active" type="button" data-section-target="toolsHubSection">Tools</button>
-                        <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-                    </div>
-                    <button id="themeToggleMulti" class="theme-toggle" type="button">
-                        <span class="theme-toggle-icon">🌞</span>
-                        <span class="theme-toggle-label">Light Mode</span>
-                    </button>
-                </div>
-            </div>
+    <section id="multiSampleSection" class="hidden content-wrapper section-padding" aria-label="Batch and Multi-Sample Analysis">
+        <div class="page-header">
+            <h1>Batch &amp; Multi-Sample Analysis</h1>
+            <p>Process multiple animals, assign groups, and export combined metrics</p>
         </div>
-        <div class="container mx-auto px-6"></div>
-        <div class="container mx-auto mb-10 bg-white rounded-2xl shadow-xl border border-gray-200 p-8 space-y-6">
+        <div class="space-y-6">
             <div class="grid lg:grid-cols-2 gap-6">
                 <div>
                     <label class="text-sm font-semibold text-slate-700">Upload CSV files (multiple allowed)</label>
@@ -1586,8 +1580,8 @@
                     <p class="text-xs text-slate-500 mt-2">Each file should follow the DeepLabCut CSV format (frame rows after two header lines).</p>
                     <div class="flex flex-wrap gap-2 mt-3">
                         <button class="btn text-xs py-2 px-3" type="button" data-example-load="batch">Load Example Batch</button>
-                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung.csv" download>Download Example 1</a>
-                        <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Ladder_rung_2.csv" download>Download Example 2</a>
+                        <a class="btn btn-secondary text-xs py-2 px-3" href="samples/csv/Ladder_rung.csv" download>Download Example 1</a>
+                        <a class="btn btn-secondary text-xs py-2 px-3" href="samples/csv/Ladder_rung_2.csv" download>Download Example 2</a>
                     </div>
                     <div id="multiSamplesStatus" class="mt-3 text-sm text-slate-600"></div>
                 </div>
@@ -1619,35 +1613,18 @@
                 </table>
             </div>
             <div class="flex flex-wrap gap-4">
-                <button class="btn btn-success px-4 py-2 text-sm" id="multiExportBtn" disabled>Export Combined CSV</button>
-                <button class="btn bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700" id="multiSendToPcaBtn" disabled>Continue to PCA</button>
+                <button class="btn btn-secondary px-4 py-2 text-sm" id="multiExportBtn" disabled>Export Combined CSV</button>
+                <button class="btn px-4 py-2 text-sm" id="multiSendToPcaBtn" disabled>Continue to PCA</button>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="pcaSection" class="hidden">
-        <div class="breadcrumb-container">
-            <div class="container mx-auto px-6 py-6 space-y-4">
-                <div class="top-nav">
-                    <div class="nav-brand">
-                        <span class="nav-brand-title">KiMA</span>
-                        <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-                    </div>
-                    <div class="nav-links">
-                        <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                        <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
-                        <button class="nav-link active" type="button" data-section-target="toolsHubSection">Tools</button>
-                        <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-                    </div>
-                    <button id="themeTogglePca" class="theme-toggle" type="button">
-                        <span class="theme-toggle-icon">🌞</span>
-                        <span class="theme-toggle-label">Light Mode</span>
-                    </button>
-                </div>
-            </div>
+    <section id="pcaSection" class="hidden content-wrapper section-padding" aria-label="PCA Analysis">
+        <div class="page-header">
+            <h1>PCA Analysis</h1>
+            <p>Principal component analysis for group separation and cohort comparison</p>
         </div>
-        <div class="container mx-auto px-6"></div>
-        <div class="container mx-auto mb-10 bg-white rounded-2xl shadow-xl border border-gray-200 p-8 space-y-6">
+        <div class="space-y-6">
             <div class="grid lg:grid-cols-2 gap-6">
                 <div>
                     <label class="text-sm font-semibold text-slate-700">Upload aggregated metrics CSV</label>
@@ -1681,44 +1658,23 @@
                 </table>
             </div>
             <div class="flex gap-4">
-                <button class="btn btn-success px-4 py-2 text-sm" id="runPcaBtn" disabled>Run PCA</button>
+                <button class="btn btn-secondary px-4 py-2 text-sm" id="runPcaBtn" disabled>Run PCA</button>
             </div>
             <div id="pcaVariance" class="text-sm text-slate-600"></div>
             <div id="pcaPlot" class="w-full h-[520px] rounded-xl border border-slate-200"></div>
         </div>
-    </div>
+    </section>
 
-    <div id="footFallSection" class="hidden">
-        <div class="breadcrumb-container">
-            <div class="container mx-auto px-6 py-6 space-y-4">
-                <div class="top-nav">
-                    <div class="nav-brand">
-                        <span class="nav-brand-title">KiMA</span>
-                        <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-                    </div>
-                    <div class="nav-links">
-                        <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                        <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
-                        <button class="nav-link active" type="button" data-section-target="toolsHubSection">Tools</button>
-                        <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-                    </div>
-                    <button id="themeToggleFootFall" class="theme-toggle" type="button">
-                        <span class="theme-toggle-icon">🌞</span>
-                        <span class="theme-toggle-label">Light Mode</span>
-                    </button>
-                </div>
-            </div>
+    <section id="footFallSection" class="hidden content-wrapper section-padding" aria-label="Foot Fall Analysis">
+        <div class="page-header">
+            <h1>Foot Fall Analysis</h1>
+            <p>Paw-contact analysis for RF, LF, RH, and LH tracking data</p>
         </div>
-        <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-            <div class="header p-8 text-center">
-                <h1 class="text-4xl font-bold tracking-tight">KiMA - Foot Fall Analysis</h1>
-                <p class="text-lg text-slate-300 mt-2">Dedicated paw-contact analysis for RF, LF, RH, and LH DeepLabCut outputs</p>
-            </div>
 
-            <div class="content flex flex-col lg:flex-row gap-8 p-8">
+            <div class="content flex flex-col lg:flex-row gap-8">
                 <div class="controls-panel lg:w-1/3 space-y-6">
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                        <h2 class="text-xl font-semibold pb-4 mb-4">File Upload</h2>
                         <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="footFallUploadArea">
                             <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                             <p class="mt-2 text-sm text-gray-600">Click to upload Foot Fall CSV</p>
@@ -1727,13 +1683,13 @@
                         </div>
                         <div class="flex flex-wrap gap-2 mt-4">
                             <button class="btn text-xs py-2 px-3" type="button" data-example-load="foot_fall">Load Example</button>
-                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Foot_fall.csv" download>Download Example CSV</a>
+                            <a class="btn btn-secondary text-xs py-2 px-3" href="samples/csv/Foot_fall.csv" download>Download Example CSV</a>
                         </div>
                         <div id="footFallStatus" class="mt-4"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Detection Settings</h2>
+                        <h2 class="text-xl font-semibold pb-4 mb-4">Detection Settings</h2>
                         <div class="form-group mb-4">
                             <label class="text-sm font-medium">Likelihood Threshold</label>
                             <input type="number" id="footFallLikelihood" value="0.5" min="0" max="1" step="0.05" class="w-full mt-1">
@@ -1783,50 +1739,50 @@
                                 </div>
                                 <div>
                                     <label class="text-xs font-medium text-gray-600">Export</label>
-                                    <button class="btn btn-success w-full text-sm py-2 mt-1" id="footFallExportImagesBtn" disabled>Download Images</button>
+                                    <button class="btn btn-secondary w-full text-sm py-2 mt-1" id="footFallExportImagesBtn" disabled>Download Images</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
-                        <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
-                        <button class="btn w-full text-base py-3 btn-success" id="footFallExportBtn" disabled>Download Foot Fall Contacts CSV</button>
-                        <p class="text-xs text-green-700 mt-2">Exports detected stance/contact windows for all paws</p>
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4 text-slate-800">Export Results</h2>
+                        <button class="btn w-full text-base py-3 btn-secondary" id="footFallExportBtn" disabled>Download Foot Fall Contacts CSV</button>
+                        <p class="text-xs text-slate-500 mt-2">Exports detected stance/contact windows for all paws</p>
                     </div>
                 </div>
 
                 <div class="results-panel lg:w-2/3 flex flex-col gap-6">
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">🧾 Summary</h2>
+                        <h2 class="text-xl font-semibold mb-2">Summary</h2>
                         <p class="text-sm text-slate-500 mb-4">Simple counts and averages so users can quickly understand the result.</p>
                         <div id="footFallSummary"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📊 Total Foot Fall Count</h2>
+                        <h2 class="text-xl font-semibold mb-2">Total Foot Fall Count</h2>
                         <p class="text-sm text-slate-500 mb-4">One bar per paw showing how many foot falls were detected.</p>
                         <div id="footFallCountPlot" class="w-full h-[320px] lg:h-[360px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📍 2D Paw-Only Plot</h2>
+                        <h2 class="text-xl font-semibold mb-2">2D Paw-Only Plot</h2>
                         <p class="text-sm text-slate-500 mb-4">Only the paw traces and detected foot falls are shown, using the full run length as the axis range.</p>
                         <div id="footFallPlot" class="w-full h-[420px] lg:h-[520px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📉 Paw Line Plot With Contact Peaks</h2>
+                        <h2 class="text-xl font-semibold mb-2">Paw Line Plot With Contact Peaks</h2>
                         <p class="text-sm text-slate-500 mb-4">Each line shows paw position across frames, with contact markers placed where foot fall is detected.</p>
                         <div id="footFallSignalPlot" class="w-full h-[360px] lg:h-[420px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">🎥 Separate Paw Videos</h2>
+                        <h2 class="text-xl font-semibold mb-2">Separate Paw Videos</h2>
                         <p class="text-sm text-slate-500 mb-4">Each paw is shown alone on the same axis range to make the foot fall pattern easier to read.</p>
                         <div class="flex flex-wrap items-center gap-3 mb-4">
                             <button class="btn text-xs py-2 px-3" id="footFallPlayBtn">Play</button>
-                            <button class="btn text-xs py-2 px-3 bg-slate-600 hover:bg-slate-700 text-white" id="footFallPauseBtn">Pause</button>
+                            <button class="btn btn-ghost btn-sm" id="footFallPauseBtn">Pause</button>
                             <label class="flex items-center gap-2 text-sm">Frame
                                 <input type="range" id="footFallFrameSlider" min="0" max="0" value="0" class="w-56">
                             </label>
@@ -1836,28 +1792,28 @@
                             <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                                 <div class="flex items-center justify-between gap-3 mb-3">
                                     <h3 class="text-base font-semibold" style="color:#ef4444">RF Paw</h3>
-                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="RF">Download RF Video</button>
+                                    <button class="btn btn-secondary text-xs py-2 px-3 footfall-video-btn" data-paw="RF">Download RF Video</button>
                                 </div>
                                 <canvas id="footFallCanvasRF" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
                             </div>
                             <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                                 <div class="flex items-center justify-between gap-3 mb-3">
                                     <h3 class="text-base font-semibold" style="color:#3b82f6">LF Paw</h3>
-                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="LF">Download LF Video</button>
+                                    <button class="btn btn-secondary text-xs py-2 px-3 footfall-video-btn" data-paw="LF">Download LF Video</button>
                                 </div>
                                 <canvas id="footFallCanvasLF" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
                             </div>
                             <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                                 <div class="flex items-center justify-between gap-3 mb-3">
                                     <h3 class="text-base font-semibold" style="color:#10b981">RH Paw</h3>
-                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="RH">Download RH Video</button>
+                                    <button class="btn btn-secondary text-xs py-2 px-3 footfall-video-btn" data-paw="RH">Download RH Video</button>
                                 </div>
                                 <canvas id="footFallCanvasRH" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
                             </div>
                             <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
                                 <div class="flex items-center justify-between gap-3 mb-3">
                                     <h3 class="text-base font-semibold" style="color:#f59e0b">LH Paw</h3>
-                                    <button class="btn btn-success text-xs py-2 px-3 footfall-video-btn" data-paw="LH">Download LH Video</button>
+                                    <button class="btn btn-secondary text-xs py-2 px-3 footfall-video-btn" data-paw="LH">Download LH Video</button>
                                 </div>
                                 <canvas id="footFallCanvasLH" width="640" height="360" class="w-full rounded-md border border-slate-200 bg-white"></canvas>
                             </div>
@@ -1866,7 +1822,7 @@
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📋 Detected Contacts</h2>
+                        <h2 class="text-xl font-semibold mb-2">Detected Contacts</h2>
                         <p class="text-sm text-slate-500 mb-4">Start/end frame, duration, and contact center for every detected stance window.</p>
                         <div style="max-height:360px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
                             <table class="min-w-full text-sm">
@@ -1890,7 +1846,7 @@
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">🧪 Multiple Sample Foot Fall Analysis</h2>
+                        <h2 class="text-xl font-semibold mb-2">Multiple Sample Foot Fall Analysis</h2>
                         <p class="text-sm text-slate-500 mb-4">Batch process multiple animals, assign treatment/group labels, and export combined foot-fall summaries.</p>
                         <div class="border border-dashed border-slate-300 rounded-xl p-4 bg-slate-50">
                             <label class="text-sm font-semibold text-slate-700">Upload Foot Fall CSV files (multiple allowed)</label>
@@ -1916,44 +1872,23 @@
                             </table>
                         </div>
                         <div class="flex flex-wrap gap-4 mt-4">
-                            <button class="btn btn-success px-4 py-2 text-sm" id="footFallMultiExportBtn" disabled>Export Combined Foot Fall CSV</button>
+                            <button class="btn btn-secondary px-4 py-2 text-sm" id="footFallMultiExportBtn" disabled>Export Combined Foot Fall CSV</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="treadmillSection" class="hidden">
-        <div class="breadcrumb-container">
-            <div class="container mx-auto px-6 py-6 space-y-4">
-                <div class="top-nav">
-                    <div class="nav-brand">
-                        <span class="nav-brand-title">KiMA</span>
-                        <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-                    </div>
-                    <div class="nav-links">
-                        <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                        <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
-                        <button class="nav-link active" type="button" data-section-target="toolsHubSection">Tools</button>
-                        <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-                    </div>
-                    <button id="themeToggleTreadmill" class="theme-toggle" type="button">
-                        <span class="theme-toggle-icon">🌞</span>
-                        <span class="theme-toggle-label">Light Mode</span>
-                    </button>
-                </div>
-            </div>
+    <section id="treadmillSection" class="hidden content-wrapper section-padding" aria-label="Treadmill Analysis">
+        <div class="page-header">
+            <h1>Treadmill Analysis</h1>
+            <p>Continuous hindlimb tracking for treadmill gait quality, cycle stability, and fatigue-style comparisons</p>
         </div>
-        <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-            <div class="header p-8 text-center">
-                <h1 class="text-4xl font-bold tracking-tight">KiMA - Treadmill Analysis</h1>
-                <p class="text-lg text-slate-300 mt-2">Continuous hindlimb tracking for treadmill gait quality, cycle stability, and fatigue-style comparisons</p>
-            </div>
-            <div class="content flex flex-col lg:flex-row gap-8 p-8">
+            <div class="content flex flex-col lg:flex-row gap-8">
                 <div class="controls-panel lg:w-1/3 space-y-6">
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                        <h2 class="text-xl font-semibold pb-4 mb-4">File Upload</h2>
                         <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="treadmillUploadArea">
                             <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                             <p class="mt-2 text-sm text-gray-600">Click to upload Treadmill CSV</p>
@@ -1962,13 +1897,13 @@
                         </div>
                         <div class="flex flex-wrap gap-2 mt-4">
                             <button class="btn text-xs py-2 px-3" type="button" data-example-load="treadmill">Load Example</button>
-                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Treadmill.csv" download>Download Example CSV</a>
+                            <a class="btn btn-secondary text-xs py-2 px-3" href="samples/csv/Treadmill.csv" download>Download Example CSV</a>
                         </div>
                         <div id="treadmillStatus" class="mt-4"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Settings</h2>
+                        <h2 class="text-xl font-semibold pb-4 mb-4">Settings</h2>
                         <div class="form-group mb-4">
                             <label class="text-sm font-medium">Likelihood Threshold</label>
                             <input type="number" id="treadmillLikelihood" value="0.5" min="0" max="1" step="0.05" class="w-full mt-1">
@@ -2005,33 +1940,33 @@
                                 </div>
                                 <div>
                                     <label class="text-xs font-medium text-gray-600">Export</label>
-                                    <button class="btn btn-success w-full text-sm py-2 mt-1" id="treadmillExportImagesBtn" disabled>Download Images</button>
+                                    <button class="btn btn-secondary w-full text-sm py-2 mt-1" id="treadmillExportImagesBtn" disabled>Download Images</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
-                        <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
-                        <button class="btn w-full text-base py-3 btn-success" id="treadmillExportCyclesBtn" disabled>Download Treadmill Cycle CSV</button>
-                        <p class="text-xs text-green-700 mt-2">Exports per-cycle treadmill metrics and joint summaries</p>
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4 text-slate-800">Export Results</h2>
+                        <button class="btn w-full text-base py-3 btn-secondary" id="treadmillExportCyclesBtn" disabled>Download Treadmill Cycle CSV</button>
+                        <p class="text-xs text-slate-500 mt-2">Exports per-cycle treadmill metrics and joint summaries</p>
                     </div>
                 </div>
 
                 <div class="results-panel lg:w-2/3 flex flex-col gap-6">
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">🧾 Summary</h2>
+                        <h2 class="text-xl font-semibold mb-2">Summary</h2>
                         <p class="text-sm text-slate-500 mb-4">Continuous treadmill summary with cycle count, cadence, stride proxy, and toe clearance.</p>
                         <div id="treadmillSummary"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">🎞️ Treadmill Player</h2>
+                        <h2 class="text-xl font-semibold mb-2">Treadmill Player</h2>
                         <p class="text-sm text-slate-500 mb-4">Play the tracked hindlimb as a normalized stick figure through the treadmill run.</p>
                         <div class="flex flex-wrap items-center gap-3 mb-4">
                             <button class="btn text-xs py-2 px-3" id="treadmillPlayBtn">Play</button>
-                            <button class="btn text-xs py-2 px-3 bg-slate-600 hover:bg-slate-700 text-white" id="treadmillPauseBtn">Pause</button>
-                            <button class="btn btn-success text-xs py-2 px-3" id="treadmillVideoBtn">Download Video</button>
+                            <button class="btn btn-ghost btn-sm" id="treadmillPauseBtn">Pause</button>
+                            <button class="btn btn-secondary text-xs py-2 px-3" id="treadmillVideoBtn">Download Video</button>
                             <label class="flex items-center gap-2 text-sm">Frame
                                 <input type="range" id="treadmillFrameSlider" min="0" max="0" value="0" class="w-56">
                             </label>
@@ -2042,25 +1977,25 @@
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📈 Joint Angles Over Time</h2>
+                        <h2 class="text-xl font-semibold mb-2">Joint Angles Over Time</h2>
                         <p class="text-sm text-slate-500 mb-4">Toe, ankle, knee, and hip behavior through the full treadmill session.</p>
                         <div id="treadmillAnglesPlot" class="w-full h-[360px] lg:h-[420px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">🏃 Cycle Trends</h2>
+                        <h2 class="text-xl font-semibold mb-2">Cycle Trends</h2>
                         <p class="text-sm text-slate-500 mb-4">Cycle-by-cycle cadence, stride proxy, and toe clearance to show stability or fatigue over time.</p>
                         <div id="treadmillCyclesPlot" class="w-full h-[360px] lg:h-[420px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📊 Early / Mid / Late Comparison</h2>
+                        <h2 class="text-xl font-semibold mb-2">Early / Mid / Late Comparison</h2>
                         <p class="text-sm text-slate-500 mb-4">Compare treadmill performance blocks across the run.</p>
                         <div id="treadmillBlocksPlot" class="w-full h-[320px] lg:h-[380px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📋 Per-Cycle Metrics</h2>
+                        <h2 class="text-xl font-semibold mb-2">Per-Cycle Metrics</h2>
                         <p class="text-sm text-slate-500 mb-4">Each row summarizes one detected treadmill cycle.</p>
                         <div style="max-height:360px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
                             <table class="min-w-full text-sm">
@@ -2084,38 +2019,17 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="catWalkSection" class="hidden">
-        <div class="breadcrumb-container">
-            <div class="container mx-auto px-6 py-6 space-y-4">
-                <div class="top-nav">
-                    <div class="nav-brand">
-                        <span class="nav-brand-title">KiMA</span>
-                        <span class="nav-brand-subtitle">Spinal cord injury gait analysis suite</span>
-                    </div>
-                    <div class="nav-links">
-                        <button class="nav-link" type="button" data-section-target="homeSection">Home</button>
-                        <button class="nav-link" type="button" data-section-target="manualSection">Manual</button>
-                        <button class="nav-link active" type="button" data-section-target="toolsHubSection">Tools</button>
-                        <a class="nav-link" href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab</a>
-                    </div>
-                    <button id="themeToggleCatWalk" class="theme-toggle" type="button">
-                        <span class="theme-toggle-icon">🌞</span>
-                        <span class="theme-toggle-label">Light Mode</span>
-                    </button>
-                </div>
-            </div>
+    <section id="catWalkSection" class="hidden content-wrapper section-padding" aria-label="Cat Walk Analysis">
+        <div class="page-header">
+            <h1>Cat Walk Analysis</h1>
+            <p>Runway-based paw contact analysis for stride length and stride width</p>
         </div>
-        <div class="container mx-auto my-8 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-            <div class="header p-8 text-center">
-                <h1 class="text-4xl font-bold tracking-tight">KiMA - Cat Walk Analysis</h1>
-                <p class="text-lg text-slate-300 mt-2">Runway-based paw contact analysis for stride length and stride width</p>
-            </div>
-            <div class="content flex flex-col lg:flex-row gap-8 p-8">
+            <div class="content flex flex-col lg:flex-row gap-8">
                 <div class="controls-panel lg:w-1/3 space-y-6">
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold pb-4 mb-4">📁 File Upload</h2>
+                        <h2 class="text-xl font-semibold pb-4 mb-4">File Upload</h2>
                         <div class="upload-area rounded-lg p-10 text-center cursor-pointer" id="catWalkUploadArea">
                             <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                             <p class="mt-2 text-sm text-gray-600">Click to upload Cat Walk CSV</p>
@@ -2124,13 +2038,13 @@
                         </div>
                         <div class="flex flex-wrap gap-2 mt-4">
                             <button class="btn text-xs py-2 px-3" type="button" data-example-load="cat_walk">Load Example</button>
-                            <a class="btn btn-success text-xs py-2 px-3" href="samples/csv/Cat_Walk.csv" download>Download Example CSV</a>
+                            <a class="btn btn-secondary text-xs py-2 px-3" href="samples/csv/Cat_Walk.csv" download>Download Example CSV</a>
                         </div>
                         <div id="catWalkStatus" class="mt-4"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold pb-4 mb-4">⚙️ Settings</h2>
+                        <h2 class="text-xl font-semibold pb-4 mb-4">Settings</h2>
                         <div class="form-group mb-4">
                             <label class="text-sm font-medium">Likelihood Threshold</label>
                             <input type="number" id="catWalkLikelihood" value="0.5" min="0" max="1" step="0.05" class="w-full mt-1">
@@ -2154,40 +2068,40 @@
                         </div>
                     </div>
 
-                    <div class="panel rounded-xl p-6 bg-green-50 border-green-200">
-                        <h2 class="text-xl font-semibold pb-4 mb-4 text-green-800">📊 Export Results</h2>
-                        <button class="btn w-full text-base py-3 btn-success" id="catWalkExportBtn" disabled>Download Cat Walk Metrics CSV</button>
-                        <p class="text-xs text-green-700 mt-2">Exports projected contacts, stride lengths, and stride widths</p>
+                    <div class="panel rounded-xl p-6">
+                        <h2 class="text-xl font-semibold pb-4 mb-4 text-slate-800">Export Results</h2>
+                        <button class="btn w-full text-base py-3 btn-secondary" id="catWalkExportBtn" disabled>Download Cat Walk Metrics CSV</button>
+                        <p class="text-xs text-slate-500 mt-2">Exports projected contacts, stride lengths, and stride widths</p>
                     </div>
                 </div>
 
                 <div class="results-panel lg:w-2/3 flex flex-col gap-6">
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">🧾 Summary</h2>
+                        <h2 class="text-xl font-semibold mb-2">Summary</h2>
                         <p class="text-sm text-slate-500 mb-4">Runway-projected paw metrics computed from detected contact points.</p>
                         <div id="catWalkSummary"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📍 Projected Paw Contact Map</h2>
+                        <h2 class="text-xl font-semibold mb-2">Projected Paw Contact Map</h2>
                         <p class="text-sm text-slate-500 mb-4">Contact points are projected into runway length and lateral width coordinates.</p>
                         <div id="catWalkMapPlot" class="w-full h-[380px] lg:h-[440px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📏 Stride Length</h2>
+                        <h2 class="text-xl font-semibold mb-2">Stride Length</h2>
                         <p class="text-sm text-slate-500 mb-4">Stride length is computed between successive contacts of the same paw along the runway axis.</p>
                         <div id="catWalkStridePlot" class="w-full h-[340px] lg:h-[400px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">↔️ Stride Width</h2>
+                        <h2 class="text-xl font-semibold mb-2">Stride Width</h2>
                         <p class="text-sm text-slate-500 mb-4">Stride width is computed as the lateral separation between left and right fore or hind paw contacts.</p>
                         <div id="catWalkWidthPlot" class="w-full h-[320px] lg:h-[380px]"></div>
                     </div>
 
                     <div class="panel rounded-xl p-6">
-                        <h2 class="text-xl font-semibold mb-2">📋 Stride Metrics</h2>
+                        <h2 class="text-xl font-semibold mb-2">Stride Metrics</h2>
                         <p class="text-sm text-slate-500 mb-4">Projected stride length values and paired width values used for the summary plots.</p>
                         <div style="max-height:360px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
                             <table class="min-w-full text-sm">
@@ -2208,7 +2122,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    </main><!-- end main -->
 
     <script>
         let csvData = null;
@@ -2333,8 +2249,8 @@
             LH: document.getElementById('footFallCanvasLH')
         };
         const themeToggleBtn = document.getElementById('themeToggle');
-        const themeToggleIcon = document.getElementById('themeToggleIcon');
-        const themeToggleLabel = document.getElementById('themeToggleLabel');
+        const themeIconSun = document.getElementById('themeIconSun');
+        const themeIconMoon = document.getElementById('themeIconMoon');
         const sectionsMap = {
             homeSection: homeSectionEl,
             toolsHubSection: toolsHubSectionEl,
@@ -2529,6 +2445,34 @@
             const initialSection = getSectionFromLocation();
             showSection(initialSection, { replaceHistory: true, scroll: false });
             initTheme();
+
+            // Manual TOC toggle and scroll links
+            const manualTocToggle = document.getElementById('manualTocToggle');
+            const manualTocDropdown = document.getElementById('manualTocDropdown');
+            if (manualTocToggle && manualTocDropdown) {
+                manualTocToggle.addEventListener('click', () => {
+                    manualTocDropdown.classList.toggle('open');
+                });
+                manualTocDropdown.querySelectorAll('a').forEach(a => {
+                    a.addEventListener('click', () => {
+                        manualTocDropdown.classList.remove('open');
+                    });
+                });
+            }
+            // Manual TOC scroll-to-section links
+            document.querySelectorAll('[data-manual-scroll]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-manual-scroll');
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Highlight active TOC link
+                        document.querySelectorAll('[data-manual-scroll]').forEach(l => l.classList.remove('active'));
+                        document.querySelectorAll('[data-manual-scroll="' + targetId + '"]').forEach(l => l.classList.add('active'));
+                    }
+                });
+            });
 
             window.addEventListener('popstate', () => {
                 showSection(getSectionFromLocation(), { updateHistory: false, scroll: false });
@@ -2745,10 +2689,27 @@
         }
 
         function updateNavState(sectionId) {
-            document.querySelectorAll('[data-section-target]').forEach(el => {
-                if (!el.classList.contains('nav-link')) return;
-                el.classList.toggle('active', el.dataset.sectionTarget === sectionId);
+            // Map tool sections to "Tools" nav active state
+            const toolSections = ['singleSampleSection', 'multiSampleSection', 'pcaSection', 'footFallSection', 'treadmillSection', 'catWalkSection'];
+            const navTarget = toolSections.includes(sectionId) ? 'toolsHubSection' : sectionId;
+
+            document.querySelectorAll('.site-header .nav-link[data-section-target], .mobile-menu .nav-link[data-section-target]').forEach(el => {
+                el.classList.toggle('active', el.dataset.sectionTarget === navTarget);
             });
+
+            // Update page title
+            const titleMap = {
+                homeSection: 'KiMA — Gait Analysis Suite',
+                toolsHubSection: 'Tools — KiMA',
+                manualSection: 'Manual — KiMA',
+                singleSampleSection: 'Ladder & Rung — KiMA',
+                multiSampleSection: 'Batch Analysis — KiMA',
+                pcaSection: 'PCA — KiMA',
+                footFallSection: 'Foot Fall — KiMA',
+                treadmillSection: 'Treadmill — KiMA',
+                catWalkSection: 'Cat Walk — KiMA'
+            };
+            document.title = titleMap[sectionId] || 'KiMA — Gait Analysis Suite';
         }
 
         function showSection(sectionId, options = {}) {
@@ -2766,6 +2727,20 @@
                 homeSectionEl.classList.remove('hidden');
             }
             updateNavState(resolvedSection);
+
+            // Show/hide tools sub-navigation
+            const toolSections = ['singleSampleSection', 'multiSampleSection', 'pcaSection', 'footFallSection', 'treadmillSection', 'catWalkSection', 'toolsHubSection'];
+            const toolsSubnav = document.getElementById('toolsSubnav');
+            if (toolsSubnav) {
+                if (toolSections.includes(resolvedSection)) {
+                    toolsSubnav.classList.remove('hidden');
+                    toolsSubnav.querySelectorAll('.tools-subnav-link').forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.sectionTarget === resolvedSection);
+                    });
+                } else {
+                    toolsSubnav.classList.add('hidden');
+                }
+            }
             if (updateHistory) {
                 const nextHash = `#${resolvedSection}`;
                 if (replaceHistory) {
@@ -2784,14 +2759,34 @@
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             applyThemePreference(savedTheme || (prefersDark ? 'dark' : 'light'));
 
-            // Add listeners to all theme toggle buttons
-            const allThemeToggles = document.querySelectorAll('[id^="themeToggle"]');
-            allThemeToggles.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const nextTheme = document.body.classList.contains('theme-dark') ? 'light' : 'dark';
+            // Single theme toggle button
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
                     applyThemePreference(nextTheme);
                 });
-            });
+            }
+
+            // Hamburger menu
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (hamburgerBtn && mobileMenu) {
+                hamburgerBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('open');
+                });
+                // Close on nav click
+                mobileMenu.querySelectorAll('[data-section-target]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('open');
+                    });
+                });
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                        mobileMenu.classList.remove('open');
+                    }
+                });
+            }
         }
 
         function applyThemePreference(mode = 'light') {
@@ -2800,14 +2795,13 @@
             document.documentElement.classList.toggle('dark', normalized === 'dark');
             document.documentElement.style.colorScheme = normalized === 'dark' ? 'dark' : 'light';
 
-            // Update all theme toggle buttons
-            const allThemeToggles = document.querySelectorAll('[id^="themeToggle"]');
-            allThemeToggles.forEach(btn => {
-                const icon = btn.querySelector('.theme-toggle-icon') || btn.querySelector('#themeToggleIcon');
-                const label = btn.querySelector('.theme-toggle-label') || btn.querySelector('#themeToggleLabel');
-                if (icon) icon.textContent = normalized === 'dark' ? '🌙' : '🌞';
-                if (label) label.textContent = normalized === 'dark' ? 'Dark Mode' : 'Light Mode';
-            });
+            // Update theme toggle icons
+            const sunIcon = document.getElementById('themeIconSun');
+            const moonIcon = document.getElementById('themeIconMoon');
+            if (sunIcon && moonIcon) {
+                sunIcon.style.display = normalized === 'dark' ? 'none' : 'block';
+                moonIcon.style.display = normalized === 'dark' ? 'block' : 'none';
+            }
 
             try { localStorage.setItem(THEME_STORAGE_KEY, normalized); } catch (error) {
                 console.warn('Unable to persist theme preference', error);
@@ -5451,7 +5445,7 @@
                         <p class="text-xs text-slate-500">${sample.frameCount} frame${sample.frameCount === 1 ? '' : 's'} detected</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button class="btn btn-success text-xs px-3 py-2" data-action="load" data-sample-index="${idx}">Load &amp; View</button>
+                        <button class="btn btn-secondary text-xs px-3 py-2" data-action="load" data-sample-index="${idx}">Load &amp; View</button>
                         <button class="btn text-xs px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800" data-action="remove" data-sample-index="${idx}">Remove</button>
                     </div>
                 </div>
@@ -5956,13 +5950,15 @@ setInterval(()=>{
     }
 }, 1200);
 </script>
-<footer class="site-footer">
+<footer class="site-footer" role="contentinfo">
     <div class="site-footer-inner">
-        <p>Developed by manoj · <a href="https://github.com/mano2991" target="_blank" rel="noopener noreferrer">github.com/mano2991</a></p>
-        <div class="site-footer-meta">
-            <span>&copy; 2026 manoj</span>
-            <span>KiMA Suite v1.0</span>
-            <span>Licensed under the MIT License</span>
+        <span>KiMA v1.0 &middot; MIT License</span>
+        <div class="footer-links">
+            <span>Developed by Manojkumar</span>
+            <a href="https://github.com/mano2991" target="_blank" rel="noopener noreferrer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://venkateshlab.science" target="_blank" rel="noopener noreferrer">Venkatesh Lab &#8599;</a>
         </div>
     </div>
 </footer>
