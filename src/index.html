@@ -8,6 +8,11 @@
     <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pca-js@1.0.3/dist/pca.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -775,166 +780,215 @@
             margin: 0 0.25rem;
         }
 
-        /* Dark Mode - Section Container keeps white background */
+        /* Dark Mode - Proper colors using design variables */
         body.theme-dark .section-container {
-            background: #ffffff;
+            background: var(--bg);
+            color: var(--text);
         }
 
         body.theme-dark .section-header {
-            background: #ffffff;
-            color: #1a202c;
+            background: var(--bg);
+            color: var(--text);
         }
 
         body.theme-dark .container.mx-auto.bg-white {
-            background: #ffffff;
-            color: #1a202c;
+            background: var(--bg);
+            color: var(--text);
         }
 
         body.theme-dark .header {
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            color: #1f2937;
+            background: linear-gradient(135deg, var(--header-bg) 0%, #111827 100%);
+            color: var(--header-text);
         }
 
         body.theme-dark .header h1 {
-            color: #1f2937;
+            color: var(--header-text);
         }
 
         body.theme-dark .header p {
-            color: #6b7280;
+            color: var(--muted);
         }
 
         body.theme-dark .controls-panel .panel {
-            background: #ffffff;
-            border-color: #e5e7eb;
-            color: #1a202c;
+            background: var(--panel-bg);
+            border-color: var(--panel-border);
+            color: var(--text);
         }
 
         body.theme-dark .controls-panel h2 {
-            color: #1a202c;
+            color: var(--text);
         }
 
         body.theme-dark .results-panel .panel {
-            background: #ffffff;
-            border-color: #e5e7eb;
-            color: #1a202c;
+            background: var(--panel-bg);
+            border-color: var(--panel-border);
+            color: var(--text);
         }
 
         body.theme-dark .results-panel h2 {
-            color: #1a202c;
+            color: var(--text);
         }
 
         body.theme-dark .upload-area {
-            border-color: #cbd5e1;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(59, 130, 246, 0.04));
+            border-color: var(--panel-border);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.08));
         }
 
         body.theme-dark .upload-area p {
-            color: #6b7280;
+            color: var(--muted);
         }
 
         body.theme-dark .form-group label {
-            color: #6b7280;
+            color: var(--muted);
         }
 
         body.theme-dark .form-group input,
         body.theme-dark .form-group select {
-            background-color: #f9fafb;
-            border-color: #e5e7eb;
-            color: #1a202c;
+            background-color: #111827;
+            border-color: var(--panel-border);
+            color: var(--text);
         }
 
         body.theme-dark .form-group input:focus,
         body.theme-dark .form-group select:focus {
-            background-color: #ffffff;
+            background-color: #0f172a;
             border-color: var(--primary);
         }
 
         body.theme-dark .tab-button {
-            color: #6b7280;
+            color: var(--muted);
             border-bottom-color: transparent;
         }
 
         body.theme-dark .tab-button.active {
             color: var(--primary);
             border-bottom-color: var(--primary);
-            background-color: #f0f4ff;
+            background-color: rgba(59, 130, 246, 0.15);
         }
 
         body.theme-dark .tab-content {
-            color: #1a202c;
+            color: var(--text);
         }
 
         body.theme-dark .panel.bg-green-50 {
-            background: #f0fdf4;
-            border-color: #bbf7d0;
-            color: #15803d;
+            background: #022c22;
+            border-color: #064e3b;
+            color: #34d399;
         }
 
         body.theme-dark .panel.bg-green-50 h2 {
-            color: #15803d;
+            color: #34d399;
         }
 
         body.theme-dark .panel.bg-green-50 p {
-            color: #15803d;
+            color: #34d399;
         }
 
-        /* dark mode table styles moved to main.css */
-
         body.theme-dark .tab-header {
-            border-color: #e5e7eb;
+            border-color: var(--panel-border);
         }
 
         body.theme-dark .border-gray-200 {
-            border-color: #e5e7eb;
+            border-color: var(--panel-border);
         }
 
         body.theme-dark .text-gray-600 {
-            color: #6b7280;
+            color: var(--muted);
         }
 
         body.theme-dark .text-gray-400 {
-            color: #9ca3af;
+            color: var(--muted);
         }
 
         body.theme-dark .text-gray-500 {
-            color: #9ca3af;
+            color: var(--muted);
         }
 
         body.theme-dark .bg-slate-50,
         body.theme-dark .bg-slate-100 {
-            background: #f3f4f6;
-            color: #1f2937;
+            background: var(--surface-secondary);
+            color: var(--text-secondary);
         }
 
         body.theme-dark .bg-blue-50 {
-            background: #f0f4ff;
-            color: #1e40af;
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
         }
 
         /* Dark Mode - Download Options Box */
         body.theme-dark .download-options {
-            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
-            border-color: #e5e7eb;
-            color: #1a202c;
+            background: var(--surface-secondary);
+            border-color: var(--panel-border);
+            color: var(--text);
         }
 
         body.theme-dark .download-options .text-sm,
         body.theme-dark .download-options label {
-            color: #1a202c;
+            color: var(--text);
         }
 
         body.theme-dark .download-options .text-xs {
-            color: #6b7280;
+            color: var(--muted);
         }
 
         body.theme-dark .download-options select {
-            background: #ffffff;
-            border-color: #e5e7eb;
-            color: #1a202c;
+            background: var(--panel-bg);
+            border-color: var(--panel-border);
+            color: var(--text);
         }
 
-        body.theme-dark .slider-labels {
-            color: #6b7280;
+        /* Ensure table header cells inherit background to prevent transparency issues when sticky */
+        thead th {
+            background-color: inherit;
+        }
+
+        html.dark thead th,
+        body.theme-dark thead th {
+            background-color: var(--panel-bg) !important;
+            color: var(--text) !important;
+        }
+
+        /* Dynamic theme overrides for Tailwind classes in dark mode */
+        html.dark .bg-white {
+            background-color: var(--panel-bg) !important;
+        }
+        html.dark .bg-slate-50,
+        html.dark .bg-gray-50 {
+            background-color: var(--surface-secondary) !important;
+        }
+        html.dark .bg-slate-100,
+        html.dark .bg-gray-100 {
+            background-color: var(--surface-secondary) !important;
+        }
+        html.dark .border-gray-200,
+        html.dark .border-slate-200,
+        html.dark .border-gray-300,
+        html.dark .border-slate-300 {
+            border-color: var(--panel-border) !important;
+        }
+        html.dark .text-gray-900,
+        html.dark .text-slate-900 {
+            color: var(--text) !important;
+        }
+        html.dark .text-gray-800,
+        html.dark .text-slate-800 {
+            color: var(--text) !important;
+        }
+        html.dark .text-gray-700,
+        html.dark .text-slate-700 {
+            color: var(--text) !important;
+        }
+        html.dark .text-gray-600,
+        html.dark .text-slate-600 {
+            color: var(--muted) !important;
+        }
+        html.dark .text-gray-500,
+        html.dark .text-slate-500 {
+            color: var(--muted) !important;
+        }
+        html.dark .text-gray-400,
+        html.dark .text-slate-400 {
+            color: var(--muted) !important;
         }
     </style>
 </head>
@@ -1334,7 +1388,7 @@
         </div>
     <div>
 
-        <div class="content flex flex-col lg:flex-row gap-8 p-8">
+        <div class="content flex flex-col lg:flex-row gap-8">
             <div class="controls-panel lg:w-1/3 space-y-6">
                 <div class="panel rounded-xl p-6">
                     <h2 class="text-xl font-semibold pb-4 mb-4">File Upload</h2>
@@ -1353,16 +1407,7 @@
                     <div id="fileStatus" class="mt-4"></div>
                 </div>
 
-                <div class="panel rounded-xl p-6">
-                    <h2 class="text-xl font-semibold pb-4 mb-4 text-slate-800">Export Results</h2>
-                    <button class="btn w-full text-base py-3 btn-secondary" id="downloadParamsBtn" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        Download Parameters CSV
-                    </button>
-                    <p class="text-xs text-slate-500 mt-2">Exports all 46 gait parameters</p>
-                </div>
+
 
                 <div class="panel rounded-xl p-6">
                     <h2 class="text-xl font-semibold pb-4 mb-4">Plot Styling</h2>
@@ -1409,7 +1454,6 @@
                                         </label>
                                         <button class="btn text-xs py-2 px-3" id="sequenceAutoBtn">Auto</button>
                                         <button class="btn btn-secondary text-xs py-2 px-3" id="sequencePlayBtn">Play</button>
-                                        <button class="btn btn-ghost btn-sm" id="sequencePauseBtn">Pause</button>
                                         <button class="btn btn-secondary btn-sm" id="sequenceVideoBtn">Download Video</button>
                                     </div>
                                 </div>
@@ -1431,7 +1475,18 @@
                         </div>
 
                         <div id="gaitParametersTab" class="tab-content flex-col w-full">
-                            <h2 class="text-xl font-semibold mb-4">Gait Parameters</h2>
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 pb-4 border-b">
+                                <div>
+                                    <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Gait Parameters</h2>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Calculated gait kinematics and joint angles (46 parameters)</p>
+                                </div>
+                                <button class="btn btn-secondary text-sm py-2 px-4" id="downloadParamsBtn" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Download Parameters CSV
+                                </button>
+                            </div>
                             <div style="max-height:600px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:8px">
                                 <table class="min-w-full text-sm">
                                     <thead class="bg-blue-50 sticky top-0">
@@ -1448,90 +1503,104 @@
                             </div>
                         </div>
 
-                        <div id="statsAnalysisTab" class="tab-content flex-col lg:flex-row gap-6 w-full">
-                            <div class="lg:w-2/3">
+                        <div id="statsAnalysisTab" class="tab-content flex flex-col gap-6 w-full">
+                            <div class="w-full">
                                 <h2 class="text-xl font-semibold mb-2">Angle Distribution Analysis</h2>
                                 <p class="text-sm text-slate-500 mb-4">Distribution of joint angles across the **entire dataset**.</p>
                                 <div id="statsPlot" class="w-full h-[400px] lg:h-[500px]"></div>
-                            <div class="w-full border-t mt-6 pt-6">
-                                <h2 class="text-xl font-semibold mb-2">Gait Metrics</h2>
-                                <p class="text-sm text-slate-500 mb-4">Cadence, stride, and swing/stance from foot speed (assumes 30 fps, foot=toe).</p>
-                                <div id="gaitMetricsPlot" class="w-full h-[360px] lg:h-[420px]"></div>
-                                <div id="gaitSummary" class="mt-3 text-sm text-slate-700"></div>
-                                <div class="mt-4">
-                                    <div style="max-height:260px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
-                                        <table class="min-w-full text-sm">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="px-2 py-1 text-left">#</th>
-                                                    <th class="px-2 py-1 text-right">Start frame</th>
-                                                    <th class="px-2 py-1 text-right">End frame</th>
-                                                    <th class="px-2 py-1 text-right">Step time (s)</th>
-                                                    <th class="px-2 py-1 text-right">Cadence (spm)</th>
-                                                    <th class="px-2 py-1 text-right">Stance %</th>
-                                                    <th class="px-2 py-1 text-right">Swing %</th>
-                                                    <th class="px-2 py-1 text-right">Stride (px)</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="gaitCyclesBody"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                                
+                                <!-- Chart Options immediately below Angle Distribution Analysis plot -->
+                                <div class="w-full mt-6 mb-8">
+                                    <div class="panel p-6 bg-slate-50">
+                                        <h3 class="text-lg font-semibold mb-4">Chart Options</h3>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
+                                            <!-- Column 1: Chart Type & Show Data Points -->
+                                            <div class="space-y-4">
+                                                <div class="form-group">
+                                                    <label class="text-sm font-medium">Chart Type</label>
+                                                    <div class="flex flex-col space-y-1 mt-1">
+                                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="box" checked> Box Plot</label>
+                                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="violin"> Violin Plot</label>
+                                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="violinbox"> Violin + Box</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="text-sm font-medium flex items-center">
+                                                        <input type="checkbox" id="showDataPoints" class="mr-2 h-4 w-4">
+                                                        Show Data Points
+                                                    </label>
+                                                </div>
+                                            </div>
 
-                            </div>
-                            <div class="lg:w-1/3 border-t lg:border-t-0 lg:border-l p-4 space-y-4">
-                                <h3 class="text-lg font-semibold">Chart Options</h3>
-                                <div class="form-group">
-                                    <label class="text-sm font-medium">Chart Type</label>
-                                    <div class="flex flex-col space-y-1 mt-1">
-                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="box" checked> Box Plot</label>
-                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="violin"> Violin Plot</label>
-                                        <label class="text-sm"><input type="radio" name="statsPlotType" value="violinbox"> Violin + Box</label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="text-sm font-medium flex items-center">
-                                        <input type="checkbox" id="showDataPoints" class="mr-2 h-4 w-4">
-                                        Show Data Points
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="text-sm font-medium">Plot Color</label>
-                                    <div class="color-picker text-sm flex items-center mt-1">
-                                        <span>Plot Color:</span>
-                                        <input type="color" id="statsPlotColor" value="#818cf8" class="ml-auto">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="text-sm font-medium">Text Size</label>
-                                    <input type="number" id="statsTextSize" value="12" min="8" class="w-full mt-1 text-sm">
-                                </div>
-                                
-                                <div class="form-group border-t pt-4">
-                                     <label class="text-sm font-medium">Download Dimensions</label>
-                                     <div class="grid grid-cols-2 gap-2 mt-1">
-                                        <div>
-                                            <label class="text-xs text-gray-500">Width (in)</label>
-                                            <input type="number" id="statsWidthIn" value="8" class="w-full text-sm">
+                                            <!-- Column 2: Styling -->
+                                            <div class="space-y-4">
+                                                <div class="form-group">
+                                                    <label class="text-sm font-medium">Plot Color</label>
+                                                    <div class="color-picker text-sm flex items-center mt-1">
+                                                        <span>Plot Color:</span>
+                                                        <input type="color" id="statsPlotColor" value="#818cf8" class="ml-auto">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="text-sm font-medium">Text Size</label>
+                                                    <input type="number" id="statsTextSize" value="12" min="8" class="w-full mt-1 text-sm">
+                                                </div>
+                                            </div>
+
+                                            <!-- Column 3: Download Dimensions -->
+                                            <div class="space-y-2">
+                                                <label class="text-sm font-medium">Download Dimensions</label>
+                                                <div class="grid grid-cols-2 gap-2">
+                                                    <div>
+                                                        <label class="text-xs text-gray-500">Width (in)</label>
+                                                        <input type="number" id="statsWidthIn" value="8" class="w-full text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-xs text-gray-500">Height (in)</label>
+                                                        <input type="number" id="statsHeightIn" value="5" class="w-full text-sm">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="text-xs text-gray-500">DPI</label>
+                                                    <input type="number" id="statsDpi" value="300" class="w-full text-sm">
+                                                </div>
+                                            </div>
+
+                                            <!-- Column 4: Download Button -->
+                                            <div>
+                                                <button class="btn btn-secondary w-full text-sm py-3" id="downloadStatsBtn">
+                                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+                                                    Download Chart
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label class="text-xs text-gray-500">Height (in)</label>
-                                            <input type="number" id="statsHeightIn" value="5" class="w-full text-sm">
-                                        </div>
-                                     </div>
-                                      <div class="mt-2">
-                                        <label class="text-xs text-gray-500">DPI</label>
-                                        <input type="number" id="statsDpi" value="300" class="w-full text-sm">
-                                        <p class="text-xs text-gray-400 mt-1">Total pixels = inches × DPI</p>
                                     </div>
                                 </div>
                                 
-                                <div class="mt-6">
-                                    <button class="btn btn-secondary w-full text-sm py-2" id="downloadStatsBtn">
-                                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
-                                        Download Chart
-                                    </button>
+                                <div class="w-full border-t pt-8">
+                                    <h2 class="text-xl font-semibold mb-2">Gait Metrics</h2>
+                                    <p class="text-sm text-slate-500 mb-4">Cadence, stride, and swing/stance from foot speed (assumes 30 fps, foot=toe).</p>
+                                    <div id="gaitMetricsPlot" class="w-full h-[360px] lg:h-[420px]"></div>
+                                    <div id="gaitSummary" class="mt-3 text-sm text-slate-700"></div>
+                                    <div class="mt-4">
+                                        <div style="max-height:260px;overflow:auto;border:1px solid #e2e8f0;border-radius:8px">
+                                            <table class="min-w-full text-sm">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-2 py-1 text-left">#</th>
+                                                        <th class="px-2 py-1 text-right">Start frame</th>
+                                                        <th class="px-2 py-1 text-right">End frame</th>
+                                                        <th class="px-2 py-1 text-right">Step time (s)</th>
+                                                        <th class="px-2 py-1 text-right">Cadence (spm)</th>
+                                                        <th class="px-2 py-1 text-right">Stance %</th>
+                                                        <th class="px-2 py-1 text-right">Swing %</th>
+                                                        <th class="px-2 py-1 text-right">Stride (px)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="gaitCyclesBody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1558,6 +1627,9 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
+
+
 
                     </div>
                 </div>
@@ -1782,7 +1854,6 @@
                         <p class="text-sm text-slate-500 mb-4">Each paw is shown alone on the same axis range to make the foot fall pattern easier to read.</p>
                         <div class="flex flex-wrap items-center gap-3 mb-4">
                             <button class="btn text-xs py-2 px-3" id="footFallPlayBtn">Play</button>
-                            <button class="btn btn-ghost btn-sm" id="footFallPauseBtn">Pause</button>
                             <label class="flex items-center gap-2 text-sm">Frame
                                 <input type="range" id="footFallFrameSlider" min="0" max="0" value="0" class="w-56">
                             </label>
@@ -1965,7 +2036,6 @@
                         <p class="text-sm text-slate-500 mb-4">Play the tracked hindlimb as a normalized stick figure through the treadmill run.</p>
                         <div class="flex flex-wrap items-center gap-3 mb-4">
                             <button class="btn text-xs py-2 px-3" id="treadmillPlayBtn">Play</button>
-                            <button class="btn btn-ghost btn-sm" id="treadmillPauseBtn">Pause</button>
                             <button class="btn btn-secondary text-xs py-2 px-3" id="treadmillVideoBtn">Download Video</button>
                             <label class="flex items-center gap-2 text-sm">Frame
                                 <input type="range" id="treadmillFrameSlider" min="0" max="0" value="0" class="w-56">
@@ -2127,6 +2197,69 @@
     </main><!-- end main -->
 
     <script>
+        // Wrap Plotly.newPlot and Plotly.react to inject theme colors dynamically
+        (function() {
+            function wrapPlotlyFunction(funcName) {
+                if (window.Plotly && window.Plotly[funcName]) {
+                    const originalFunc = window.Plotly[funcName];
+                    window.Plotly[funcName] = function(gd, data, layout, config) {
+                        const isDark = document.documentElement.classList.contains('dark');
+                        layout = layout || {};
+                        
+                        // Theme properties - Plots should always have white background and dark text/grid lines
+                        const themeBg = '#ffffff';
+                        const themeText = '#1f2937';
+                        const themeGrid = '#e5e7eb';
+                        
+                        layout.paper_bgcolor = themeBg;
+                        layout.plot_bgcolor = themeBg;
+                        
+                        if (!layout.font) layout.font = {};
+                        layout.font.color = themeText;
+                        layout.font.family = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                        
+                        // Update axes
+                        const updateAxis = (axis) => {
+                            if (!axis) return;
+                            axis.gridcolor = themeGrid;
+                            if (!axis.tickfont) axis.tickfont = {};
+                            axis.tickfont.color = '#4b5563';
+                            if (!axis.title) axis.title = {};
+                            if (typeof axis.title === 'object') {
+                                if (!axis.title.font) axis.title.font = {};
+                                axis.title.font.color = themeText;
+                            }
+                        };
+                        
+                        updateAxis(layout.xaxis);
+                        updateAxis(layout.yaxis);
+                        
+                        if (layout.title) {
+                            if (typeof layout.title === 'string') {
+                                layout.title = { text: layout.title };
+                            }
+                            if (!layout.title.font) layout.title.font = {};
+                            if (!layout.title.font.color) layout.title.font.color = themeText;
+                        }
+                        
+                        if (layout.legend) {
+                            if (!layout.legend.font) layout.legend.font = {};
+                            if (!layout.legend.font.color) layout.legend.font.color = themeText;
+                        }
+                        
+                        return originalFunc.call(window.Plotly, gd, data, layout, config);
+                    };
+                }
+            }
+            // Run immediately and also set a small timeout just in case it is loaded/overridden later
+            wrapPlotlyFunction('newPlot');
+            wrapPlotlyFunction('react');
+            setTimeout(() => {
+                wrapPlotlyFunction('newPlot');
+                wrapPlotlyFunction('react');
+            }, 0);
+        })();
+
         let csvData = null;
         let allNormalizedPoints = [];
         let selectedFrames = [];
@@ -2522,10 +2655,13 @@
                 });
             }
             if (sequencePlayBtn) {
-                sequencePlayBtn.addEventListener('click', () => { startSequencePlayback(); });
-            }
-            if (sequencePauseBtn) {
-                sequencePauseBtn.addEventListener('click', () => { stopSequencePlayback(); });
+                sequencePlayBtn.addEventListener('click', () => {
+                    if (sequenceInterval) {
+                        stopSequencePlayback();
+                    } else {
+                        startSequencePlayback();
+                    }
+                });
             }
             if (sequenceVideoBtn) {
                 sequenceVideoBtn.addEventListener('click', () => { downloadSequenceVideo(); });
@@ -2581,10 +2717,13 @@
                 }
             });
             if (footFallPlayBtn) {
-                footFallPlayBtn.addEventListener('click', startFootFallPlayback);
-            }
-            if (footFallPauseBtn) {
-                footFallPauseBtn.addEventListener('click', stopFootFallPlayback);
+                footFallPlayBtn.addEventListener('click', () => {
+                    if (footFallPlaybackInterval) {
+                        stopFootFallPlayback();
+                    } else {
+                        startFootFallPlayback();
+                    }
+                });
             }
             if (footFallFrameSlider) {
                 footFallFrameSlider.addEventListener('input', () => {
@@ -2611,8 +2750,15 @@
                     });
                 }
             });
-            if (treadmillPlayBtn) treadmillPlayBtn.addEventListener('click', startTreadmillPlayback);
-            if (treadmillPauseBtn) treadmillPauseBtn.addEventListener('click', stopTreadmillPlayback);
+            if (treadmillPlayBtn) {
+                treadmillPlayBtn.addEventListener('click', () => {
+                    if (treadmillPlaybackInterval) {
+                        stopTreadmillPlayback();
+                    } else {
+                        startTreadmillPlayback();
+                    }
+                });
+            }
             if (treadmillFrameSlider) {
                 treadmillFrameSlider.addEventListener('input', () => {
                     stopTreadmillPlayback();
@@ -2801,6 +2947,41 @@
             if (sunIcon && moonIcon) {
                 sunIcon.style.display = normalized === 'dark' ? 'none' : 'block';
                 moonIcon.style.display = normalized === 'dark' ? 'block' : 'none';
+            }
+
+            // Sync settings panel color pickers with the theme
+            const plotBgPicker = document.getElementById('plotBackgroundColor');
+            const textColorPicker = document.getElementById('textColor');
+            const bgFrameColorPicker = document.getElementById('backgroundFrameColor');
+            const footFallBgPicker = document.getElementById('footFallBackgroundColor');
+            const treadmillBgPicker = document.getElementById('treadmillBackgroundColor');
+
+            if (plotBgPicker) plotBgPicker.value = '#ffffff';
+            if (textColorPicker) textColorPicker.value = '#1e293b';
+            if (bgFrameColorPicker) bgFrameColorPicker.value = '#94a3b8';
+            if (footFallBgPicker) footFallBgPicker.value = '#ffffff';
+            if (treadmillBgPicker) treadmillBgPicker.value = '#ffffff';
+
+            // Trigger plot redraws if data is loaded
+            try {
+                if (typeof csvData !== 'undefined' && csvData) {
+                    if (typeof generateInteractivePlot === 'function') generateInteractivePlot();
+                    if (typeof drawStatsPlot === 'function') drawStatsPlot();
+                }
+                if (typeof footFallState !== 'undefined' && footFallState && footFallState.analysis) {
+                    if (typeof renderFootFallPlotlyCharts === 'function') renderFootFallPlotlyCharts();
+                }
+                if (typeof treadmillState !== 'undefined' && treadmillState && treadmillState.analysis) {
+                    if (typeof renderTreadmillPlots === 'function') renderTreadmillPlots();
+                }
+                if (typeof catWalkState !== 'undefined' && catWalkState && catWalkState.analysis) {
+                    if (typeof renderCatWalkPlots === 'function') renderCatWalkPlots();
+                }
+                if (typeof pcaState !== 'undefined' && pcaState && pcaState.analysis) {
+                    if (typeof runPcaAnalysis === 'function') runPcaAnalysis();
+                }
+            } catch (e) {
+                console.error('Error redrawing plots on theme switch:', e);
             }
 
             try { localStorage.setItem(THEME_STORAGE_KEY, normalized); } catch (error) {
@@ -3521,12 +3702,18 @@
                 pointer = (pointer + 1) % footFallState.frames.length;
                 updateFootFallFramePreview(pointer);
             }, Math.max(40, Math.round(1000 / Math.max(5, footFallState.settings.fps))));
+            if (footFallPlayBtn) {
+                footFallPlayBtn.textContent = 'Pause';
+            }
         }
 
         function stopFootFallPlayback() {
             if (footFallPlaybackInterval) {
                 clearInterval(footFallPlaybackInterval);
                 footFallPlaybackInterval = null;
+            }
+            if (footFallPlayBtn) {
+                footFallPlayBtn.textContent = 'Play';
             }
         }
 
@@ -4198,12 +4385,18 @@
                 pointer = getNextValidTreadmillFrame(pointer);
                 updateTreadmillFramePreview(pointer);
             }, Math.max(40, Math.round(1000 / Math.max(5, treadmillState.settings.fps))));
+            if (treadmillPlayBtn) {
+                treadmillPlayBtn.textContent = 'Pause';
+            }
         }
 
         function stopTreadmillPlayback() {
             if (treadmillPlaybackInterval) {
                 clearInterval(treadmillPlaybackInterval);
                 treadmillPlaybackInterval = null;
+            }
+            if (treadmillPlayBtn) {
+                treadmillPlayBtn.textContent = 'Play';
             }
         }
 
@@ -4956,12 +5149,18 @@
                 sequenceCurrentIndex = (sequenceCurrentIndex + 1) % sequenceFrames.length;
                 drawSequenceFramePreview();
             }, SEQUENCE_PLAYBACK_DELAY);
+            if (sequencePlayBtn) {
+                sequencePlayBtn.textContent = 'Pause';
+            }
         }
 
         function stopSequencePlayback() {
             if (sequenceInterval) {
                 clearInterval(sequenceInterval);
                 sequenceInterval = null;
+            }
+            if (sequencePlayBtn) {
+                sequencePlayBtn.textContent = 'Play';
             }
         }
 
