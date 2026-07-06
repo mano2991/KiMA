@@ -6397,11 +6397,10 @@
                             x: [],
                             y: [],
                             text: [],
-                            mode: 'markers+text',
+                            mode: 'markers',
                             type: 'scatter',
                             name: group,
-                            marker: { size: 14, color: palette[colorIdx % palette.length], line: { color: '#0f172a', width: 1 } },
-                            textposition: 'top center'
+                            marker: { size: 14, color: palette[colorIdx % palette.length], line: { color: '#0f172a', width: 1 } }
                         };
                         colorIdx++;
                     }
@@ -6412,10 +6411,23 @@
                 const traces = Object.values(tracesMap);
                 const layout = {
                     title: 'PCA Projection (PC1 vs PC2)',
-                    xaxis: { title: `PC1 ${(percentVar[0] || 0).toFixed(1)}%` },
-                    yaxis: { title: `PC2 ${(percentVar[1] || 0).toFixed(1)}%` },
+                    xaxis: { 
+                        title: `PC1 ${(percentVar[0] || 0).toFixed(1)}%`,
+                        gridcolor: '#f1f5f9',
+                        linecolor: '#cbd5e1',
+                        tickfont: { color: '#64748b' }
+                    },
+                    yaxis: { 
+                        title: `PC2 ${(percentVar[1] || 0).toFixed(1)}%`,
+                        gridcolor: '#f1f5f9',
+                        linecolor: '#cbd5e1',
+                        tickfont: { color: '#64748b' }
+                    },
                     legend: { orientation: 'h' },
-                    hovermode: 'closest'
+                    hovermode: 'closest',
+                    paper_bgcolor: '#ffffff',
+                    plot_bgcolor: '#ffffff',
+                    font: { family: 'Inter, sans-serif', color: '#1e293b' }
                 };
                 if (pcaVariance) {
                     pcaVariance.textContent = `Explained variance: PC1 ${(percentVar[0] || 0).toFixed(2)}% · PC2 ${(percentVar[1] || 0).toFixed(2)}%`;
