@@ -1429,11 +1429,19 @@
 
                 <div class="panel rounded-xl p-6">
                     <h2 class="text-xl font-semibold pb-4 mb-4">Plot Styling</h2>
+                    <div class="form-group mb-4">
+                        <label class="text-sm font-medium">Anatomy Model Profile</label>
+                        <select id="anatomyProfile" class="mt-1 w-full text-sm">
+                            <option value="hindlimb">Hindlimb (Iliac, Hip, Knee, Ankle, MTP, Toe)</option>
+                            <option value="forelimb">Forelimb (Scapula, Shoulder, Elbow, Wrist, MCP, Digit)</option>
+                            <option value="spine">Cervical / Spine (Lumbar, Thoracic, Cervical, Head, Snout)</option>
+                        </select>
+                    </div>
                     <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Title</label> <input type="text" id="plotTitle" value="Gait Analysis Plot" class="mt-1 w-full"> </div>
                     <div class="grid grid-cols-2 gap-4 form-group mb-4"> <div><label class="text-sm font-medium">X-Axis Label</label><input type="text" id="xAxisLabel" value="X - Coordinate" class="mt-1 w-full"></div> <div><label class="text-sm font-medium">Y-Axis Label</label><input type="text" id="yAxisLabel" value="Y - Coordinate" class="mt-1 w-full"></div> </div>
                     <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Background Color</label> <div class="color-picker text-sm flex items-center mt-1"> <span>Background Color:</span> <input type="color" id="plotBackgroundColor" value="#ffffff" class="ml-auto"> </div> </div>
                     <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">Highlighted Frame Style</label> <div class="grid grid-cols-3 gap-4"> <div><label class="text-xs font-medium text-gray-600">Point Size</label><input type="number" id="pointSize" value="8" class="mt-1 w-full"></div> <div><label class="text-xs font-medium text-gray-600">Line Width</label><input type="number" id="lineWidth" value="5" class="mt-1 w-full"></div> <div><label class="text-xs font-medium text-gray-600">Text Size</label><input type="number" id="textSize" value="14" class="mt-1 w-full"></div> </div> </div>
-                    <div class="form-group mb-4"> <label class="text-sm font-medium">Body Part Colors</label> <div class="grid grid-cols-2 gap-x-6 gap-y-4 mt-2"> <div class="color-picker text-sm flex items-center"><span>Toe:</span><input type="color" id="colorToe" value="#F781BF" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>MTP:</span><input type="color" id="colorMtp" value="#FDB462" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Ankle:</span><input type="color" id="colorAnkle" value="#B3ED69" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Knee:</span><input type="color" id="colorKnee" value="#80B1D3" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Hip:</span><input type="color" id="colorHip" value="#CAB2D6" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span>Iliac:</span><input type="color" id="colorIliac" value="#F90B0B" class="ml-auto"></div> </div> </div>
+                    <div class="form-group mb-4"> <label class="text-sm font-medium">Body Part Colors</label> <div class="grid grid-cols-2 gap-x-6 gap-y-4 mt-2"> <div class="color-picker text-sm flex items-center"><span id="lblToe">Toe:</span><input type="color" id="colorToe" value="#F781BF" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span id="lblMtp">MTP:</span><input type="color" id="colorMtp" value="#FDB462" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span id="lblAnkle">Ankle:</span><input type="color" id="colorAnkle" value="#B3ED69" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span id="lblKnee">Knee:</span><input type="color" id="colorKnee" value="#80B1D3" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span id="lblHip">Hip:</span><input type="color" id="colorHip" value="#CAB2D6" class="ml-auto"></div> <div class="color-picker text-sm flex items-center"><span id="lblIliac">Iliac:</span><input type="color" id="colorIliac" value="#F90B0B" class="ml-auto"></div> </div> </div>
                     <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">Background / Unselected Frames</label> <div class="grid grid-cols-2 gap-4"> <div> <label class="text-xs font-medium text-gray-600">Color</label> <div class="color-picker text-sm flex items-center mt-1"><span>Frame Color:</span><input type="color" id="backgroundFrameColor" value="#94a3b8" class="ml-auto"></div> </div> <div> <label class="text-xs font-medium text-gray-600">Opacity</label> <input type="range" id="backgroundOpacity" min="0" max="100" value="10" class="w-full mt-1"> <div class="text-xs text-center text-gray-600" id="opacityValue">10%</div> </div> </div> <div class="mt-4"> <label class="text-sm font-medium text-gray-700">Frame Step</label> <input type="number" id="frameStep" value="1" min="1" class="w-full mt-1"> <p class="text-xs text-gray-500 mt-1">Draw one background frame every N steps to reduce clutter.</p> </div> </div>
                     <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold block mb-2">General Settings</label> <div class="mb-4"> <label class="text-sm font-medium">Labels & Title Color</label> <div class="color-picker text-sm flex items-center mt-1"><span>Text Color:</span><input type="color" id="textColor" value="#1e293b" class="ml-auto"></div> </div> <label class="text-sm font-medium">Likelihood Threshold</label> <input type="number" id="threshold" value="0.5" min="0" max="1" step="0.1" class="w-full mt-1"> </div>
                     <div class="form-group mb-4 border-t pt-4"> <label class="text-sm font-bold mb-3 block">Download Options (Interactive Plot)</label> <div class="download-options"> <div class="grid grid-cols-2 gap-4 mb-4"> <div> <label class="text-xs font-medium text-gray-600 mb-2 block">DPI Quality</label> <div class="slider-container"> <input type="range" id="dpiSlider" min="100" max="600" value="300" step="50" class="dpi-slider"> <div class="slider-labels"><span>100</span><span>600</span></div> </div> <div class="text-center text-sm font-semibold text-gray-700 mt-1" id="dpiValue">300 DPI</div> </div> <div> <label class="text-xs font-medium text-gray-600 mb-1 block">Background</label> <select id="backgroundType" class="w-full text-sm"> <option value="white">White Background</option> <option value="black">Black Background</option> <option value="transparent">Transparent Background</option> </select> </div> </div> <div class="text-xs text-gray-500 mb-2"><span id="imageSizeInfo">Image size: ~2400 x 2100 pixels</span></div> </div> </div>
@@ -1723,11 +1731,39 @@
                                 <option value="box">Box Plot</option>
                                 <option value="violin">Violin Plot</option>
                                 <option value="violin_box">Violin + Box Plot</option>
+                                <option value="correlation">Parameter Correlation Heatmap</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div id="batchComparisonPlot" class="w-full h-[450px]"></div>
+            </div>
+
+            <div id="batchStatsCard" class="hidden border border-slate-200 rounded-xl p-6 bg-white space-y-6">
+                <div class="border-b border-slate-100 pb-4">
+                    <h3 class="text-lg font-semibold text-slate-800">Cohort Statistical Report</h3>
+                    <p class="text-xs text-slate-500">Automatically computes differences between your defined groups (minimum 2 samples per group required).</p>
+                </div>
+                <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-slate-50 text-slate-600 uppercase text-xs">
+                            <tr>
+                                <th class="px-3 py-2 text-left font-semibold">Gait Metric</th>
+                                <th class="px-3 py-2 text-left font-semibold">Comparison Groups</th>
+                                <th class="px-3 py-2 text-left font-semibold">Statistical Test</th>
+                                <th class="px-3 py-2 text-right font-semibold">Test Statistic</th>
+                                <th class="px-3 py-2 text-right font-semibold">P-Value</th>
+                                <th class="px-3 py-2 text-center font-semibold">Significance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="batchStatsTableBody">
+                            <!-- Filled dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex gap-4">
+                    <button class="btn btn-secondary text-xs px-3 py-2" id="downloadStatsReportBtn">Export Stats CSV</button>
+                </div>
             </div>
 
             <div class="flex flex-wrap gap-4">
@@ -1962,6 +1998,23 @@
                                     <tr><td colspan="8" class="px-3 py-8 text-center text-gray-400">Upload a Foot Fall CSV to begin</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="panel rounded-xl p-6" id="footFallSymmetryPanel" style="display:none">
+                        <h2 class="text-xl font-semibold mb-2">Limb Symmetry Analysis</h2>
+                        <p class="text-sm text-slate-500 mb-4">Symmetry Index (SI) comparing left vs. right limbs. Perfect symmetry is 0%; positive/negative values indicate side bias.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                                <h3 class="font-semibold text-slate-800 mb-2">Forelimbs (LF vs. RF)</h3>
+                                <ul class="space-y-2 text-sm text-slate-600" id="footFallForelimbSymmetry">
+                                </ul>
+                            </div>
+                            <div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                                <h3 class="font-semibold text-slate-800 mb-2">Hindlimbs (LH vs. RH)</h3>
+                                <ul class="space-y-2 text-sm text-slate-600" id="footFallHindlimbSymmetry">
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -2328,6 +2381,115 @@
         let pcaMetricKeys = [];
         let multiStickSamples = [];
         let currentDatasetLabel = 'current';
+        const ANATOMY_PROFILES = {
+            hindlimb: {
+                label: "Hindlimb",
+                parts: ['toe', 'mtp', 'ankle', 'knee', 'hip', 'iliac'],
+                displayNames: {
+                    toe: "Toe",
+                    mtp: "MTP",
+                    ankle: "Ankle",
+                    knee: "Knee",
+                    hip: "Hip",
+                    iliac: "Iliac Crest"
+                },
+                segments: [
+                    ['toe', 'mtp'],
+                    ['mtp', 'ankle'],
+                    ['ankle', 'knee'],
+                    ['knee', 'hip'],
+                    ['hip', 'iliac']
+                ],
+                angles: {
+                    "MTP": ['toe', 'mtp', 'ankle'],
+                    "Ankle": ['mtp', 'ankle', 'knee'],
+                    "Knee": ['ankle', 'knee', 'hip'],
+                    "Hip": ['knee', 'hip', 'iliac'],
+                    "Pelvic Tilt": ['hip', 'iliac', 'horizontal']
+                },
+                anchor: 'iliac',
+                colors: {
+                    toe: '#F781BF',
+                    mtp: '#FDB462',
+                    ankle: '#B3ED69',
+                    knee: '#80B1D3',
+                    hip: '#CAB2D6',
+                    iliac: '#F90B0B'
+                }
+            },
+            forelimb: {
+                label: "Forelimb",
+                parts: ['digit', 'mcp', 'wrist', 'elbow', 'shoulder', 'scapula'],
+                displayNames: {
+                    digit: "Digit",
+                    mcp: "MCP",
+                    wrist: "Wrist",
+                    elbow: "Elbow",
+                    shoulder: "Shoulder",
+                    scapula: "Scapula"
+                },
+                segments: [
+                    ['digit', 'mcp'],
+                    ['mcp', 'wrist'],
+                    ['wrist', 'elbow'],
+                    ['elbow', 'shoulder'],
+                    ['shoulder', 'scapula']
+                ],
+                angles: {
+                    "MCP": ['digit', 'mcp', 'wrist'],
+                    "Wrist": ['mcp', 'wrist', 'elbow'],
+                    "Elbow": ['wrist', 'elbow', 'shoulder'],
+                    "Shoulder": ['elbow', 'shoulder', 'scapula'],
+                    "Scapular Tilt": ['shoulder', 'scapula', 'horizontal']
+                },
+                anchor: 'scapula',
+                colors: {
+                    digit: '#F781BF',
+                    mcp: '#FDB462',
+                    wrist: '#B3ED69',
+                    elbow: '#80B1D3',
+                    shoulder: '#CAB2D6',
+                    scapula: '#F90B0B'
+                }
+            },
+            spine: {
+                label: "Cervical / Spine",
+                parts: ['snout', 'nose', 'ear', 'cervical', 'thoracic', 'lumbar'],
+                displayNames: {
+                    snout: "Snout",
+                    nose: "Nose",
+                    ear: "Ear",
+                    cervical: "Cervical",
+                    thoracic: "Thoracic",
+                    lumbar: "Lumbar"
+                },
+                segments: [
+                    ['snout', 'nose'],
+                    ['nose', 'ear'],
+                    ['ear', 'cervical'],
+                    ['cervical', 'thoracic'],
+                    ['thoracic', 'lumbar']
+                ],
+                angles: {
+                    "Nose": ['snout', 'nose', 'ear'],
+                    "Head": ['nose', 'ear', 'cervical'],
+                    "Cervical": ['ear', 'cervical', 'thoracic'],
+                    "Thoracic": ['cervical', 'thoracic', 'lumbar'],
+                    "Lumbar Tilt": ['thoracic', 'lumbar', 'horizontal']
+                },
+                anchor: 'lumbar',
+                colors: {
+                    snout: '#F781BF',
+                    nose: '#FDB462',
+                    ear: '#B3ED69',
+                    cervical: '#80B1D3',
+                    thoracic: '#CAB2D6',
+                    lumbar: '#F90B0B'
+                }
+            }
+        };
+        let currentAnatomyProfile = 'hindlimb';
+        let rawHeaders = null;
         let footFallState = null;
         let footFallBatchSamples = [];
         let footFallPlaybackInterval = null;
@@ -2671,6 +2833,19 @@
             immediateRefreshControls.forEach(control => {
                 control.addEventListener('input', () => { if (csvData) generateInteractivePlot(); });
             });
+            const anatomyProfileSelect = document.getElementById('anatomyProfile');
+            if (anatomyProfileSelect) {
+                anatomyProfileSelect.addEventListener('change', function() {
+                    currentAnatomyProfile = this.value;
+                    updateAnatomyLabels();
+                    if (csvData) {
+                        processData();
+                        calculateAllAngles();
+                        generateInteractivePlot();
+                        drawStatsPlot();
+                    }
+                });
+            }
             backgroundOpacitySlider.addEventListener('input', () => { opacityValue.textContent = `${backgroundOpacitySlider.value}%`; });
             dpiSlider.addEventListener('input', function() {
                 const dpi = parseInt(this.value);
@@ -2742,6 +2917,10 @@
             }
             if (multiExportBtn) {
                 multiExportBtn.addEventListener('click', exportMultiSamplesCsv);
+            }
+            const downloadStatsReportBtn = document.getElementById('downloadStatsReportBtn');
+            if (downloadStatsReportBtn) {
+                downloadStatsReportBtn.addEventListener('click', exportBatchStatsReportCsv);
             }
             if (multiSendToPcaBtn) {
                 multiSendToPcaBtn.addEventListener('click', () => {
@@ -3617,6 +3796,45 @@
                 margin: { l: 60, r: 20, b: 60, t: 50 },
                 legend: { orientation: 'h' }
             }, { responsive: true });
+
+            // 4. Symmetry Calculations
+            const symmetryPanel = document.getElementById('footFallSymmetryPanel');
+            const forelimbList = document.getElementById('footFallForelimbSymmetry');
+            const hindlimbList = document.getElementById('footFallHindlimbSymmetry');
+            
+            if (symmetryPanel && forelimbList && hindlimbList) {
+                const rfStats = analysis.perPawStats['RF'] || { contactCount: 0, stanceDurations: [] };
+                const lfStats = analysis.perPawStats['LF'] || { contactCount: 0, stanceDurations: [] };
+                const rhStats = analysis.perPawStats['RH'] || { contactCount: 0, stanceDurations: [] };
+                const lhStats = analysis.perPawStats['LH'] || { contactCount: 0, stanceDurations: [] };
+                
+                const rfMean = meanArray(rfStats.stanceDurations) || 0;
+                const lfMean = meanArray(lfStats.stanceDurations) || 0;
+                const rhMean = meanArray(rhStats.stanceDurations) || 0;
+                const lhMean = meanArray(lhStats.stanceDurations) || 0;
+                
+                const computeSI = (valA, valB) => {
+                    if (valA === 0 && valB === 0) return 0;
+                    return ((valA - valB) / (0.5 * (valA + valB))) * 100;
+                };
+                
+                const countForeSI = computeSI(lfStats.contactCount, rfStats.contactCount);
+                const durForeSI = computeSI(lfMean, rfMean);
+                const countHindSI = computeSI(lhStats.contactCount, rhStats.contactCount);
+                const durHindSI = computeSI(lhMean, rhMean);
+                
+                forelimbList.innerHTML = `
+                    <li><strong>Contact Count SI:</strong> ${countForeSI.toFixed(1)}% <span class="text-xs text-slate-400">(LF: ${lfStats.contactCount} · RF: ${rfStats.contactCount})</span></li>
+                    <li><strong>Mean Stance Duration SI:</strong> ${durForeSI.toFixed(1)}% <span class="text-xs text-slate-400">(LF: ${lfMean.toFixed(3)}s · RF: ${rfMean.toFixed(3)}s)</span></li>
+                `;
+                
+                hindlimbList.innerHTML = `
+                    <li><strong>Contact Count SI:</strong> ${countHindSI.toFixed(1)}% <span class="text-xs text-slate-400">(LH: ${lhStats.contactCount} · RH: ${rhStats.contactCount})</span></li>
+                    <li><strong>Mean Stance Duration SI:</strong> ${durHindSI.toFixed(1)}% <span class="text-xs text-slate-400">(LH: ${lhMean.toFixed(3)}s · RH: ${rhMean.toFixed(3)}s)</span></li>
+                `;
+                
+                symmetryPanel.style.display = 'block';
+            }
         }
 
         function exportFootFallContactsCsv() {
@@ -5007,7 +5225,39 @@
         }
 
         // --- All other functions (unchanged) ---
-        function parseCSV(csvText, label = '') { try { setProcessing(true, 'Processing CSV file...'); currentDatasetLabel = label || 'current'; selectedFrames = []; angleDistributions = {}; sequenceFrames = []; sequenceCurrentIndex = 0; userModifiedSelection = false; stopSequencePlayback(); if (sequencePanel) sequencePanel.classList.add('hidden'); const lines = csvText.split('\n').filter(line => line.trim()); if (lines.length < 3) throw new Error("CSV must have at least 3 rows."); const dataLines = lines.slice(2); csvData = dataLines.map(line => line.split(',')); if (!csvData.length) throw new Error('No frame data found after the header rows.'); __gaitCache = null; __gaitComputedFor = null; processData(); calculateAllAngles(); showStatus('success', `Loaded ${label || 'dataset'} with ${csvData.length} frames.`); downloadBtn.disabled = false; generateInteractivePlot(); } catch (error) { showStatus('error', 'Error parsing CSV: ' + error.message); csvData = null; currentDatasetLabel = 'current'; downloadBtn.disabled = true; } finally { setProcessing(false); } }
+        function parseCSV(csvText, label = '') {
+            try {
+                setProcessing(true, 'Processing CSV file...');
+                currentDatasetLabel = label || 'current';
+                selectedFrames = [];
+                angleDistributions = {};
+                sequenceFrames = [];
+                sequenceCurrentIndex = 0;
+                userModifiedSelection = false;
+                stopSequencePlayback();
+                if (sequencePanel) sequencePanel.classList.add('hidden');
+                const lines = csvText.split('\n').filter(line => line.trim());
+                if (lines.length < 3) throw new Error("CSV must have at least 3 rows.");
+                rawHeaders = lines.slice(0, 3).map(line => line.split(','));
+                const dataLines = lines.slice(2);
+                csvData = dataLines.map(line => line.split(','));
+                if (!csvData.length) throw new Error('No frame data found after the header rows.');
+                __gaitCache = null;
+                __gaitComputedFor = null;
+                processData();
+                calculateAllAngles();
+                showStatus('success', `Loaded ${label || 'dataset'} with ${csvData.length} frames.`);
+                downloadBtn.disabled = false;
+                generateInteractivePlot();
+            } catch (error) {
+                showStatus('error', 'Error parsing CSV: ' + error.message);
+                csvData = null;
+                currentDatasetLabel = 'current';
+                downloadBtn.disabled = true;
+            } finally {
+                setProcessing(false);
+            }
+        }
         function generateInteractivePlot() { if (!csvData) return; ensureDefaultSelections(sequenceFrames); const { canvas, plotContext } = generatePlotCanvas({ isForDownload: false }); displayResults(canvas, plotContext); updateSequencePlayer({ forceAuto: sequenceFrames.length === 0 }); }
         function displayResults(displayCanvas, plotContext) { results.innerHTML = ''; const plotContainer = document.createElement('div'); plotContainer.id = 'plot-container'; displayCanvas.style.maxWidth = '100%'; displayCanvas.style.height = 'auto'; displayCanvas.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'; displayCanvas.style.borderRadius = '0.5rem'; const hoverCanvas = document.createElement('canvas'); hoverCanvas.id = 'hover-canvas'; hoverCanvas.width = displayCanvas.width; hoverCanvas.height = displayCanvas.height; hoverCanvas.style.maxWidth = '100%'; hoverCanvas.style.height = 'auto'; const tooltip = document.createElement('div'); tooltip.id = 'tooltip'; plotContainer.append(displayCanvas, hoverCanvas, tooltip); results.appendChild(plotContainer); requestAnimationFrame(() => { const rect = displayCanvas.getBoundingClientRect(); hoverCanvas.style.width = `${rect.width}px`; hoverCanvas.style.height = `${rect.height}px`; plotContainer.addEventListener('mousemove', e => handleCanvasHover(e, plotContext)); plotContainer.addEventListener('mouseleave', handleCanvasLeave); plotContainer.addEventListener('click', e => handleCanvasClick(e, plotContext)); }); }
         function generateDownloadableImage() { setProcessing(true, 'Generating high-resolution image...'); setTimeout(() => { try { const { canvas } = generatePlotCanvas({ isForDownload: true }); const filename = buildExportName(currentDatasetLabel || 'single_sample', 'gait_analysis_plot', 'png'); downloadDataUrl(canvas.toDataURL('image/png'), filename); } catch (error) { console.error("Download failed:", error); } finally { setProcessing(false); } }, 100); }
@@ -5019,13 +5269,73 @@
         function handleCanvasClick(event, plotContext) { const canvas = event.currentTarget.querySelector('canvas:not(#hover-canvas)'); if (!canvas) return; const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; const mouseX = (event.clientX - rect.left) * scaleX; const mouseY = (event.clientY - rect.top) * scaleY; const frameIndex = findNearestFrame(mouseX, mouseY, plotContext); if (frameIndex !== -1) { const indexInSelection = selectedFrames.indexOf(frameIndex); if (indexInSelection > -1) { selectedFrames.splice(indexInSelection, 1); } else { selectedFrames.push(frameIndex); } userModifiedSelection = true; generateInteractivePlot(); } }
         function findNearestFrame(mouseX, mouseY, plotContext) { const { scale, offsetX, offsetY } = plotContext; const dataX = (mouseX - offsetX) / scale; const dataY = (mouseY - offsetY) / scale; let bestMatch = { frameIndex: -1, distance: Infinity }; allNormalizedPoints.forEach((points, frameIndex) => { if (!points) return; let minDistanceForThisFrame = Infinity; for (const partName in points) { const partPoint = points[partName]; const dist = Math.hypot(partPoint.x - dataX, partPoint.y - dataY); if (dist < minDistanceForThisFrame) { minDistanceForThisFrame = dist; } } if (minDistanceForThisFrame < bestMatch.distance) { bestMatch = { frameIndex, distance: minDistanceForThisFrame }; } }); return bestMatch.distance < 20 ? bestMatch.frameIndex : -1; }
         function handleCanvasLeave() { const hoverCanvas = document.getElementById('hover-canvas'); const tooltip = document.getElementById('tooltip'); if (!hoverCanvas || !tooltip) return; hoverCanvas.getContext('2d').clearRect(0, 0, hoverCanvas.width, hoverCanvas.height); tooltip.style.display = 'none'; }
-        function drawStickFigure(ctx, points, scale, offsetX, offsetY, overrideColor, lineWidth, pointColors = null, pointSize = 6) { const segments = [['toe', 'mtp'], ['mtp', 'ankle'], ['ankle', 'knee'], ['knee', 'hip'], ['hip', 'iliac']]; ctx.lineCap = 'round'; ctx.lineWidth = lineWidth; segments.forEach(([part1, part2]) => { const p1 = points[part1], p2 = points[part2]; if (p1 && p2) { ctx.strokeStyle = overrideColor || (pointColors ? pointColors[part1] : 'black'); ctx.beginPath(); ctx.moveTo(p1.x * scale + offsetX, p1.y * scale + offsetY); ctx.lineTo(p2.x * scale + offsetX, p2.y * scale + offsetY); ctx.stroke(); } }); if (pointColors && pointSize > 0) { for (const part in points) { if (pointColors[part]) { ctx.fillStyle = ctx.strokeStyle = pointColors[part]; drawMarker(ctx, part, points[part].x * scale + offsetX, points[part].y * scale + offsetY, pointSize); } } } }
-        function drawMarker(ctx, part, x, y, size) { const s = size / 2; ctx.beginPath(); switch (part) { case 'toe': ctx.arc(x, y, s, 0, 2 * Math.PI); ctx.fill(); break; case 'mtp': ctx.rect(x - s, y - s, size, size); ctx.fill(); break; case 'ankle': ctx.moveTo(x, y - s); ctx.lineTo(x + s, y); ctx.lineTo(x, y + s); ctx.lineTo(x - s, y); ctx.closePath(); ctx.fill(); break; case 'knee': ctx.moveTo(x, y - s); ctx.lineTo(x + s, y + s); ctx.lineTo(x - s, y + s); ctx.closePath(); ctx.fill(); break; case 'hip': ctx.moveTo(x, y + s); ctx.lineTo(x + s, y - s); ctx.lineTo(x - s, y - s); ctx.closePath(); ctx.fill(); break; case 'iliac': const currentFillStyle = ctx.fillStyle; ctx.lineWidth = Math.max(2, size / 4); ctx.beginPath(); ctx.moveTo(x - s, y); ctx.lineTo(x + s, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y - s); ctx.lineTo(x, y + s); ctx.stroke(); ctx.fillStyle = currentFillStyle; break; } }
-        function drawLegend(ctx, colors, canvasWidth, canvasHeight, pointSize, textColor, scaleFactor) { ctx.font = `${12 * scaleFactor}px Inter, sans-serif`; ctx.textAlign = 'left'; const legendY = canvasHeight - (25 * scaleFactor); const parts = ['toe', 'mtp', 'ankle', 'knee', 'hip', 'iliac']; const itemWidth = 100 * scaleFactor; let startX = (canvasWidth - (parts.length * itemWidth)) / 2 + (20 * scaleFactor); parts.forEach(part => { ctx.fillStyle = colors[part]; ctx.strokeStyle = colors[part]; ctx.lineWidth = 2 * scaleFactor; drawMarker(ctx, part, startX, legendY, pointSize * 0.8); ctx.fillStyle = textColor; ctx.fillText(part.charAt(0).toUpperCase() + part.slice(1), startX + (15 * scaleFactor), legendY + (4 * scaleFactor)); startX += itemWidth; }); }
+        function drawStickFigure(ctx, points, scale, offsetX, offsetY, overrideColor, lineWidth, pointColors = null, pointSize = 6) {
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const segments = profile.segments;
+            ctx.lineCap = 'round';
+            ctx.lineWidth = lineWidth;
+            segments.forEach(([part1, part2]) => {
+                const p1 = points[part1], p2 = points[part2];
+                if (p1 && p2) {
+                    ctx.strokeStyle = overrideColor || (pointColors ? pointColors[part1] : 'black');
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x * scale + offsetX, p1.y * scale + offsetY);
+                    ctx.lineTo(p2.x * scale + offsetX, p2.y * scale + offsetY);
+                    ctx.stroke();
+                }
+            });
+            if (pointColors && pointSize > 0) {
+                for (const part in points) {
+                    if (pointColors[part]) {
+                        ctx.fillStyle = ctx.strokeStyle = pointColors[part];
+                        drawMarker(ctx, part, points[part].x * scale + offsetX, points[part].y * scale + offsetY, pointSize);
+                    }
+                }
+            }
+        }
+        function drawMarker(ctx, part, x, y, size) {
+            const s = size / 2;
+            ctx.beginPath();
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const idx = profile.parts.indexOf(part);
+            if (idx === 0) {
+                ctx.arc(x, y, s, 0, 2 * Math.PI); ctx.fill();
+            } else if (idx === 1) {
+                ctx.rect(x - s, y - s, size, size); ctx.fill();
+            } else if (idx === 2) {
+                ctx.moveTo(x, y - s); ctx.lineTo(x + s, y); ctx.lineTo(x, y + s); ctx.lineTo(x - s, y); ctx.closePath(); ctx.fill();
+            } else if (idx === 3) {
+                ctx.moveTo(x, y - s); ctx.lineTo(x + s, y + s); ctx.lineTo(x - s, y + s); ctx.closePath(); ctx.fill();
+            } else if (idx === 4) {
+                ctx.moveTo(x, y + s); ctx.lineTo(x + s, y - s); ctx.lineTo(x - s, y - s); ctx.closePath(); ctx.fill();
+            } else if (idx === 5) {
+                const currentFillStyle = ctx.fillStyle; ctx.lineWidth = Math.max(2, size / 4); ctx.beginPath(); ctx.moveTo(x - s, y); ctx.lineTo(x + s, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y - s); ctx.lineTo(x, y + s); ctx.stroke(); ctx.fillStyle = currentFillStyle;
+            }
+        }
+        function drawLegend(ctx, colors, canvasWidth, canvasHeight, pointSize, textColor, scaleFactor) {
+            ctx.font = `${12 * scaleFactor}px Inter, sans-serif`;
+            ctx.textAlign = 'left';
+            const legendY = canvasHeight - (25 * scaleFactor);
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const parts = profile.parts;
+            const itemWidth = 100 * scaleFactor;
+            let startX = (canvasWidth - (parts.length * itemWidth)) / 2 + (20 * scaleFactor);
+            parts.forEach(part => {
+                ctx.fillStyle = colors[part];
+                ctx.strokeStyle = colors[part];
+                ctx.lineWidth = 2 * scaleFactor;
+                drawMarker(ctx, part, startX, legendY, pointSize * 0.8);
+                ctx.fillStyle = textColor;
+                const displayName = profile.displayNames[part] || part;
+                ctx.fillText(displayName.charAt(0).toUpperCase() + displayName.slice(1), startX + (15 * scaleFactor), legendY + (4 * scaleFactor));
+                startX += itemWidth;
+            });
+        }
 
         function drawStickLegendOverlay(ctx, colors, canvasWidth, canvasHeight, options = {}) {
             if (!colors) return;
-            const parts = ['toe', 'mtp', 'ankle', 'knee', 'hip', 'iliac'];
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const parts = profile.parts;
             const scale = options.scale || 1;
             const bottomPadding = options.bottomPadding || 30;
             const itemWidth = Math.min((canvasWidth - 40 * scale) / parts.length, (options.itemWidth || 120) * scale);
@@ -5039,7 +5349,8 @@
                 ctx.lineWidth = Math.max(2, 2 * scale);
                 drawMarker(ctx, part, startX + (10 * scale), legendY, 18 * scale);
                 ctx.fillStyle = '#0f172a';
-                ctx.fillText(part.charAt(0).toUpperCase() + part.slice(1), startX + (26 * scale), legendY + (5 * scale));
+                const displayName = profile.displayNames[part] || part;
+                ctx.fillText(displayName.charAt(0).toUpperCase() + displayName.slice(1), startX + (26 * scale), legendY + (5 * scale));
                 startX += itemWidth;
             });
         }
@@ -5360,8 +5671,69 @@
             return lines.slice(2).map(line => line.split(','));
         }
 
+        function getBodyPartIndicesFromHeaders(profileName) {
+            const profile = ANATOMY_PROFILES[profileName];
+            const parts = profile.parts;
+            const mapping = {};
+            
+            const defaults = {
+                hindlimb: { iliac: 1, hip: 4, knee: 7, ankle: 10, mtp: 13, toe: 16 },
+                forelimb: { scapula: 1, shoulder: 4, elbow: 7, wrist: 10, mcp: 13, digit: 16 },
+                spine: { lumbar: 1, thoracic: 4, cervical: 7, ear: 10, nose: 13, snout: 16 }
+            };
+            
+            parts.forEach(part => {
+                mapping[part] = [
+                    defaults[profileName][part], 
+                    defaults[profileName][part] + 1, 
+                    defaults[profileName][part] + 2
+                ];
+            });
+            
+            if (rawHeaders && rawHeaders.length >= 2) {
+                const bodypartsRow = rawHeaders[1];
+                parts.forEach(part => {
+                    const aliases = {
+                        iliac: ['iliac crest', 'iliac_crest', 'iliac'],
+                        scapula: ['scapula', 'scapular'],
+                        lumbar: ['lumbar', 'lumbar spine', 'lumbar_spine'],
+                        digit: ['digit', 'claw'],
+                        mcp: ['mcp', 'knuckle'],
+                        wrist: ['wrist', 'carpus'],
+                        snout: ['snout', 'mouth'],
+                        nose: ['nose'],
+                        ear: ['ear', 'head'],
+                        cervical: ['cervical', 'cervical spine', 'cervical_spine', 'neck'],
+                        thoracic: ['thoracic', 'thoracic spine', 'thoracic_spine', 'back']
+                    };
+                    const searchTerms = aliases[part] || [part];
+                    for (let colIdx = 0; colIdx < bodypartsRow.length; colIdx++) {
+                        const cell = (bodypartsRow[colIdx] || '').trim().toLowerCase();
+                        if (searchTerms.some(term => cell === term || cell.includes(term))) {
+                            mapping[part] = [colIdx, colIdx + 1, colIdx + 2];
+                            break;
+                        }
+                    }
+                });
+            }
+            return mapping;
+        }
+
+        function updateAnatomyLabels() {
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const labelIds = ['lblToe', 'lblMtp', 'lblAnkle', 'lblKnee', 'lblHip', 'lblIliac'];
+            profile.parts.forEach((part, index) => {
+                const span = document.getElementById(labelIds[index]);
+                if (span) {
+                    span.textContent = (profile.displayNames[part] || part) + ':';
+                }
+            });
+        }
+
         function computeNormalizedPointsFromRows(rows, threshold = 0.5) {
-            const bodyPartIndices = { 'iliac': [1, 2, 3], 'hip': [4, 5, 6], 'knee': [7, 8, 9], 'ankle': [10, 11, 12], 'mtp': [13, 14, 15], 'toe': [16, 17, 18] };
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const bodyPartIndices = getBodyPartIndicesFromHeaders(currentAnatomyProfile);
+            const anchor = profile.anchor;
             if (!Array.isArray(rows)) return [];
             return rows.map(row => {
                 let points = {};
@@ -5371,8 +5743,8 @@
                         points[part] = { x: parseFloat(row[x_idx]), y: parseFloat(row[y_idx]) };
                     }
                 }
-                if (Object.keys(points).length < 6 || !points.iliac) return null;
-                const refX = points.iliac.x, refY = points.iliac.y;
+                if (Object.keys(points).length < 6 || !points[anchor]) return null;
+                const refX = points[anchor].x, refY = points[anchor].y;
                 const normalized = {};
                 for (const part in points) {
                     normalized[part] = { x: points[part].x - refX, y: points[part].y - refY };
@@ -5382,28 +5754,44 @@
         }
 
         function computeAngleDistributions(pointsList) {
-            const angles = { mtp: [], ankle: [], knee: [], hip: [], pelvicTilt: [] };
-            if (!Array.isArray(pointsList)) return { "MTP": [], "Ankle": [], "Knee": [], "Hip": [], "Pelvic Tilt": [] };
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const keys = Object.keys(profile.angles);
+            const distributions = {};
+            keys.forEach(k => { distributions[k] = []; });
+            
+            if (!Array.isArray(pointsList)) {
+                return distributions;
+            }
+            
             pointsList.forEach(points => {
                 if (!points) return;
-                angles.mtp.push(calculateAngle(points.toe, points.mtp, points.ankle));
-                angles.ankle.push(calculateAngle(points.mtp, points.ankle, points.knee));
-                angles.knee.push(calculateAngle(points.ankle, points.knee, points.hip));
-                angles.hip.push(calculateAngle(points.knee, points.hip, points.iliac));
-                angles.pelvicTilt.push(calculateHorizontalAngle(points.hip, points.iliac));
+                keys.forEach(key => {
+                    const definition = profile.angles[key];
+                    if (definition.length === 3) {
+                        const [p1, p2, p3] = definition;
+                        if (points[p1] && points[p2] && points[p3]) {
+                            distributions[key].push(calculateAngle(points[p1], points[p2], points[p3]));
+                        }
+                    } else if (definition.length === 2 && definition[1] === 'horizontal') {
+                        const [p1, p2] = definition;
+                        if (points[p1] && points[p2]) {
+                            distributions[key].push(calculateHorizontalAngle(points[p1], points[p2]));
+                        }
+                    }
+                });
             });
-            return {
-                "MTP": angles.mtp.filter(a => a !== null),
-                "Ankle": angles.ankle.filter(a => a !== null),
-                "Knee": angles.knee.filter(a => a !== null),
-                "Hip": angles.hip.filter(a => a !== null),
-                "Pelvic Tilt": angles.pelvicTilt.filter(a => a !== null),
-            };
+            
+            const result = {};
+            keys.forEach(key => {
+                result[key] = distributions[key].filter(a => a !== null);
+            });
+            return result;
         }
 
         function computeGaitMetricsFromPoints(pointsList) {
             const fps = 30;
-            const foot = 'toe';
+            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
+            const foot = profile.parts[0];
             if (!Array.isArray(pointsList) || pointsList.length < 10) return null;
             const xs = [], ys = [], fr = [];
             for (let i = 0; i < pointsList.length; i++) {
@@ -6157,24 +6545,23 @@
             const selectedMetric = metricSelect.value;
             const selectedPlotType = plotTypeSelect.value;
             
-            if (!selectedMetric) {
-                container.classList.add('hidden');
-                return;
+            if (selectedPlotType === 'correlation') {
+                metricSelect.parentElement.classList.add('hidden');
+                if (multiSamples.length < 2) {
+                    plotDiv.innerHTML = '<div class="text-center text-slate-400 py-12">At least 2 samples are required in the batch list to compute parameter correlations. Please upload more files.</div>';
+                    // Hide the stats card too since we need >= 2 groups with >= 2 samples
+                    document.getElementById('batchStatsCard')?.classList.add('hidden');
+                    return;
+                }
+            } else {
+                metricSelect.parentElement.classList.remove('hidden');
+                if (!selectedMetric) {
+                    container.classList.add('hidden');
+                    return;
+                }
             }
             
             container.classList.remove('hidden');
-            
-            // 2. Group sample values by group name
-            const groups = {};
-            multiSamples.forEach(sample => {
-                const groupName = (sample.group || '').trim() || 'Unassigned';
-                const metrics = sample.metrics || {};
-                const value = metrics[selectedMetric];
-                if (Number.isFinite(value)) {
-                    if (!groups[groupName]) groups[groupName] = [];
-                    groups[groupName].push(value);
-                }
-            });
             
             // Helper functions for mean and std
             const mean = arr => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
@@ -6188,84 +6575,152 @@
                 return colors[idx % colors.length];
             };
             
-            // 3. Prepare Traces
-            let traces = [];
-            const groupNames = Object.keys(groups).sort();
+            const pearsonCorrelation = (x, y) => {
+                const n = x.length;
+                const meanX = x.reduce((a,b)=>a+b,0)/n;
+                const meanY = y.reduce((a,b)=>a+b,0)/n;
+                let num = 0, denX = 0, denY = 0;
+                for (let i = 0; i < n; i++) {
+                    const dx = x[i] - meanX;
+                    const dy = y[i] - meanY;
+                    num += dx * dy;
+                    denX += dx * dx;
+                    denY += dy * dy;
+                }
+                if (denX === 0 || denY === 0) return 0;
+                return num / Math.sqrt(denX * denY);
+            };
             
-            if (selectedPlotType === 'bar') {
-                const x = [];
-                const y = [];
-                const error_y = [];
-                
-                groupNames.forEach((name) => {
-                    const vals = groups[name];
-                    x.push(name);
-                    y.push(mean(vals));
-                    error_y.push(std(vals));
-                });
-                
-                traces = [{
-                    x: x,
-                    y: y,
-                    type: 'bar',
-                    error_y: {
-                        type: 'data',
-                        array: error_y,
-                        visible: true,
-                        color: '#94a3b8'
-                    },
-                    marker: {
-                        color: x.map((_, i) => getPaletteColor(i)),
-                        line: { width: 1, color: '#475569' }
+            const computeCorrelationMatrix = (samples, keys) => {
+                const n = keys.length;
+                const matrix = Array.from({ length: n }, () => Array(n).fill(0));
+                for (let i = 0; i < n; i++) {
+                    for (let j = 0; j < n; j++) {
+                        const xVals = [], yVals = [];
+                        samples.forEach(s => {
+                            const x = s.metrics[keys[i]];
+                            const y = s.metrics[keys[j]];
+                            if (Number.isFinite(x) && Number.isFinite(y)) {
+                                xVals.push(x);
+                                yVals.push(y);
+                            }
+                        });
+                        if (xVals.length < 2) {
+                            matrix[i][j] = NaN;
+                            continue;
+                        }
+                        matrix[i][j] = pearsonCorrelation(xVals, yVals);
                     }
-                }];
-            } else if (selectedPlotType === 'box') {
-                traces = groupNames.map((name, idx) => ({
-                    y: groups[name],
-                    name: name,
-                    type: 'box',
-                    boxpoints: 'all',
-                    jitter: 0.3,
-                    pointpos: -1.8,
-                    marker: { color: getPaletteColor(idx) }
-                }));
-            } else if (selectedPlotType === 'violin' || selectedPlotType === 'violin_box') {
-                traces = groupNames.map((name, idx) => ({
-                    y: groups[name],
-                    name: name,
-                    type: 'violin',
-                    box: {
-                        visible: selectedPlotType === 'violin_box'
-                    },
-                    meanline: { visible: true },
-                    points: 'all',
-                    jitter: 0.3,
-                    marker: { color: getPaletteColor(idx) }
-                }));
-            }
+                }
+                return matrix;
+            };
             
-            // 4. Layout
-            const layout = {
+            let traces = [];
+            let layout = {
                 paper_bgcolor: '#ffffff',
                 plot_bgcolor: '#ffffff',
                 font: { family: 'Inter, sans-serif', color: '#1e293b' },
                 xaxis: {
-                    title: { text: 'Group', font: { size: 13, weight: 'bold' } },
-                    gridcolor: '#f1f5f9',
+                    title: { text: selectedPlotType === 'correlation' ? '' : 'Group', font: { size: 13, weight: 'bold' } },
+                    gridcolor: selectedPlotType === 'correlation' ? 'rgba(0,0,0,0)' : '#f1f5f9',
+                    showgrid: selectedPlotType !== 'correlation',
                     linecolor: '#cbd5e1',
                     tickfont: { color: '#64748b' }
                 },
                 yaxis: {
-                    title: { text: selectedMetric, font: { size: 13, weight: 'bold' } },
-                    gridcolor: '#f1f5f9',
+                    title: { text: selectedPlotType === 'correlation' ? '' : selectedMetric, font: { size: 13, weight: 'bold' } },
+                    gridcolor: selectedPlotType === 'correlation' ? 'rgba(0,0,0,0)' : '#f1f5f9',
+                    showgrid: selectedPlotType !== 'correlation',
                     linecolor: '#cbd5e1',
                     tickfont: { color: '#64748b' }
                 },
-                margin: { t: 40, b: 60, l: 60, r: 20 },
+                margin: selectedPlotType === 'correlation' ? { t: 40, b: 120, l: 120, r: 20 } : { t: 40, b: 60, l: 60, r: 20 },
                 showlegend: false
             };
             
+            if (selectedPlotType === 'correlation') {
+                const zMatrix = computeCorrelationMatrix(multiSamples, metricKeys);
+                traces = [{
+                    z: zMatrix,
+                    x: metricKeys,
+                    y: metricKeys,
+                    type: 'heatmap',
+                    colorscale: 'RdBu',
+                    zmin: -1,
+                    zmax: 1,
+                    colorbar: { title: { text: 'Pearson r', font: { size: 11 } } },
+                    hovertemplate: 'x=%{x}<br>y=%{y}<br>r=%{z:.3f}<extra></extra>'
+                }];
+            } else {
+                const groups = {};
+                multiSamples.forEach(sample => {
+                    const groupName = (sample.group || '').trim() || 'Unassigned';
+                    const metrics = sample.metrics || {};
+                    const value = metrics[selectedMetric];
+                    if (Number.isFinite(value)) {
+                        if (!groups[groupName]) groups[groupName] = [];
+                        groups[groupName].push(value);
+                    }
+                });
+                
+                const groupNames = Object.keys(groups).sort();
+                
+                if (selectedPlotType === 'bar') {
+                    const x = [];
+                    const y = [];
+                    const error_y = [];
+                    groupNames.forEach((name) => {
+                        const vals = groups[name];
+                        x.push(name);
+                        y.push(mean(vals));
+                        error_y.push(std(vals));
+                    });
+                    
+                    traces = [{
+                        x: x,
+                        y: y,
+                        type: 'bar',
+                        error_y: {
+                            type: 'data',
+                            array: error_y,
+                            visible: true,
+                            color: '#94a3b8'
+                        },
+                        marker: {
+                            color: x.map((_, i) => getPaletteColor(i)),
+                            line: { width: 1, color: '#475569' }
+                        }
+                    }];
+                } else if (selectedPlotType === 'box') {
+                    traces = groupNames.map((name, idx) => ({
+                        y: groups[name],
+                        name: name,
+                        type: 'box',
+                        boxpoints: 'all',
+                        jitter: 0.3,
+                        pointpos: -1.8,
+                        marker: { color: getPaletteColor(idx) }
+                    }));
+                } else if (selectedPlotType === 'violin' || selectedPlotType === 'violin_box') {
+                    traces = groupNames.map((name, idx) => ({
+                        y: groups[name],
+                        name: name,
+                        type: 'violin',
+                        box: {
+                            visible: selectedPlotType === 'violin_box'
+                        },
+                        meanline: { visible: true },
+                        points: 'all',
+                        jitter: 0.3,
+                        marker: { color: getPaletteColor(idx) }
+                    }));
+                }
+            }
+            
             Plotly.newPlot(plotDiv, traces, layout, { responsive: true });
+            
+            // Trigger stats card update
+            updateBatchStatsTable();
         }
 
         function exportMultiSamplesCsv() {
@@ -6287,6 +6742,229 @@
             });
             const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
             downloadBlob(blob, buildExportName('kima', 'multi_samples', 'csv'));
+        }
+
+        function tTestPValue(t, df) {
+            t = Math.abs(t);
+            df = Math.round(df);
+            if (df <= 0) return 1.0;
+            if (df === 1) {
+                return 1.0 - (2.0 / Math.PI) * Math.atan(t);
+            }
+            const x = df / (df + t * t);
+            let p = 0;
+            if (df % 2 === 0) {
+                let term = 1;
+                p = 1;
+                for (let i = 2; i <= df - 2; i += 2) {
+                    term = term * x * (i - 1) / i;
+                    p += term;
+                }
+                return 1.0 - Math.sqrt(1.0 - x) * p;
+            } else {
+                let term = 1;
+                p = 1;
+                for (let i = 3; i <= df - 2; i += 2) {
+                    term = term * x * (i - 1) / i;
+                    p += term;
+                }
+                return 1.0 - (2.0 / Math.PI) * (Math.atan(t / Math.sqrt(df)) + (t / Math.sqrt(df)) * x * p);
+            }
+        }
+
+        function fTestPValue(f, df1, df2) {
+            if (f <= 0) return 1.0;
+            if (df1 === 1) {
+                return tTestPValue(Math.sqrt(f), df2);
+            }
+            const w = (Math.log(df1 * f) - Math.log(df2)) / 3.0;
+            const sigma2 = 2.0 / (9.0 * df1) + 2.0 / (9.0 * df2);
+            const z = (w - (2.0 / (9.0 * df1) - 2.0 / (9.0 * df2))) / Math.sqrt(sigma2);
+            return normalCDF(-Math.abs(z)) * 2.0;
+        }
+
+        function normalCDF(x) {
+            const t = 1.0 / (1.0 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2.0);
+            const prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            if (x > 0) return 1.0 - prob;
+            return prob;
+        }
+
+        function computeWelchTTest(groupA, groupB) {
+            const nA = groupA.length;
+            const nB = groupB.length;
+            if (nA < 2 || nB < 2) return { t: 0, p: 1, df: 1, method: "T-Test" };
+            const meanA = groupA.reduce((a,b)=>a+b, 0) / nA;
+            const meanB = groupB.reduce((a,b)=>a+b, 0) / nB;
+            const varA = groupA.reduce((acc, val) => acc + (val - meanA) ** 2, 0) / (nA - 1);
+            const varB = groupB.reduce((acc, val) => acc + (val - meanB) ** 2, 0) / (nB - 1);
+            const seA = varA / nA;
+            const seB = varB / nB;
+            const se = Math.sqrt(seA + seB);
+            if (se === 0) return { t: 0, p: 1, df: 1, method: "Welch T-Test" };
+            const t = (meanA - meanB) / se;
+            const df = (seA + seB) ** 2 / ((seA ** 2 / (nA - 1)) + (seB ** 2 / (nB - 1)));
+            const p = tTestPValue(t, df);
+            return { t, p, df, method: "Welch T-Test" };
+        }
+
+        function computeOneWayAnova(groups) {
+            const k = groups.length;
+            const n = groups.reduce((acc, g) => acc + g.length, 0);
+            if (k < 2 || n <= k) return { f: 0, p: 1, df1: 1, df2: 1, method: "ANOVA" };
+            const allValues = groups.flat();
+            const grandMean = allValues.reduce((a,b)=>a+b, 0) / n;
+            let ssb = 0;
+            groups.forEach(g => {
+                const mean = g.reduce((a,b)=>a+b, 0) / g.length;
+                ssb += g.length * (mean - grandMean) ** 2;
+            });
+            let ssw = 0;
+            groups.forEach(g => {
+                const mean = g.reduce((a,b)=>a+b, 0) / g.length;
+                g.forEach(val => {
+                    ssw += (val - mean) ** 2;
+                });
+            });
+            const df1 = k - 1;
+            const df2 = n - k;
+            const msb = ssb / df1;
+            const msw = ssw / df2;
+            if (msw === 0) return { f: 0, p: 1, df1, df2, method: "ANOVA" };
+            const f = msb / msw;
+            const p = fTestPValue(f, df1, df2);
+            return { f, p, df1, df2, method: "ANOVA" };
+        }
+
+        function getSignificanceMarker(p) {
+            if (p < 0.001) return '***';
+            if (p < 0.01) return '**';
+            if (p < 0.05) return '*';
+            return 'ns';
+        }
+
+        function updateBatchStatsTable() {
+            const card = document.getElementById('batchStatsCard');
+            const tbody = document.getElementById('batchStatsTableBody');
+            if (!card || !tbody) return;
+            if (!multiSamples || multiSamples.length < 3) {
+                card.classList.add('hidden');
+                return;
+            }
+            const firstSample = multiSamples[0];
+            const metricKeys = Object.keys(firstSample.metrics || {});
+            if (!metricKeys.length) {
+                card.classList.add('hidden');
+                return;
+            }
+            const groupsMap = {};
+            multiSamples.forEach(sample => {
+                const grp = (sample.group || '').trim();
+                if (grp) {
+                    if (!groupsMap[grp]) groupsMap[grp] = [];
+                    groupsMap[grp].push(sample);
+                }
+            });
+            const groupNames = Object.keys(groupsMap).sort();
+            const validGroups = groupNames.filter(g => groupsMap[g].length >= 2);
+            if (groupNames.length < 2 || validGroups.length < 2) {
+                card.classList.add('hidden');
+                return;
+            }
+            card.classList.remove('hidden');
+            let rowsHtml = '';
+            const isThreePlus = groupNames.length >= 3;
+            metricKeys.forEach(metric => {
+                let testName = "";
+                let statVal = 0;
+                let pVal = 1.0;
+                let comparisons = "";
+                if (isThreePlus) {
+                    testName = "One-Way ANOVA";
+                    comparisons = groupNames.join(" vs ");
+                    const arrays = groupNames.map(g => groupsMap[g].map(s => s.metrics[metric]).filter(Number.isFinite));
+                    const res = computeOneWayAnova(arrays);
+                    statVal = res.f;
+                    pVal = res.p;
+                } else {
+                    testName = "Welch T-Test";
+                    const grpA = groupNames[0];
+                    const grpB = groupNames[1];
+                    comparisons = `${grpA} vs ${grpB}`;
+                    const arrA = groupsMap[grpA].map(s => s.metrics[metric]).filter(Number.isFinite);
+                    const arrB = groupsMap[grpB].map(s => s.metrics[metric]).filter(Number.isFinite);
+                    const res = computeWelchTTest(arrA, arrB);
+                    statVal = res.t;
+                    pVal = res.p;
+                }
+                const sig = getSignificanceMarker(pVal);
+                rowsHtml += `
+                    <tr class="border-t">
+                        <td class="px-3 py-2 text-left font-semibold text-slate-800">${metric}</td>
+                        <td class="px-3 py-2 text-left">${comparisons}</td>
+                        <td class="px-3 py-2 text-left text-slate-500">${testName}</td>
+                        <td class="px-3 py-2 text-right">${statVal.toFixed(3)}</td>
+                        <td class="px-3 py-2 text-right font-medium ${pVal < 0.05 ? 'text-emerald-600' : 'text-slate-500'}">${pVal < 0.0001 ? '< 0.0001' : pVal.toFixed(4)}</td>
+                        <td class="px-3 py-2 text-center font-bold text-slate-800">${sig}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = rowsHtml;
+        }
+
+        function exportBatchStatsReportCsv() {
+            if (!multiSamples.length) return;
+            const firstSample = multiSamples[0];
+            const metricKeys = Object.keys(firstSample.metrics || {});
+            const groupsMap = {};
+            multiSamples.forEach(sample => {
+                const grp = (sample.group || '').trim();
+                if (grp) {
+                    if (!groupsMap[grp]) groupsMap[grp] = [];
+                    groupsMap[grp].push(sample);
+                }
+            });
+            const groupNames = Object.keys(groupsMap).sort();
+            if (groupNames.length < 2) return;
+            const isThreePlus = groupNames.length >= 3;
+            const headers = ['Gait Metric', 'Comparison', 'Statistical Test', 'Statistic', 'P-Value', 'Significance'];
+            const lines = [headers.join(',')];
+            metricKeys.forEach(metric => {
+                let testName = "";
+                let statVal = 0;
+                let pVal = 1.0;
+                let comparisons = "";
+                if (isThreePlus) {
+                    testName = "One-Way ANOVA";
+                    comparisons = groupNames.join(" vs ");
+                    const arrays = groupNames.map(g => groupsMap[g].map(s => s.metrics[metric]).filter(Number.isFinite));
+                    const res = computeOneWayAnova(arrays);
+                    statVal = res.f;
+                    pVal = res.p;
+                } else {
+                    testName = "Welch T-Test";
+                    const grpA = groupNames[0];
+                    const grpB = groupNames[1];
+                    comparisons = `${grpA} vs ${grpB}`;
+                    const arrA = groupsMap[grpA].map(s => s.metrics[metric]).filter(Number.isFinite);
+                    const arrB = groupsMap[grpB].map(s => s.metrics[metric]).filter(Number.isFinite);
+                    const res = computeWelchTTest(arrA, arrB);
+                    statVal = res.t;
+                    pVal = res.p;
+                }
+                const sig = getSignificanceMarker(pVal);
+                lines.push([
+                    `"${metric}"`,
+                    `"${comparisons}"`,
+                    `"${testName}"`,
+                    statVal.toFixed(6),
+                    pVal.toFixed(6),
+                    `"${sig}"`
+                ].join(','));
+            });
+            const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            downloadBlob(blob, buildExportName('kima', 'cohort_statistical_report', 'csv'));
         }
 
         function setPcaDatasetFromSamples(samples) {
