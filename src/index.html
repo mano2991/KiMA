@@ -1429,14 +1429,6 @@
 
                 <div class="panel rounded-xl p-6">
                     <h2 class="text-xl font-semibold pb-4 mb-4">Plot Styling</h2>
-                    <div class="form-group mb-4">
-                        <label class="text-sm font-medium">Anatomy Model Profile</label>
-                        <select id="anatomyProfile" class="mt-1 w-full text-sm">
-                            <option value="hindlimb">Hindlimb (Iliac, Hip, Knee, Ankle, MTP, Toe)</option>
-                            <option value="forelimb">Forelimb (Scapula, Shoulder, Elbow, Wrist, MCP, Digit)</option>
-                            <option value="spine">Cervical / Spine (Lumbar, Thoracic, Cervical, Head, Snout)</option>
-                        </select>
-                    </div>
                     <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Title</label> <input type="text" id="plotTitle" value="Gait Analysis Plot" class="mt-1 w-full"> </div>
                     <div class="grid grid-cols-2 gap-4 form-group mb-4"> <div><label class="text-sm font-medium">X-Axis Label</label><input type="text" id="xAxisLabel" value="X - Coordinate" class="mt-1 w-full"></div> <div><label class="text-sm font-medium">Y-Axis Label</label><input type="text" id="yAxisLabel" value="Y - Coordinate" class="mt-1 w-full"></div> </div>
                     <div class="form-group mb-4"> <label class="text-sm font-medium">Plot Background Color</label> <div class="color-picker text-sm flex items-center mt-1"> <span>Background Color:</span> <input type="color" id="plotBackgroundColor" value="#ffffff" class="ml-auto"> </div> </div>
@@ -2416,76 +2408,6 @@
                     hip: '#CAB2D6',
                     iliac: '#F90B0B'
                 }
-            },
-            forelimb: {
-                label: "Forelimb",
-                parts: ['digit', 'mcp', 'wrist', 'elbow', 'shoulder', 'scapula'],
-                displayNames: {
-                    digit: "Digit",
-                    mcp: "MCP",
-                    wrist: "Wrist",
-                    elbow: "Elbow",
-                    shoulder: "Shoulder",
-                    scapula: "Scapula"
-                },
-                segments: [
-                    ['digit', 'mcp'],
-                    ['mcp', 'wrist'],
-                    ['wrist', 'elbow'],
-                    ['elbow', 'shoulder'],
-                    ['shoulder', 'scapula']
-                ],
-                angles: {
-                    "MCP": ['digit', 'mcp', 'wrist'],
-                    "Wrist": ['mcp', 'wrist', 'elbow'],
-                    "Elbow": ['wrist', 'elbow', 'shoulder'],
-                    "Shoulder": ['elbow', 'shoulder', 'scapula'],
-                    "Scapular Tilt": ['shoulder', 'scapula', 'horizontal']
-                },
-                anchor: 'scapula',
-                colors: {
-                    digit: '#F781BF',
-                    mcp: '#FDB462',
-                    wrist: '#B3ED69',
-                    elbow: '#80B1D3',
-                    shoulder: '#CAB2D6',
-                    scapula: '#F90B0B'
-                }
-            },
-            spine: {
-                label: "Cervical / Spine",
-                parts: ['snout', 'nose', 'ear', 'cervical', 'thoracic', 'lumbar'],
-                displayNames: {
-                    snout: "Snout",
-                    nose: "Nose",
-                    ear: "Ear",
-                    cervical: "Cervical",
-                    thoracic: "Thoracic",
-                    lumbar: "Lumbar"
-                },
-                segments: [
-                    ['snout', 'nose'],
-                    ['nose', 'ear'],
-                    ['ear', 'cervical'],
-                    ['cervical', 'thoracic'],
-                    ['thoracic', 'lumbar']
-                ],
-                angles: {
-                    "Nose": ['snout', 'nose', 'ear'],
-                    "Head": ['nose', 'ear', 'cervical'],
-                    "Cervical": ['ear', 'cervical', 'thoracic'],
-                    "Thoracic": ['cervical', 'thoracic', 'lumbar'],
-                    "Lumbar Tilt": ['thoracic', 'lumbar', 'horizontal']
-                },
-                anchor: 'lumbar',
-                colors: {
-                    snout: '#F781BF',
-                    nose: '#FDB462',
-                    ear: '#B3ED69',
-                    cervical: '#80B1D3',
-                    thoracic: '#CAB2D6',
-                    lumbar: '#F90B0B'
-                }
             }
         };
         let currentAnatomyProfile = 'hindlimb';
@@ -2833,19 +2755,7 @@
             immediateRefreshControls.forEach(control => {
                 control.addEventListener('input', () => { if (csvData) generateInteractivePlot(); });
             });
-            const anatomyProfileSelect = document.getElementById('anatomyProfile');
-            if (anatomyProfileSelect) {
-                anatomyProfileSelect.addEventListener('change', function() {
-                    currentAnatomyProfile = this.value;
-                    updateAnatomyLabels();
-                    if (csvData) {
-                        processData();
-                        calculateAllAngles();
-                        generateInteractivePlot();
-                        drawStatsPlot();
-                    }
-                });
-            }
+
             backgroundOpacitySlider.addEventListener('input', () => { opacityValue.textContent = `${backgroundOpacitySlider.value}%`; });
             dpiSlider.addEventListener('input', function() {
                 const dpi = parseInt(this.value);
@@ -5677,9 +5587,7 @@
             const mapping = {};
             
             const defaults = {
-                hindlimb: { iliac: 1, hip: 4, knee: 7, ankle: 10, mtp: 13, toe: 16 },
-                forelimb: { scapula: 1, shoulder: 4, elbow: 7, wrist: 10, mcp: 13, digit: 16 },
-                spine: { lumbar: 1, thoracic: 4, cervical: 7, ear: 10, nose: 13, snout: 16 }
+                hindlimb: { iliac: 1, hip: 4, knee: 7, ankle: 10, mtp: 13, toe: 16 }
             };
             
             parts.forEach(part => {
@@ -5695,16 +5603,11 @@
                 parts.forEach(part => {
                     const aliases = {
                         iliac: ['iliac crest', 'iliac_crest', 'iliac'],
-                        scapula: ['scapula', 'scapular'],
-                        lumbar: ['lumbar', 'lumbar spine', 'lumbar_spine'],
-                        digit: ['digit', 'claw'],
-                        mcp: ['mcp', 'knuckle'],
-                        wrist: ['wrist', 'carpus'],
-                        snout: ['snout', 'mouth'],
-                        nose: ['nose'],
-                        ear: ['ear', 'head'],
-                        cervical: ['cervical', 'cervical spine', 'cervical_spine', 'neck'],
-                        thoracic: ['thoracic', 'thoracic spine', 'thoracic_spine', 'back']
+                        toe: ['toe'],
+                        mtp: ['mtp'],
+                        ankle: ['ankle'],
+                        knee: ['knee'],
+                        hip: ['hip']
                     };
                     const searchTerms = aliases[part] || [part];
                     for (let colIdx = 0; colIdx < bodypartsRow.length; colIdx++) {
@@ -5717,17 +5620,6 @@
                 });
             }
             return mapping;
-        }
-
-        function updateAnatomyLabels() {
-            const profile = ANATOMY_PROFILES[currentAnatomyProfile];
-            const labelIds = ['lblToe', 'lblMtp', 'lblAnkle', 'lblKnee', 'lblHip', 'lblIliac'];
-            profile.parts.forEach((part, index) => {
-                const span = document.getElementById(labelIds[index]);
-                if (span) {
-                    span.textContent = (profile.displayNames[part] || part) + ':';
-                }
-            });
         }
 
         function computeNormalizedPointsFromRows(rows, threshold = 0.5) {
